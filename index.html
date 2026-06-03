@@ -254,39 +254,51 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 
   <!-- Step 3: Settings -->
   <div class="section" id="step-3">
-    <div class="section-label">Due dates</div>
+    <div class="section-label">Due dates &amp; post dates</div>
 
     <div class="field">
-      <label>When should each task be due?</label>
+      <label>Do you want a due date on each task?</label>
+      <div class="toggle-group">
+        <button class="active" onclick="setHasDueDate(true)" id="hasDueDateYes">Yes</button>
+        <button onclick="setHasDueDate(false)" id="hasDueDateNo">No</button>
+      </div>
+    </div>
+
+    <div class="field field-row-conditional visible" id="dueDateSettingField">
+      <label>How should the due date be calculated?</label>
       <select id="dueDateSetting" onchange="handleDueDateChange()">
-        <option value="same">Same day as the task date</option>
-        <option value="before">A few days before the task date</option>
-        <option value="none">No due date</option>
+        <option value="same">Same as the scheduled task date</option>
+        <option value="before">A set number of days before the task date</option>
       </select>
+      <div class="hint" id="dueDateHint">The due date will match the date the task is scheduled for</div>
     </div>
 
     <div class="field field-row-conditional" id="daysBeforeField">
       <label>How many days before?</label>
       <input type="number" id="daysBefore" value="3" min="1" />
-      <div class="hint">e.g. if the task date is January 10 and you enter 3, the due date will be January 7</div>
+      <div class="hint">e.g. if the task is scheduled for January 10 and you enter 3, the due date will be set to January 7</div>
     </div>
 
     <hr class="divider" />
-    <div class="section-label">Post / publish date field &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px">(optional)</span></div>
+    <div class="section-label">Post date custom field &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px">(optional)</span></div>
+
+    <div class="info-box">
+      <div class="info-title">What is this?</div>
+      <p>If your ClickUp list has a custom date field — like a "Post Date" or "Publish Date" field — this tool can automatically fill it in with the scheduled date for each task. This is separate from the due date above.<br /><br />If you don't have a custom date field yet or aren't sure what this means, <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank">follow these instructions</a> to set one up and find the Field ID you'll need.</p>
+    </div>
 
     <div class="field">
-      <label>Do your tasks have a custom "post date" or "publish date" field?</label>
+      <label>Do you want to populate a custom post/publish date field?</label>
       <div class="toggle-group">
         <button class="active" onclick="setPostDate(false)" id="pdNo">No</button>
         <button onclick="setPostDate(true)" id="pdYes">Yes</button>
       </div>
-      <div class="hint">Only turn this on if you have a custom date field in ClickUp that you use to track when content goes live — like a "Post Date" or "Publish Date" field on the list</div>
     </div>
 
     <div class="field field-row-conditional" id="customFieldIdField">
       <label>Custom Field ID</label>
       <input type="text" id="customFieldId" placeholder="e.g. a1b2c3d4-e5f6-..." />
-      <div class="hint">This is a technical ID from ClickUp. If you're not sure what it is, ask whoever set up your ClickUp workspace — or find it via the ClickUp API or browser Dev Tools.</div>
+      <div class="hint">Paste the Field ID here — <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">see instructions for how to find it</a></div>
     </div>
 
     <hr class="divider" />
@@ -353,7 +365,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 </div>
 
 <script>
-var state={namingStyle:'prefix',includeDow:false,skipWeekends:false,selectedDays:[],setPostDate:false,dueDateSetting:'same',running:false};
+var state={namingStyle:'prefix',includeDow:false,skipWeekends:false,selectedDays:[],setPostDate:false,hasDueDate:true,dueDateSetting:'same',running:false};
 
 function goTo(s){
   document.querySelectorAll('.section').forEach(function(el,i){el.classList.toggle('active',i===s);});
@@ -454,10 +466,24 @@ function setPostDate(val){
   document.getElementById('customFieldIdField').classList.toggle('visible',val);
 }
 
+function setHasDueDate(val){
+  state.hasDueDate=val;
+  document.getElementById('hasDueDateYes').classList.toggle('active',val);
+  document.getElementById('hasDueDateNo').classList.toggle('active',!val);
+  document.getElementById('dueDateSettingField').classList.toggle('visible',val);
+  if(!val) document.getElementById('daysBeforeField').classList.remove('visible');
+  if(val) handleDueDateChange();
+}
+
 function handleDueDateChange(){
   var s=v('dueDateSetting');
   state.dueDateSetting=s;
   document.getElementById('daysBeforeField').classList.toggle('visible',s==='before');
+  var hints={
+    same:'The due date will match the date the task is scheduled for',
+    before:'The due date will be set a few days before the scheduled date — great for giving yourself a buffer'
+  };
+  document.getElementById('dueDateHint').textContent=hints[s]||'';
 }
 
 function parseDate(str){
@@ -527,7 +553,7 @@ function buildSummary(){
     ['Last task date',v('endDate')?fmtDate(parseDate(v('endDate'))):'—'],
     ['Repeat pattern',patternEl.options[patternEl.selectedIndex].text],
     ['Skip weekends',state.skipWeekends?'Yes — weekdays only':'No — including weekends'],
-    ['Due date',dueEl.options[dueEl.selectedIndex].text],
+    ['Due date',!state.hasDueDate?'No due date':dueEl.options[dueEl.selectedIndex].text],
     ['Post date field',state.setPostDate?'Yes — field ID: '+(v('customFieldId')||'not entered'):'No'],
     ['Assignee',v('assigneeId')||'None'],
     ['Task status',v('taskStatus')||'List default'],
@@ -575,8 +601,10 @@ async function runTasks(){
     var taskDate=dates[i];
     var taskName=buildTaskName(taskDate);
     var payload={name:taskName};
-    if(dueSetting==='same'){payload.due_date=taskDate.getTime();payload.due_date_time=false;}
-    else if(dueSetting==='before'&&daysBefore>0){var dd=new Date(taskDate);dd.setDate(dd.getDate()-daysBefore);payload.due_date=dd.getTime();payload.due_date_time=false;}
+    if(state.hasDueDate){
+      if(dueSetting==='same'){payload.due_date=taskDate.getTime();payload.due_date_time=false;}
+      else if(dueSetting==='before'&&daysBefore>0){var dd=new Date(taskDate);dd.setDate(dd.getDate()-daysBefore);payload.due_date=dd.getTime();payload.due_date_time=false;}
+    }
     if(assigneeId)payload.assignees=[parseInt(assigneeId)];
     if(taskStatus)payload.status=taskStatus;
     if(state.setPostDate&&customFieldId)payload.custom_fields=[{id:customFieldId,value:taskDate.getTime()}];
