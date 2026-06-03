@@ -128,6 +128,10 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
       <input type="text" id="listId" placeholder="e.g. 901327450596" />
       <div class="hint">The number after /li/ in your ClickUp list URL</div>
     </div>
+    <div style="background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Your data is safe</div>
+      <div style="font-size:12px;color:var(--slate);line-height:1.6">Your API token is sent directly from your browser to ClickUp. It is never stored on or sent to any Shine Bright Virtual server — we never see it, touch it, or log it.</div>
+    </div>
     <div class="nav-row">
       <span></span>
       <button class="btn-primary" onclick="next(0)">Next →</button>
@@ -193,9 +197,11 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
     <div class="field field-row-conditional visible" id="intervalField">
       <label id="intervalLabel">Every X days</label>
       <input type="number" id="intervalX" value="3" min="1" max="365" onchange="updateTaskCount()" />
+      <div class="hint" id="intervalHint">e.g. enter 3 to create a task every 3 days, 7 for weekly, 14 for every two weeks</div>
     </div>
     <div class="field field-row-conditional" id="dowPickerField">
       <label>Days of the week</label>
+      <div class="hint" style="margin-bottom:8px">Select one or more days — a task will be created on each selected day every week</div>
       <div class="day-picker">
         <button class="day-btn" onclick="toggleDay(0)" id="day-0">Sun</button>
         <button class="day-btn" onclick="toggleDay(1)" id="day-1">Mon</button>
@@ -321,7 +327,7 @@ function validate(s){
   if(s===2){
     if(!v('startDate'))return'Start date is required.';
     if(!v('endDate'))return'End date is required.';
-    if(new Date(v('startDate'))>new Date(v('endDate')))return'Start date must be before end date.';
+    if(parseDate(v('startDate'))>parseDate(v('endDate')))return'Start date must be before end date.';
     if(v('repeatPattern')==='specific-days'&&state.selectedDays.length===0)return'Please select at least one day of the week.';
   }
   if(s===3){if(state.setPostDate&&!v('customFieldId'))return'Custom Field ID is required when populating a post date field.';}
@@ -397,9 +403,12 @@ function handleDueDateChange(){
   document.getElementById('daysBeforeField').classList.toggle('visible',s==='before');
 }
 
+function parseDate(str){
+  var p=str.split('-');return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+}
 function buildDateList(){
-  var start=new Date(v('startDate'));start.setHours(0,0,0,0);
-  var end=new Date(v('endDate'));end.setHours(0,0,0,0);
+  var start=parseDate(v('startDate'));
+  var end=parseDate(v('endDate'));
   var pattern=v('repeatPattern');
   var interval=parseInt(document.getElementById('intervalX').value)||1;
   var dates=[];var cur=new Date(start);
