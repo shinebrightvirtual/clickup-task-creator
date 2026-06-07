@@ -35,11 +35,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 .field{margin-bottom:20px}
 .field label{display:block;font-size:13px;font-weight:500;color:var(--olive);margin-bottom:6px}
 .field .hint{font-size:11px;color:var(--muted);margin-top:5px;font-style:italic;line-height:1.6}
-.field input,.field select{
-  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;
-  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--olive);
-  background:var(--white);outline:none;transition:border-color 0.15s;
-}
+.field input,.field select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none;transition:border-color 0.15s;}
 .field input:focus,.field select:focus{border-color:var(--rust)}
 .field.protected input{background:var(--cream-light)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -48,7 +44,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 .day-btn.selected{background:var(--olive);border-color:var(--olive);color:var(--white)}
 .preview-box{background:var(--ochre);border-radius:6px;padding:14px 16px;margin-top:12px}
 .preview-box .preview-label{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:5px}
-.preview-box .preview-value{font-size:15px;font-style:italic;color:var(--white);font-weight:400}
+.preview-box .preview-value{font-size:15px;font-style:italic;color:var(--white)}
 .toggle-group{display:flex}
 .toggle-group button{flex:1;padding:9px 12px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--slate);background:var(--white);cursor:pointer;transition:all 0.15s;margin:0}
 .toggle-group button:first-child{border-radius:6px 0 0 6px}
@@ -61,6 +57,10 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 .btn-secondary{padding:11px 20px;background:transparent;color:var(--slate);border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.15s}
 .btn-secondary:hover{border-color:var(--slate)}
 .btn-ghost{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;padding:4px 0}
+.btn-small{padding:7px 14px;font-size:12px;font-weight:500;border-radius:5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;border:1px solid var(--border);background:var(--white);color:var(--slate)}
+.btn-small:hover{border-color:var(--rust);color:var(--rust)}
+.btn-small.danger{color:var(--red);border-color:rgba(155,34,38,0.3)}
+.btn-small.danger:hover{background:#fef2f2}
 .summary-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:16px}
 .summary-card h3{font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .summary-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--cream);font-size:13px;gap:16px}
@@ -93,12 +93,30 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 .info-box .info-title{font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
 .info-box p{font-size:12px;color:var(--slate);line-height:1.6}
 .info-box a{color:var(--rust);text-decoration:none}
+
+/* Presets */
+.preset-bar{background:var(--cream-light);border-bottom:1px solid var(--border);padding:12px 40px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.preset-bar label{font-size:12px;font-weight:500;color:var(--slate);white-space:nowrap}
+.preset-bar select{padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--olive);background:var(--white);flex:1;min-width:140px;max-width:240px}
+.preset-list{margin-top:12px}
+.preset-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--white);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;font-size:13px}
+.preset-item .preset-name{font-weight:500;color:var(--olive)}
+.preset-item .preset-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.preset-actions{display:flex;gap:6px}
+
+/* Fetch status */
+.fetch-status{font-size:11px;padding:6px 10px;border-radius:4px;display:inline-flex;align-items:center;gap:6px;margin-top:6px}
+.fetch-status.loading{background:var(--cream-light);color:var(--muted)}
+.fetch-status.success{background:#f0fdf4;color:var(--green)}
+.fetch-status.error{background:#fef2f2;color:var(--red)}
+
 .footer{text-align:center;padding:32px 40px;font-size:12px;color:var(--muted)}
 .footer a{color:var(--rust);text-decoration:none}
 @media(max-width:600px){
   .header,.section{padding:24px 20px}
   .progress-step{font-size:9px;padding:10px 2px}
   .two-col{grid-template-columns:1fr}
+  .preset-bar{padding:12px 20px}
 }
 </style>
 </head>
@@ -108,6 +126,16 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
   <div class="header">
     <h1>ClickUp Bulk Task Creator</h1>
     <p>Built by <a href="https://shinebrightvirtual.com" target="_blank">Shine Bright Virtual</a></p>
+  </div>
+
+  <!-- Preset bar -->
+  <div class="preset-bar" id="presetBar">
+    <label>Saved presets:</label>
+    <select id="presetSelect" onchange="loadPreset()">
+      <option value="">— select a saved preset —</option>
+    </select>
+    <button class="btn-small" onclick="showSavePreset()">Save current</button>
+    <button class="btn-small danger" id="deletePresetBtn" style="display:none" onclick="deletePreset()">Delete</button>
   </div>
 
   <div class="progress-bar">
@@ -124,19 +152,25 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 
     <div class="info-box">
       <div class="info-title">Before you start</div>
-      <p>You'll need two things from ClickUp: your <strong>API Token</strong> (a password that lets this tool talk to your account) and the <strong>List ID</strong> (which tells it where to create the tasks). Both are easy to find — see the hints below each field.</p>
+      <p>You'll need two things from ClickUp: your <strong>API Token</strong> (a password that lets this tool talk to your account) and the <strong>List ID</strong> of the list where you want tasks created. Both are easy to find — see the hints below each field.</p>
     </div>
 
     <div class="field protected">
       <label>API Token</label>
-      <input type="password" id="apiToken" placeholder="pk_•••••••••••••••••••" autocomplete="off" />
+      <input type="password" id="apiToken" placeholder="pk_•••••••••••••••••••" autocomplete="off" oninput="clearListData()" />
       <div class="hint">In ClickUp: click your avatar (bottom left) → Settings → Apps → copy the API Token. It starts with pk_</div>
     </div>
 
     <div class="field">
       <label>List ID</label>
-      <input type="text" id="listId" placeholder="e.g. 901327450596" />
-      <div class="hint">Open the ClickUp list where you want the tasks created. Look at the URL — the List ID is the long number after /li/ in the address bar.</div>
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <div style="flex:1">
+          <input type="text" id="listId" placeholder="e.g. 901327450596" oninput="clearListData()" />
+          <div class="hint">Open the ClickUp list where you want tasks created. Look at the URL — the List ID is the long number after /li/ in the address bar.</div>
+        </div>
+        <button class="btn-small" style="margin-top:1px;white-space:nowrap" onclick="fetchListData()">Load list info</button>
+      </div>
+      <div id="fetchStatusMsg"></div>
     </div>
 
     <div class="info-box" style="margin-top:4px">
@@ -157,7 +191,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
     <div class="field">
       <label>Task title format</label>
       <div class="toggle-group" id="namingToggle">
-        <button class="active" onclick="setNaming('prefix')">Text + date</button>
+        <button class="active" onclick="setNaming('prefix')">Custom text + date</button>
         <button onclick="setNaming('date')">Date only</button>
         <button onclick="setNaming('same')">Same title every time</button>
       </div>
@@ -210,7 +244,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
         <option value="every-day">Every day</option>
         <option value="every-x-days" selected>Every few days (you choose the number)</option>
         <option value="every-x-weeks">Every few weeks (you choose the number)</option>
-        <option value="specific-days">On specific days of the week (e.g. every Monday and Wednesday)</option>
+        <option value="specific-days">On specific days of the week</option>
       </select>
     </div>
 
@@ -222,7 +256,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 
     <div class="field field-row-conditional" id="dowPickerField">
       <label>Which days of the week?</label>
-      <div class="hint" style="margin-bottom:10px">Click to select the days you want — tasks will be created on these days each week</div>
+      <div class="hint" style="margin-bottom:10px">Click to select the days — tasks will be created on these days each week</div>
       <div class="day-picker">
         <button class="day-btn" onclick="toggleDay(0)" id="day-0">Sun</button>
         <button class="day-btn" onclick="toggleDay(1)" id="day-1">Mon</button>
@@ -284,7 +318,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 
     <div class="info-box">
       <div class="info-title">What is this?</div>
-      <p>If your ClickUp list has a custom date field — like a "Post Date" or "Publish Date" field — this tool can automatically fill it in with the scheduled date for each task. This is separate from the due date above.<br /><br />If you don't have a custom date field yet or aren't sure what this means, <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank">follow these instructions</a> to set one up and find the Field ID you'll need.</p>
+      <p>If your ClickUp list has a custom date field — like a "Post Date" or "Publish Date" field — this tool can automatically fill it in with the scheduled date for each task. This is separate from the due date above.<br /><br />If you don't have one yet or aren't sure what this means, <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank">follow these instructions</a> to set one up.</p>
     </div>
 
     <div class="field">
@@ -296,25 +330,30 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
     </div>
 
     <div class="field field-row-conditional" id="customFieldIdField">
-      <label>Custom Field ID</label>
-      <input type="text" id="customFieldId" placeholder="e.g. a1b2c3d4-e5f6-..." />
-      <div class="hint">Paste the Field ID here — <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">see instructions for how to find it</a></div>
+      <label>Which custom field?</label>
+      <select id="customFieldSelect">
+        <option value="">— select a field —</option>
+      </select>
+      <div class="hint" id="customFieldHint">These are the date-type custom fields on your list. Don't see the right one? <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">See instructions for setting one up.</a></div>
     </div>
 
     <hr class="divider" />
     <div class="section-label">Optional extras</div>
 
-    <div class="two-col">
-      <div class="field">
-        <label>Assign to someone?</label>
-        <input type="text" id="assigneeId" placeholder="Leave blank to skip" />
-        <div class="hint">Enter a ClickUp User ID — found in ClickUp under Settings → People → click a member → check the URL for their ID</div>
-      </div>
-      <div class="field">
-        <label>Set a task status?</label>
-        <input type="text" id="taskStatus" placeholder="Leave blank to skip" />
-        <div class="hint">Must match exactly how it appears in ClickUp, e.g. "To Do" — leave blank to use your list's default status</div>
-      </div>
+    <div class="field">
+      <label>Assign to someone? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+      <select id="assigneeSelect">
+        <option value="">— no assignee —</option>
+      </select>
+      <div class="hint" id="assigneeHint">These are the members of your ClickUp workspace</div>
+    </div>
+
+    <div class="field">
+      <label>Set a task status? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+      <select id="statusSelect">
+        <option value="">— use list default —</option>
+      </select>
+      <div class="hint">Leave as "use list default" if you're not sure — tasks will be created with your list's default status</div>
     </div>
 
     <div class="nav-row">
@@ -364,8 +403,248 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
   &nbsp;·&nbsp; <a href="https://shinebrightvirtual.com" target="_blank">shinebrightvirtual.com</a>
 </div>
 
+<!-- Save preset modal -->
+<div id="presetModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:none;align-items:center;justify-content:center">
+  <div style="background:var(--white);border-radius:10px;padding:28px;width:360px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2)">
+    <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--olive);margin-bottom:8px">Save preset</div>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:16px">Give this preset a name so you can load it again next time.</p>
+    <input type="text" id="presetNameInput" placeholder="e.g. MWFC Content Calendar" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:16px" />
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn-secondary" onclick="hideModal()">Cancel</button>
+      <button class="btn-primary" onclick="savePreset()">Save</button>
+    </div>
+  </div>
+</div>
+
 <script>
-var state={namingStyle:'prefix',includeDow:false,skipWeekends:false,selectedDays:[],setPostDate:false,hasDueDate:true,dueDateSetting:'same',running:false};
+var state={
+  namingStyle:'prefix',includeDow:false,skipWeekends:false,
+  selectedDays:[],setPostDate:false,hasDueDate:true,dueDateSetting:'same',
+  running:false,
+  listStatuses:[],listMembers:[],listCustomFields:[]
+};
+
+// ── Presets ──────────────────────────────────────────────────
+
+function getPresets(){
+  try{return JSON.parse(localStorage.getItem('sbv_cu_presets')||'{}');}catch(e){return {};}
+}
+
+function savePresets(p){
+  try{localStorage.setItem('sbv_cu_presets',JSON.stringify(p));}catch(e){}
+}
+
+function refreshPresetDropdown(){
+  var p=getPresets();var sel=document.getElementById('presetSelect');
+  var cur=sel.value;
+  sel.innerHTML='<option value="">— select a saved preset —</option>';
+  Object.keys(p).sort().forEach(function(name){
+    var o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);
+  });
+  if(cur&&p[cur])sel.value=cur;
+  document.getElementById('deletePresetBtn').style.display=sel.value?'inline-block':'none';
+}
+
+function showSavePreset(){
+  document.getElementById('presetNameInput').value='';
+  document.getElementById('presetModal').style.display='flex';
+  setTimeout(function(){document.getElementById('presetNameInput').focus();},50);
+}
+
+function hideModal(){
+  document.getElementById('presetModal').style.display='none';
+}
+
+function savePreset(){
+  var name=document.getElementById('presetNameInput').value.trim();
+  if(!name){alert('Please enter a name for this preset.');return;}
+  var p=getPresets();
+  p[name]=captureState();
+  savePresets(p);
+  refreshPresetDropdown();
+  document.getElementById('presetSelect').value=name;
+  document.getElementById('deletePresetBtn').style.display='inline-block';
+  hideModal();
+}
+
+function loadPreset(){
+  var name=document.getElementById('presetSelect').value;
+  document.getElementById('deletePresetBtn').style.display=name?'inline-block':'none';
+  if(!name)return;
+  var p=getPresets();
+  if(!p[name])return;
+  applyState(p[name]);
+}
+
+function deletePreset(){
+  var name=document.getElementById('presetSelect').value;
+  if(!name)return;
+  if(!confirm('Delete preset "'+name+'"?'))return;
+  var p=getPresets();delete p[name];
+  savePresets(p);
+  refreshPresetDropdown();
+}
+
+function captureState(){
+  return {
+    apiToken:v('apiToken'),listId:v('listId'),
+    namingStyle:state.namingStyle,prefix:document.getElementById('prefix').value,
+    includeDow:state.includeDow,
+    startDate:v('startDate'),endDate:v('endDate'),
+    repeatPattern:v('repeatPattern'),intervalX:document.getElementById('intervalX').value,
+    selectedDays:state.selectedDays.slice(),skipWeekends:state.skipWeekends,
+    hasDueDate:state.hasDueDate,dueDateSetting:v('dueDateSetting'),daysBefore:document.getElementById('daysBefore').value,
+    setPostDate:state.setPostDate,customFieldId:v('customFieldSelect'),
+    assigneeId:v('assigneeSelect'),taskStatus:v('statusSelect')
+  };
+}
+
+function applyState(s){
+  if(s.apiToken)document.getElementById('apiToken').value=s.apiToken;
+  if(s.listId)document.getElementById('listId').value=s.listId;
+  if(s.namingStyle)setNaming(s.namingStyle);
+  if(s.prefix)document.getElementById('prefix').value=s.prefix;
+  if(s.includeDow!==undefined)setDow(s.includeDow);
+  if(s.startDate)document.getElementById('startDate').value=s.startDate;
+  if(s.endDate)document.getElementById('endDate').value=s.endDate;
+  if(s.repeatPattern){document.getElementById('repeatPattern').value=s.repeatPattern;handlePatternChange();}
+  if(s.intervalX)document.getElementById('intervalX').value=s.intervalX;
+  if(s.selectedDays){
+    state.selectedDays=[];
+    s.selectedDays.forEach(function(d){toggleDay(d);});
+  }
+  if(s.skipWeekends!==undefined)setSkip(s.skipWeekends);
+  if(s.hasDueDate!==undefined)setHasDueDate(s.hasDueDate);
+  if(s.dueDateSetting){document.getElementById('dueDateSetting').value=s.dueDateSetting;handleDueDateChange();}
+  if(s.daysBefore)document.getElementById('daysBefore').value=s.daysBefore;
+  if(s.setPostDate!==undefined)setPostDate(s.setPostDate);
+  updatePreview();
+  updateTaskCount();
+  // If we have API token + list ID, re-fetch list data to restore dropdowns
+  if(s.apiToken&&s.listId){
+    fetchListData(function(){
+      if(s.customFieldId){document.getElementById('customFieldSelect').value=s.customFieldId;}
+      if(s.assigneeId){document.getElementById('assigneeSelect').value=s.assigneeId;}
+      if(s.taskStatus){document.getElementById('statusSelect').value=s.taskStatus;}
+    });
+  }
+}
+
+// ── List data fetch ──────────────────────────────────────────
+
+function clearListData(){
+  state.listStatuses=[];state.listMembers=[];state.listCustomFields=[];
+  document.getElementById('fetchStatusMsg').innerHTML='';
+  populateStatusDropdown([]);
+  populateMemberDropdown([]);
+  populateCustomFieldDropdown([]);
+}
+
+async function fetchListData(callback){
+  var token=v('apiToken');var listId=v('listId');
+  if(!token||!listId){
+    if(callback)callback();
+    return;
+  }
+  var msg=document.getElementById('fetchStatusMsg');
+  msg.innerHTML='<div class="fetch-status loading"><span class="spinner" style="width:12px;height:12px;border-width:2px"></span> Loading list info...</div>';
+
+  try{
+    // Fetch list details (statuses + members)
+    var listResp=await fetch('https://api.clickup.com/api/v2/list/'+listId,{
+      headers:{'Authorization':token}
+    });
+    var listData=await listResp.json();
+
+    if(!listResp.ok){
+      msg.innerHTML='<div class="fetch-status error">Could not load list — check your API Token and List ID</div>';
+      if(callback)callback();
+      return;
+    }
+
+    // Statuses
+    var statuses=listData.statuses||[];
+    state.listStatuses=statuses;
+    populateStatusDropdown(statuses);
+
+    // Members from space
+    var members=[];
+    try{
+      var spaceId=listData.space&&listData.space.id;
+      if(spaceId){
+        var membersResp=await fetch('https://api.clickup.com/api/v2/space/'+spaceId+'/member',{
+          headers:{'Authorization':token}
+        });
+        var membersData=await membersResp.json();
+        members=membersData.members||[];
+      }
+    }catch(e){}
+    state.listMembers=members;
+    populateMemberDropdown(members);
+
+    // Custom fields
+    var fieldsResp=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/field',{
+      headers:{'Authorization':token}
+    });
+    var fieldsData=await fieldsResp.json();
+    var dateFields=(fieldsData.fields||[]).filter(function(f){return f.type==='date';});
+    state.listCustomFields=dateFields;
+    populateCustomFieldDropdown(dateFields);
+
+    var parts=[];
+    if(statuses.length)parts.push(statuses.length+' statuses');
+    if(members.length)parts.push(members.length+' members');
+    if(dateFields.length)parts.push(dateFields.length+' date field'+(dateFields.length!==1?'s':''));
+    msg.innerHTML='<div class="fetch-status success">✓ Loaded: '+parts.join(', ')+(listData.name?' from "'+listData.name+'"':'')+' </div>';
+
+    if(callback)callback();
+  }catch(e){
+    msg.innerHTML='<div class="fetch-status error">Something went wrong loading the list. Check your connection and try again.</div>';
+    if(callback)callback();
+  }
+}
+
+function populateStatusDropdown(statuses){
+  var sel=document.getElementById('statusSelect');
+  var cur=sel.value;
+  sel.innerHTML='<option value="">— use list default —</option>';
+  statuses.forEach(function(s){
+    var o=document.createElement('option');
+    o.value=s.status;o.textContent=s.status;
+    sel.appendChild(o);
+  });
+  if(cur)sel.value=cur;
+}
+
+function populateMemberDropdown(members){
+  var sel=document.getElementById('assigneeSelect');
+  var cur=sel.value;
+  sel.innerHTML='<option value="">— no assignee —</option>';
+  members.forEach(function(m){
+    var o=document.createElement('option');
+    o.value=m.id||m.user&&m.user.id;
+    o.textContent=(m.username||m.user&&m.user.username||'Member '+o.value);
+    sel.appendChild(o);
+  });
+  if(cur)sel.value=cur;
+}
+
+function populateCustomFieldDropdown(fields){
+  var sel=document.getElementById('customFieldSelect');
+  var cur=sel.value;
+  sel.innerHTML='<option value="">— select a field —</option>';
+  fields.forEach(function(f){
+    var o=document.createElement('option');
+    o.value=f.id;o.textContent=f.name;
+    sel.appendChild(o);
+  });
+  if(cur)sel.value=cur;
+  if(fields.length===0&&state.setPostDate){
+    document.getElementById('customFieldHint').innerHTML='No date-type custom fields found on this list. <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">Here\'s how to create one.</a>';
+  }
+}
+
+// ── Navigation ───────────────────────────────────────────────
 
 function goTo(s){
   document.querySelectorAll('.section').forEach(function(el,i){el.classList.toggle('active',i===s);});
@@ -374,7 +653,15 @@ function goTo(s){
   window.scrollTo(0,0);
 }
 
-function next(from){var e=validate(from);if(e){alert(e);return;}goTo(from+1);}
+function next(from){
+  var e=validate(from);if(e){alert(e);return;}
+  // Fetch list data when leaving step 0 if not already loaded
+  if(from===0&&state.listStatuses.length===0){
+    fetchListData(function(){goTo(1);});
+    return;
+  }
+  goTo(from+1);
+}
 
 function validate(s){
   if(s===0){if(!v('apiToken'))return'Please enter your API Token.';if(!v('listId'))return'Please enter your List ID.';}
@@ -384,11 +671,13 @@ function validate(s){
     if(parseDate(v('startDate'))>parseDate(v('endDate')))return'The first task date must be before the last task date.';
     if(v('repeatPattern')==='specific-days'&&state.selectedDays.length===0)return'Please select at least one day of the week.';
   }
-  if(s===3){if(state.setPostDate&&!v('customFieldId'))return'Please enter the Custom Field ID, or turn off the post date field option.';}
+  if(s===3){if(state.setPostDate&&!v('customFieldSelect'))return'Please select a custom field, or turn off the post date option.';}
   return null;
 }
 
-function v(id){return document.getElementById(id).value.trim();}
+function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+
+// ── Naming ────────────────────────────────────────────────────
 
 function setNaming(style){
   state.namingStyle=style;
@@ -402,9 +691,7 @@ function setNaming(style){
   document.getElementById('prefixField').style.display=style==='date'?'none':'block';
   document.getElementById('prefixLabel').textContent=style==='same'?'Task title':'Custom text';
   document.getElementById('prefix').placeholder=style==='same'?'e.g. Content Post':'e.g. Weekly Review:';
-  if(document.getElementById('prefixHint')){
-    document.getElementById('prefixHint').textContent=style==='same'?'Every single task will use this exact title':'This text will appear at the start of every task name, before the date';
-  }
+  document.getElementById('prefixHint').textContent=style==='same'?'Every single task will use this exact title':'This text will appear at the start of every task name, before the date';
   updatePreview();
 }
 
@@ -427,6 +714,8 @@ function updatePreview(){
   else result=prefix?prefix+' '+dateStr:dateStr;
   document.getElementById('previewText').textContent='"'+result+'"';
 }
+
+// ── Schedule ──────────────────────────────────────────────────
 
 function handlePatternChange(){
   var p=v('repeatPattern');
@@ -459,20 +748,15 @@ function setSkip(val){
   updateTaskCount();
 }
 
-function setPostDate(val){
-  state.setPostDate=val;
-  document.getElementById('pdYes').classList.toggle('active',val);
-  document.getElementById('pdNo').classList.toggle('active',!val);
-  document.getElementById('customFieldIdField').classList.toggle('visible',val);
-}
+// ── Settings ──────────────────────────────────────────────────
 
 function setHasDueDate(val){
   state.hasDueDate=val;
   document.getElementById('hasDueDateYes').classList.toggle('active',val);
   document.getElementById('hasDueDateNo').classList.toggle('active',!val);
   document.getElementById('dueDateSettingField').classList.toggle('visible',val);
-  if(!val) document.getElementById('daysBeforeField').classList.remove('visible');
-  if(val) handleDueDateChange();
+  if(!val)document.getElementById('daysBeforeField').classList.remove('visible');
+  if(val)handleDueDateChange();
 }
 
 function handleDueDateChange(){
@@ -485,6 +769,15 @@ function handleDueDateChange(){
   };
   document.getElementById('dueDateHint').textContent=hints[s]||'';
 }
+
+function setPostDate(val){
+  state.setPostDate=val;
+  document.getElementById('pdYes').classList.toggle('active',val);
+  document.getElementById('pdNo').classList.toggle('active',!val);
+  document.getElementById('customFieldIdField').classList.toggle('visible',val);
+}
+
+// ── Date helpers ──────────────────────────────────────────────
 
 function parseDate(str){
   var p=str.split('-');return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
@@ -539,11 +832,20 @@ function updateTaskCount(){
   }catch(e){}
 }
 
+// ── Summary ───────────────────────────────────────────────────
+
 function buildSummary(){
   updateTaskCount();
   var namingLabels={prefix:'Custom text + date',date:'Date only',same:'Same title every time'};
   var patternEl=document.getElementById('repeatPattern');
   var dueEl=document.getElementById('dueDateSetting');
+  var statusEl=document.getElementById('statusSelect');
+  var statusLabel=statusEl.options[statusEl.selectedIndex]?statusEl.options[statusEl.selectedIndex].text:'List default';
+  var assigneeEl=document.getElementById('assigneeSelect');
+  var assigneeLabel=assigneeEl.options[assigneeEl.selectedIndex]?assigneeEl.options[assigneeEl.selectedIndex].text:'None';
+  var cfEl=document.getElementById('customFieldSelect');
+  var cfLabel=cfEl.options[cfEl.selectedIndex]?cfEl.options[cfEl.selectedIndex].text:'None';
+
   var rows=[
     ['ClickUp List ID',v('listId')||'—'],
     ['Task title format',namingLabels[state.namingStyle]],
@@ -552,11 +854,11 @@ function buildSummary(){
     ['First task date',v('startDate')?fmtDate(parseDate(v('startDate'))):'—'],
     ['Last task date',v('endDate')?fmtDate(parseDate(v('endDate'))):'—'],
     ['Repeat pattern',patternEl.options[patternEl.selectedIndex].text],
-    ['Skip weekends',state.skipWeekends?'Yes — weekdays only':'No — including weekends'],
-    ['Due date',!state.hasDueDate?'No due date':dueEl.options[dueEl.selectedIndex].text],
-    ['Post date field',state.setPostDate?'Yes — field ID: '+(v('customFieldId')||'not entered'):'No'],
-    ['Assignee',v('assigneeId')||'None'],
-    ['Task status',v('taskStatus')||'List default'],
+    ['Skip weekends',state.skipWeekends?'Yes':'No'],
+    ['Due date',!state.hasDueDate?'None':dueEl.options[dueEl.selectedIndex].text],
+    ['Post date field',state.setPostDate?cfLabel:'No'],
+    ['Assignee',assigneeLabel],
+    ['Task status',statusLabel],
   ];
   var html='<h3>Your settings</h3>';
   rows.forEach(function(r){html+='<div class="summary-row"><span class="key">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>';});
@@ -569,16 +871,17 @@ function buildSummary(){
   document.getElementById('summaryCard').innerHTML=html;
 }
 
+// ── Run ───────────────────────────────────────────────────────
+
 function addLogRow(taskName,status,detail){
   var container=document.getElementById('logContainer');
   var empty=container.querySelector('.log-empty');
   if(empty)empty.remove();
-  var row=document.createElement('div');
-  row.className='log-row';
+  var row=document.createElement('div');row.className='log-row';
   var sc=status==='Created'?'status-ok':'status-err';
   row.innerHTML='<span style="color:var(--olive);word-break:break-word">'+taskName+'</span><span style="color:var(--muted);font-size:11px;word-break:break-all">'+detail+'</span><span class="'+sc+'">'+status+'</span>';
-  container.appendChild(row);
-  container.scrollTop=container.scrollHeight;
+  document.getElementById('logContainer').appendChild(row);
+  document.getElementById('logContainer').scrollTop=document.getElementById('logContainer').scrollHeight;
 }
 
 async function runTasks(){
@@ -588,46 +891,66 @@ async function runTasks(){
   document.getElementById('errorBanner').innerHTML='';
   var dates=buildDateList();
   if(dates.length===0){document.getElementById('errorBanner').innerHTML='<div class="error-banner">No tasks to create — check your schedule settings and try again.</div>';return;}
+
   state.running=true;
   document.getElementById('runBtn').disabled=true;
   document.getElementById('logArea').style.display='block';
   document.getElementById('logContainer').innerHTML='<div class="log-empty">Working...</div>';
-  var apiToken=v('apiToken'),listId=v('listId'),dueSetting=v('dueDateSetting');
+
+  var apiToken=v('apiToken'),listId=v('listId');
+  var dueSetting=v('dueDateSetting');
   var daysBefore=parseInt(document.getElementById('daysBefore').value)||0;
-  var assigneeId=v('assigneeId'),taskStatus=v('taskStatus'),customFieldId=v('customFieldId');
+  var assigneeId=v('assigneeSelect');
+  var taskStatus=v('statusSelect');
+  var customFieldId=v('customFieldSelect');
   var success=0,fail=0;
+
   document.getElementById('progressArea').innerHTML='<div class="progress-indicator"><span class="spinner"></span> Creating tasks... <span id="progressCount">0 of '+dates.length+'</span></div>';
+
   for(var i=0;i<dates.length;i++){
     var taskDate=dates[i];
     var taskName=buildTaskName(taskDate);
     var payload={name:taskName};
+
     if(state.hasDueDate){
       if(dueSetting==='same'){payload.due_date=taskDate.getTime();payload.due_date_time=false;}
-      else if(dueSetting==='before'&&daysBefore>0){var dd=new Date(taskDate);dd.setDate(dd.getDate()-daysBefore);payload.due_date=dd.getTime();payload.due_date_time=false;}
+      else if(dueSetting==='before'&&daysBefore>0){
+        var dd=new Date(taskDate);dd.setDate(dd.getDate()-daysBefore);
+        payload.due_date=dd.getTime();payload.due_date_time=false;
+      }
     }
     if(assigneeId)payload.assignees=[parseInt(assigneeId)];
     if(taskStatus)payload.status=taskStatus;
     if(state.setPostDate&&customFieldId)payload.custom_fields=[{id:customFieldId,value:taskDate.getTime()}];
+
     try{
-      var resp=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/task',{method:'POST',headers:{'Content-Type':'application/json','Authorization':apiToken},body:JSON.stringify(payload)});
+      var resp=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/task',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':apiToken},
+        body:JSON.stringify(payload)
+      });
       var result=await resp.json();
       if(resp.ok){success++;addLogRow(taskName,'Created','Task ID: '+result.id);}
       else{fail++;addLogRow(taskName,'Failed',(result.err||resp.status));}
     }catch(e){fail++;addLogRow(taskName,'Error',e.message);}
+
     document.getElementById('progressCount').textContent=(i+1)+' of '+dates.length;
     await new Promise(function(r){setTimeout(r,150);});
   }
+
   document.getElementById('progressArea').innerHTML='';
   var banner=success>0
-    ?'<div class="success-banner">All done! '+success+' task'+(success!==1?'s':'')+' created in ClickUp'+(fail>0?' ('+fail+' failed — see the log below)':'')+'. Head to your ClickUp list to see them.</div>'
+    ?'<div class="success-banner">All done! '+success+' task'+(success!==1?'s':'')+' created in ClickUp'+(fail>0?' ('+fail+' failed — see log below)':'')+'. Head to your list to see them.</div>'
     :'<div class="error-banner">Something went wrong — no tasks were created. Double-check your API Token and List ID and try again.</div>';
   document.getElementById('errorBanner').innerHTML=banner;
   state.running=false;
   document.getElementById('runBtn').disabled=false;
 }
 
+// ── Init ──────────────────────────────────────────────────────
 handlePatternChange();
 updatePreview();
+refreshPresetDropdown();
 </script>
 </body>
 </html>
