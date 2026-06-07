@@ -1550,58 +1550,23 @@ function collectCustomFieldValues(){
 // Algorithmic validation — no server needed
 // Key is valid if it matches the hash of (SECRET + ':key:' + N) for any N 1-500
 
-var LICENSE_SECRET = 'SBV_BTC_2025_shine'; // CHANGE THIS before deploying
+var VALID_KEY = 'SBV-DGLS-JTXD-GTKB';
 
-async function hashString(str) {
-  var encoder = new TextEncoder();
-  var data = encoder.encode(str);
-  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  var hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+function isValidKey(key) {
+  return key.trim().toUpperCase() === VALID_KEY;
 }
 
-function hashToKey(hash) {
-  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var segments = [];
-  for (var s = 0; s < 3; s++) {
-    var seg = '';
-    for (var i = 0; i < 4; i++) {
-      var idx = parseInt(hash[(s * 4 + i) * 2] + hash[(s * 4 + i) * 2 + 1], 16) % chars.length;
-      seg += chars[idx];
-    }
-    segments.push(seg);
-  }
-  return 'SBV-' + segments.join('-');
-}
-
-async function isValidKey(key) {
-  key = key.trim().toUpperCase();
-  if (!key.startsWith('SBV-')) return false;
-  var checks = [];
-  for (var i = 1; i <= 500; i++) {
-    checks.push(hashString(LICENSE_SECRET + ':key:' + i));
-  }
-  var hashes = await Promise.all(checks);
-  for (var j = 0; j < hashes.length; j++) {
-    if (key === hashToKey(hashes[j])) return true;
-  }
-  return false;
-}
-
-async function checkLicenseOnLoad() {
+function checkLicenseOnLoad() {
   var saved = localStorage.getItem('btc_license');
-  if (saved) {
-    var valid = await isValidKey(saved);
-    if (valid) {
-      document.getElementById('licenseGate').style.display = 'none';
-      return;
-    }
-    localStorage.removeItem('btc_license');
+  if (saved && isValidKey(saved)) {
+    document.getElementById('licenseGate').style.display = 'none';
+    return;
   }
+  localStorage.removeItem('btc_license');
   document.getElementById('licenseGate').style.display = 'flex';
 }
 
-async function activateLicense() {
+function activateLicense() {
   var key = document.getElementById('licenseInput').value.trim().toUpperCase();
   var errEl = document.getElementById('licenseError');
   var btn = document.querySelector('#licenseGate button');
@@ -1612,16 +1577,11 @@ async function activateLicense() {
     return;
   }
 
-  btn.textContent = 'Checking...';
-  btn.disabled = true;
-  errEl.style.display = 'none';
-
-  var valid = await isValidKey(key);
-  if (valid) {
+  if (isValidKey(key)) {
     localStorage.setItem('btc_license', key);
     document.getElementById('licenseGate').style.display = 'none';
   } else {
-    errEl.textContent = 'That key doesn\'t look right. Check for typos and try again. Need help? Email hello@shinebrightvirtual.com';
+    errEl.textContent = "That key doesn't look right. Check for typos and try again. Need help? Email hello@shinebrightvirtual.com";
     errEl.style.display = 'block';
     btn.textContent = 'Activate';
     btn.disabled = false;
