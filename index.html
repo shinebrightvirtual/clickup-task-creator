@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bulk Task Creator — by Shine Bright Virtual</title>
 <meta name="description" content="Create tasks in bulk on a schedule you define. Works with ClickUp and more. Built by Shine Bright Virtual." />
+<link rel="canonical" href="https://bulktaskcreator.com" />
+<meta property="og:title" content="Bulk Task Creator" />
+<meta property="og:description" content="Create tasks in bulk on a schedule you define. Built by Shine Bright Virtual." />
+<meta property="og:url" content="https://bulktaskcreator.com" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
@@ -19,61 +23,113 @@
 }
 html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--olive)}
 .app{max-width:720px;margin:0 auto;padding:0 0 80px}
+
+/* Header */
 .header{background:var(--olive);padding:32px 40px 28px;position:relative;overflow:hidden}
 .header::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;border:1px solid rgba(174,180,160,0.15)}
 .header::before{content:'';position:absolute;right:20px;bottom:-60px;width:120px;height:120px;border-radius:50%;border:1px solid rgba(174,180,160,0.1)}
 .header h1{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;color:var(--white);letter-spacing:-0.3px;position:relative}
 .header p{font-size:13px;color:var(--sage);margin-top:6px;position:relative;font-weight:300}
 .header a{color:var(--ochre);text-decoration:none}
-.progress-bar{display:flex;background:var(--plum)}
-.progress-step{flex:1;padding:12px 4px;font-size:11px;font-weight:500;color:rgba(235,230,227,0.45);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.4px;text-transform:uppercase}
-.progress-step.active{color:var(--cream);border-bottom-color:var(--ochre)}
-.progress-step.done{color:rgba(235,230,227,0.65)}
-.section{padding:32px 40px;display:none}
-.section.active{display:block}
+
+/* Views */
+.view{display:none;padding:32px 40px}
+.view.active{display:block}
+
+/* Typography */
 .section-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.page-title{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;color:var(--olive);margin-bottom:6px}
+.page-subtitle{font-size:13px;color:var(--slate);margin-bottom:28px;line-height:1.5}
+
+/* Fields */
 .field{margin-bottom:20px}
 .field label{display:block;font-size:13px;font-weight:500;color:var(--olive);margin-bottom:6px}
 .field .hint{font-size:11px;color:var(--muted);margin-top:5px;font-style:italic;line-height:1.6}
-.field input,.field select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none;transition:border-color 0.15s;}
+.field input,.field select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none;transition:border-color 0.15s}
 .field input:focus,.field select:focus{border-color:var(--rust)}
 .field.protected input{background:var(--cream-light)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.day-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-.day-btn{padding:7px 14px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--slate);background:var(--white);cursor:pointer;transition:all 0.15s}
-.day-btn.selected{background:var(--olive);border-color:var(--olive);color:var(--white)}
-.preview-box{background:var(--ochre);border-radius:6px;padding:14px 16px;margin-top:12px}
-.preview-box .preview-label{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:5px}
-.preview-box .preview-value{font-size:15px;font-style:italic;color:var(--white)}
+.field-conditional{display:none}
+.field-conditional.visible{display:block}
+
+/* Buttons */
+.btn-primary{padding:11px 28px;background:var(--rust);color:var(--white);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background 0.15s}
+.btn-primary:hover{background:var(--rust-dark)}
+.btn-secondary{padding:11px 20px;background:transparent;color:var(--slate);border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.15s}
+.btn-secondary:hover{border-color:var(--slate)}
+.btn-ghost{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;padding:4px 0}
+.btn-ghost:hover{color:var(--slate)}
+.btn-small{padding:6px 12px;font-size:11px;font-weight:500;border-radius:5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;border:1px solid var(--border);background:var(--white);color:var(--slate)}
+.btn-small:hover{border-color:var(--rust);color:var(--rust)}
+.btn-small.danger:hover{border-color:var(--red);color:var(--red);background:#fef2f2}
+.btn-icon{background:none;border:none;cursor:pointer;padding:4px 6px;color:var(--muted);font-size:14px;border-radius:4px;transition:all 0.15s}
+.btn-icon:hover{background:var(--cream);color:var(--slate)}
+
+/* Schedule cards */
+.schedules-grid{display:grid;gap:12px;margin-bottom:28px}
+.schedule-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;transition:all 0.15s}
+.schedule-card:hover{border-color:var(--rust);box-shadow:0 2px 8px rgba(123,75,58,0.08)}
+.schedule-card.selected{border-color:var(--rust);background:var(--rust-light)}
+.schedule-card-info .name{font-size:14px;font-weight:500;color:var(--olive)}
+.schedule-card-info .pattern{font-size:11px;color:var(--muted);margin-top:3px}
+.schedule-card-actions{display:flex;gap:4px;flex-shrink:0}
+.empty-schedules{background:var(--cream-light);border:1px dashed var(--border);border-radius:8px;padding:28px;text-align:center;margin-bottom:28px}
+.empty-schedules p{font-size:13px;color:var(--muted);margin-bottom:16px}
+
+/* Toggle group */
 .toggle-group{display:flex}
 .toggle-group button{flex:1;padding:9px 12px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--slate);background:var(--white);cursor:pointer;transition:all 0.15s;margin:0}
 .toggle-group button:first-child{border-radius:6px 0 0 6px}
 .toggle-group button:last-child{border-radius:0 6px 6px 0;border-left:none}
 .toggle-group button:not(:first-child):not(:last-child){border-left:none}
 .toggle-group button.active{background:var(--olive);border-color:var(--olive);color:var(--white)}
+
+/* Day picker */
+.day-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.day-btn{padding:7px 14px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--slate);background:var(--white);cursor:pointer;transition:all 0.15s}
+.day-btn.selected{background:var(--olive);border-color:var(--olive);color:var(--white)}
+
+/* Preview box */
+.preview-box{background:var(--ochre);border-radius:6px;padding:14px 16px;margin-top:8px}
+.preview-box .preview-label{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:5px}
+.preview-box .preview-value{font-size:15px;font-style:italic;color:var(--white)}
+
+/* Progress bar */
+.progress-bar{display:flex;background:var(--plum)}
+.progress-step{flex:1;padding:11px 4px;font-size:11px;font-weight:500;color:rgba(235,230,227,0.45);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.4px;text-transform:uppercase}
+.progress-step.active{color:var(--cream);border-bottom-color:var(--ochre)}
+.progress-step.done{color:rgba(235,230,227,0.65)}
+
+/* Nav */
 .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
-.btn-primary{padding:11px 28px;background:var(--rust);color:var(--white);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background 0.15s}
-.btn-primary:hover{background:var(--rust-dark)}
-.btn-secondary{padding:11px 20px;background:transparent;color:var(--slate);border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.15s}
-.btn-secondary:hover{border-color:var(--slate)}
-.btn-ghost{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;padding:4px 0}
-.btn-small{padding:7px 14px;font-size:12px;font-weight:500;border-radius:5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;border:1px solid var(--border);background:var(--white);color:var(--slate)}
-.btn-small:hover{border-color:var(--rust);color:var(--rust)}
-.btn-small.danger{color:var(--red);border-color:rgba(155,34,38,0.3)}
-.btn-small.danger:hover{background:#fef2f2}
+.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+/* Info box */
+.info-box{background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:20px}
+.info-box .info-title{font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.info-box p{font-size:12px;color:var(--slate);line-height:1.6}
+.info-box a{color:var(--rust);text-decoration:none}
+
+/* Summary */
 .summary-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:16px}
 .summary-card h3{font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .summary-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--cream);font-size:13px;gap:16px}
 .summary-row:last-child{border-bottom:none}
 .summary-row .key{color:var(--slate);white-space:nowrap}
 .summary-row .val{font-weight:500;color:var(--olive);text-align:right;word-break:break-all}
+
+/* Task count */
 .task-count{background:var(--rust-light);border:1px solid rgba(123,75,58,0.2);border-radius:8px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .task-count .num{font-family:'DM Serif Display',serif;font-size:36px;color:var(--rust);line-height:1;min-width:48px;text-align:center}
 .task-count .label{font-size:13px;color:var(--rust-dark)}
 .task-count .label strong{display:block;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+
+/* Run button */
 .run-btn{width:100%;padding:16px;background:var(--rust);color:var(--white);border:none;border-radius:8px;font-family:'DM Serif Display',serif;font-size:18px;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;margin-top:8px}
 .run-btn:hover{background:var(--rust-dark)}
 .run-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+/* Log */
 .log-header{display:grid;grid-template-columns:1fr 160px 80px;gap:12px;padding:8px 12px;background:var(--olive);border-radius:6px 6px 0 0;font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--sage)}
 .log-row{display:grid;grid-template-columns:1fr 160px 80px;gap:12px;padding:9px 12px;border-bottom:1px solid var(--cream);font-size:12px;align-items:center}
 .log-row:last-child{border-bottom:none}
@@ -81,28 +137,14 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 .status-err{color:var(--red);font-weight:600}
 .log-container{background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;max-height:320px;overflow-y:auto}
 .log-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}
-.progress-indicator{text-align:center;padding:24px;color:var(--slate);font-size:13px}
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--rust);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:8px}
+
+/* Spinner */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--rust);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Banners */
 .error-banner{background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#991b1b}
 .success-banner{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#166534}
-.field-row-conditional{display:none}
-.field-row-conditional.visible{display:block}
-.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
-.info-box{background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:20px}
-.info-box .info-title{font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.info-box p{font-size:12px;color:var(--slate);line-height:1.6}
-.info-box a{color:var(--rust);text-decoration:none}
-
-/* Presets */
-.preset-bar{background:var(--cream-light);border-bottom:1px solid var(--border);padding:12px 40px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.preset-bar label{font-size:12px;font-weight:500;color:var(--slate);white-space:nowrap}
-.preset-bar select{padding:7px 10px;border:1px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--olive);background:var(--white);flex:1;min-width:140px;max-width:240px}
-.preset-list{margin-top:12px}
-.preset-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--white);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;font-size:13px}
-.preset-item .preset-name{font-weight:500;color:var(--olive)}
-.preset-item .preset-meta{font-size:11px;color:var(--muted);margin-top:2px}
-.preset-actions{display:flex;gap:6px}
 
 /* Fetch status */
 .fetch-status{font-size:11px;padding:6px 10px;border-radius:4px;display:inline-flex;align-items:center;gap:6px;margin-top:6px}
@@ -110,643 +152,803 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 .fetch-status.success{background:#f0fdf4;color:var(--green)}
 .fetch-status.error{background:#fef2f2;color:var(--red)}
 
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:10px;padding:32px;width:480px;max-width:92vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--olive);margin-bottom:6px}
+.modal-subtitle{font-size:13px;color:var(--slate);margin-bottom:24px;line-height:1.5}
+.modal-steps{display:flex;gap:0;margin-bottom:28px}
+.modal-step{flex:1;padding:8px;font-size:11px;font-weight:500;color:rgba(47,52,32,0.35);text-align:center;border-bottom:2px solid var(--border);text-transform:uppercase;letter-spacing:0.4px}
+.modal-step.active{color:var(--olive);border-bottom-color:var(--rust)}
+.modal-step.done{color:var(--sage);border-bottom-color:var(--sage)}
+.modal-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+
+/* Footer */
 .footer{text-align:center;padding:32px 40px;font-size:12px;color:var(--muted)}
 .footer a{color:var(--rust);text-decoration:none}
+
 @media(max-width:600px){
-  .header,.section{padding:24px 20px}
-  .progress-step{font-size:9px;padding:10px 2px}
+  .header,.view{padding:24px 20px}
   .two-col{grid-template-columns:1fr}
-  .preset-bar{padding:12px 20px}
+  .progress-step{font-size:9px;padding:10px 2px}
 }
 </style>
-<link rel="canonical" href="https://bulktaskcreator.com" />
-<meta property="og:title" content="Bulk Task Creator" />
-<meta property="og:description" content="Create tasks in bulk on a schedule you define. Built by Shine Bright Virtual." />
-<meta property="og:url" content="https://bulktaskcreator.com" />
 </head>
 <body>
-
 <div class="app">
+
   <div class="header">
     <h1>Bulk Task Creator</h1>
     <p>Built by <a href="https://shinebrightvirtual.com" target="_blank">Shine Bright Virtual</a></p>
   </div>
 
-  <!-- Preset bar -->
-  <div class="preset-bar" id="presetBar">
-    <label>Schedule presets:</label>
-    <select id="presetSelect" onchange="loadPreset()">
-      <option value="">— load a saved schedule —</option>
-    </select>
-    <button class="btn-small" onclick="showSavePreset()">Save schedule</button>
-    <button class="btn-small danger" id="deletePresetBtn" style="display:none" onclick="deletePreset()">Delete</button>
-  </div>
+  <!-- ── HOME VIEW ─────────────────────────────────────────── -->
+  <div class="view active" id="view-home">
+    <div style="padding-top:4px">
+      <div class="page-title">Your posting schedules</div>
+      <div class="page-subtitle">Save your repeat patterns here, then use them to create tasks in any ClickUp list.</div>
 
-  <div class="progress-bar">
-    <div class="progress-step active" onclick="goTo(0)">Connection</div>
-    <div class="progress-step" onclick="goTo(1)">Task Names</div>
-    <div class="progress-step" onclick="goTo(2)">Schedule</div>
-    <div class="progress-step" onclick="goTo(3)">Settings</div>
-    <div class="progress-step" onclick="goTo(4)">Review & Run</div>
-  </div>
+      <div id="schedules-grid" class="schedules-grid"></div>
 
-  <!-- Step 0: Connection -->
-  <div class="section active" id="step-0">
-    <div class="section-label">Connect to ClickUp</div>
-
-    <div class="info-box">
-      <div class="info-title">Before you start</div>
-      <p>You'll need your ClickUp <strong>API Token</strong> — a key that lets this tool connect to your account. Once you enter it, you can browse your workspace and pick exactly which list to add tasks to.</p>
+      <button class="btn-primary" onclick="openScheduleModal()">+ Create a posting schedule</button>
     </div>
 
-    <div class="field protected">
-      <label>API Token</label>
-      <input type="password" id="apiToken" placeholder="pk_•••••••••••••••••••" autocomplete="off" oninput="clearListData()" />
-      <div class="hint">In ClickUp: click your avatar or initials in the top left corner → Settings → Apps → copy the API Token. It starts with pk_</div>
+    <div class="divider" style="margin:32px 0"></div>
+
+    <div class="page-title" style="font-size:20px">Ready to create tasks?</div>
+    <div class="page-subtitle" style="margin-bottom:20px">Pick a saved schedule above, then click below to set your list and dates.</div>
+
+    <div id="selectedScheduleBanner" style="display:none;background:var(--rust-light);border:1px solid rgba(123,75,58,0.2);border-radius:8px;padding:14px 18px;margin-bottom:16px;display:none">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Selected schedule</div>
+      <div style="font-size:14px;font-weight:500;color:var(--rust-dark)" id="selectedScheduleName">—</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px" id="selectedSchedulePattern">—</div>
     </div>
 
-    <div class="field">
-      <label>Where do you want the tasks created?</label>
-      <div id="listPickerArea">
-        <button class="btn-primary" id="browseListsBtn" onclick="loadWorkspaces()" style="margin-bottom:10px">Browse my lists →</button>
+    <button class="btn-primary" id="startRunBtn" onclick="startRun()" style="opacity:0.4;cursor:not-allowed" disabled>Create tasks with this schedule →</button>
+    <div style="margin-top:10px;text-align:center">
+      <button class="btn-ghost" onclick="showView('view-run');goToStep(0)">Skip — set everything manually</button>
+    </div>
+  </div>
 
-        <!-- Cascading pickers — shown after Browse is clicked -->
-        <div id="listCascadeArea" style="display:none">
-          <div class="field" style="margin-bottom:12px" id="workspaceField">
-            <label style="font-size:12px;color:var(--muted)">Workspace</label>
-            <select id="workspaceSelect" onchange="onWorkspaceChange()">
-              <option value="">— select a workspace —</option>
-            </select>
-          </div>
-          <div class="field" style="margin-bottom:12px;display:none" id="spaceField">
-            <label style="font-size:12px;color:var(--muted)">Space</label>
-            <select id="spaceSelect" onchange="onSpaceChange()">
-              <option value="">— select a space —</option>
-            </select>
-          </div>
-          <div class="field" style="margin-bottom:12px;display:none" id="folderField">
-            <label style="font-size:12px;color:var(--muted)">Folder <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-            <select id="folderSelect" onchange="onFolderChange()">
-              <option value="">— no folder / show all lists —</option>
-            </select>
-          </div>
-          <div class="field" style="margin-bottom:12px;display:none" id="listField">
-            <label style="font-size:12px;color:var(--muted)">List</label>
-            <select id="listSelect" onchange="onListChange()">
-              <option value="">— select a list —</option>
-            </select>
-          </div>
+  <!-- ── RUN VIEW ──────────────────────────────────────────── -->
+  <div class="view" id="view-run">
 
-          <!-- Search box — only shown after all lists are loaded -->
-          <div id="listSearchArea" style="display:none;margin-top:4px;padding-top:16px;border-top:1px solid var(--border)">
-            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Or search all lists</label>
-            <div style="position:relative">
-              <input type="text" id="listSearchInput" placeholder="Type to search by list name..." oninput="filterLists()" style="padding-left:32px" />
-              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px">⌕</span>
-            </div>
-            <div id="listSearchResults" style="background:var(--white);border:1px solid var(--border);border-radius:6px;margin-top:6px;max-height:200px;overflow-y:auto;display:none"></div>
-          </div>
-        </div>
+    <div class="progress-bar" style="margin:-32px -40px 32px">
+      <div class="progress-step active" onclick="goToStep(0)">Connection</div>
+      <div class="progress-step" onclick="goToStep(1)">Schedule</div>
+      <div class="progress-step" onclick="goToStep(2)">Settings</div>
+      <div class="progress-step" onclick="goToStep(3)">Review & Run</div>
+    </div>
 
-        <!-- Selected list display -->
-        <div id="selectedListDisplay" style="display:none;background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-top:4px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-size:13px;font-weight:500;color:var(--olive)" id="selectedListName"></div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px" id="selectedListPath"></div>
-            </div>
-            <button class="btn-ghost" onclick="clearSelectedList()" style="font-size:11px;color:var(--rust)">Change</button>
-          </div>
-        </div>
+    <!-- Step 0: Connection -->
+    <div id="run-step-0">
+      <div class="section-label">Connect to ClickUp</div>
 
-        <div id="listPickerStatus" style="margin-top:8px"></div>
+      <div class="info-box">
+        <div class="info-title">Before you start</div>
+        <p>Enter your API Token to connect to ClickUp, then browse to the list where you want tasks created.</p>
       </div>
-      <!-- Hidden input to store selected list ID -->
-      <input type="hidden" id="listId" />
-      <div id="fetchStatusMsg"></div>
-    </div>
 
-    <div class="info-box" style="margin-top:4px">
-      <div class="info-title">Your data is safe</div>
-      <p>Your API token goes directly from your browser to ClickUp. It is never sent to or stored on any Shine Bright Virtual server — we never see it, touch it, or log it.</p>
-    </div>
-
-    <div class="nav-row">
-      <span></span>
-      <button class="btn-primary" onclick="next(0)">Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 1: Task Names -->
-  <div class="section" id="step-1">
-    <div class="section-label">What should the tasks be called?</div>
-
-    <div class="field">
-      <label>Task title format</label>
-      <div class="toggle-group" id="namingToggle">
-        <button class="active" onclick="setNaming('prefix')">Custom text + date</button>
-        <button onclick="setNaming('date')">Date only</button>
-        <button onclick="setNaming('same')">Same title every time</button>
+      <div class="field protected">
+        <label>API Token</label>
+        <input type="password" id="apiToken" placeholder="pk_•••••••••••••••••••" autocomplete="off" oninput="clearListData()" />
+        <div class="hint">In ClickUp: click your avatar or initials in the top left corner → Settings → Apps → copy the API Token. It starts with pk_</div>
       </div>
-      <div class="hint" id="namingHint">Each task gets your custom text followed by the date — e.g. "Weekly Review: January 6, 2025"</div>
-    </div>
 
-    <div class="field" id="prefixField">
-      <label id="prefixLabel">Custom text</label>
-      <input type="text" id="prefix" placeholder="e.g. Weekly Review:" oninput="updatePreview()" />
-      <div class="hint" id="prefixHint">This text will appear at the start of every task name, before the date</div>
-    </div>
-
-    <div class="field">
-      <label>Include the day of the week?</label>
-      <div class="toggle-group">
-        <button class="active" onclick="setDow(false)" id="dowNo">No — just the date</button>
-        <button onclick="setDow(true)" id="dowYes">Yes — add the weekday</button>
-      </div>
-    </div>
-
-    <div class="preview-box">
-      <div class="preview-label">This is what your task names will look like</div>
-      <div class="preview-value" id="previewText">"Weekly Review: January 6, 2025"</div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-secondary" onclick="goTo(0)">← Back</button>
-      <button class="btn-primary" onclick="next(1)">Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 2: Schedule -->
-  <div class="section" id="step-2">
-    <div class="section-label">When should the tasks be created?</div>
-
-    <div class="two-col">
       <div class="field">
-        <label>First task date</label>
-        <input type="date" id="startDate" onchange="updateTaskCount()" />
+        <label>Where do you want the tasks created?</label>
+        <div id="listPickerArea">
+          <button class="btn-primary" id="browseListsBtn" onclick="loadWorkspaces()">Browse my lists →</button>
+
+          <div id="listCascadeArea" style="display:none;margin-top:14px">
+            <div class="field" style="margin-bottom:12px" id="workspaceField">
+              <label style="font-size:12px;color:var(--muted)">Workspace</label>
+              <select id="workspaceSelect" onchange="onWorkspaceChange()">
+                <option value="">— select a workspace —</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:12px;display:none" id="spaceField">
+              <label style="font-size:12px;color:var(--muted)">Space</label>
+              <select id="spaceSelect" onchange="onSpaceChange()">
+                <option value="">— select a space —</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:12px;display:none" id="folderField">
+              <label style="font-size:12px;color:var(--muted)">Folder <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+              <select id="folderSelect" onchange="onFolderChange()">
+                <option value="">— no folder / show all lists —</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:12px;display:none" id="listField">
+              <label style="font-size:12px;color:var(--muted)">List</label>
+              <select id="listSelect" onchange="onListChange()">
+                <option value="">— select a list —</option>
+              </select>
+            </div>
+            <div id="listSearchArea" style="display:none;padding-top:16px;border-top:1px solid var(--border)">
+              <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Or search all lists</label>
+              <div style="position:relative">
+                <input type="text" id="listSearchInput" placeholder="Type to search by list name..." oninput="filterLists()" style="padding-left:32px" />
+                <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px">⌕</span>
+              </div>
+              <div id="listSearchResults" style="background:var(--white);border:1px solid var(--border);border-radius:6px;margin-top:6px;max-height:200px;overflow-y:auto;display:none"></div>
+            </div>
+          </div>
+
+          <div id="selectedListDisplay" style="display:none;background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-top:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:13px;font-weight:500;color:var(--olive)" id="selectedListName"></div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px" id="selectedListPath"></div>
+              </div>
+              <button class="btn-ghost" onclick="clearSelectedList()" style="font-size:11px;color:var(--rust)">Change</button>
+            </div>
+          </div>
+
+          <div id="listPickerStatus" style="margin-top:8px"></div>
+        </div>
+        <input type="hidden" id="listId" />
+        <div id="fetchStatusMsg"></div>
       </div>
+
+      <div class="info-box">
+        <div class="info-title">Your data is safe</div>
+        <p>Your API token goes directly from your browser to ClickUp. It is never sent to or stored on any Shine Bright Virtual server — we never see it, touch it, or log it.</p>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-ghost" onclick="showView('view-home')">← Back to schedules</button>
+        <button class="btn-primary" onclick="nextRunStep(0)">Next →</button>
+      </div>
+    </div>
+
+    <!-- Step 1: Schedule & Dates -->
+    <div id="run-step-1" style="display:none">
+      <div class="section-label">Schedule & dates</div>
+
+      <div id="loadedScheduleNote" style="display:none;background:var(--rust-light);border:1px solid rgba(123,75,58,0.15);border-radius:6px;padding:10px 14px;margin-bottom:20px;font-size:12px;color:var(--rust-dark)">
+        <strong id="loadedScheduleNoteName"></strong> loaded — adjust dates below and you're ready to run.
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>First task date</label>
+          <input type="date" id="startDate" onchange="updateTaskCount()" />
+        </div>
+        <div class="field">
+          <label>Last task date</label>
+          <input type="date" id="endDate" onchange="updateTaskCount()" />
+        </div>
+      </div>
+
       <div class="field">
-        <label>Last task date</label>
-        <input type="date" id="endDate" onchange="updateTaskCount()" />
+        <label>How often should tasks repeat?</label>
+        <select id="repeatPattern" onchange="handlePatternChange()">
+          <option value="every-day">Every day</option>
+          <option value="every-x-days" selected>Every few days</option>
+          <option value="every-x-weeks">Every few weeks</option>
+          <option value="specific-days">Specific days of the week</option>
+        </select>
+      </div>
+
+      <div class="field field-conditional visible" id="intervalField">
+        <label id="intervalLabel">How many days between each task?</label>
+        <input type="number" id="intervalX" value="3" min="1" max="365" onchange="updateTaskCount()" />
+        <div class="hint" id="intervalHint">e.g. 3 = every 3 days · 7 = once a week · 14 = every two weeks</div>
+      </div>
+
+      <div class="field field-conditional" id="dowPickerField">
+        <label>Which days of the week?</label>
+        <div class="hint" style="margin-bottom:10px">Click to select — tasks will be created on these days each week</div>
+        <div class="day-picker">
+          <button class="day-btn" onclick="toggleDay(0)" id="day-0">Sun</button>
+          <button class="day-btn" onclick="toggleDay(1)" id="day-1">Mon</button>
+          <button class="day-btn" onclick="toggleDay(2)" id="day-2">Tue</button>
+          <button class="day-btn" onclick="toggleDay(3)" id="day-3">Wed</button>
+          <button class="day-btn" onclick="toggleDay(4)" id="day-4">Thu</button>
+          <button class="day-btn" onclick="toggleDay(5)" id="day-5">Fri</button>
+          <button class="day-btn" onclick="toggleDay(6)" id="day-6">Sat</button>
+        </div>
+      </div>
+
+      <div class="field" id="skipWeekendsField">
+        <label>Skip Saturdays and Sundays?</label>
+        <div class="toggle-group">
+          <button class="active" onclick="setSkip(false)" id="skipNo">No — include weekends</button>
+          <button onclick="setSkip(true)" id="skipYes">Yes — weekdays only</button>
+        </div>
+      </div>
+
+      <div id="taskCountPreview" style="display:none;background:var(--rust-light);border:1px solid rgba(123,75,58,0.2);border-radius:6px;padding:12px 16px;margin-top:4px">
+        <span style="font-size:13px;color:var(--rust-dark)">This will create <strong id="taskCountInline">0</strong> tasks — from <span id="taskCountFrom"></span> to <span id="taskCountTo"></span></span>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">Task naming</div>
+
+      <div class="field">
+        <label>Task title format</label>
+        <div class="toggle-group" id="namingToggle">
+          <button class="active" onclick="setNaming('prefix')">Custom text + date</button>
+          <button onclick="setNaming('date')">Date only</button>
+          <button onclick="setNaming('same')">Same title every time</button>
+        </div>
+        <div class="hint" id="namingHint">Each task gets your custom text followed by the date</div>
+      </div>
+
+      <div class="field" id="prefixField">
+        <label id="prefixLabel">Custom text</label>
+        <input type="text" id="prefix" placeholder="e.g. Weekly Review:" oninput="updatePreview()" />
+        <div class="hint" id="prefixHint">This text will appear at the start of every task name, before the date</div>
+      </div>
+
+      <div class="field">
+        <label>Include the day of the week?</label>
+        <div class="toggle-group">
+          <button class="active" onclick="setDow(false)" id="dowNo">No — just the date</button>
+          <button onclick="setDow(true)" id="dowYes">Yes — add the weekday</button>
+        </div>
+      </div>
+
+      <div class="preview-box">
+        <div class="preview-label">Task name preview</div>
+        <div class="preview-value" id="previewText">"Weekly Review: January 6, 2025"</div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToStep(0)">← Back</button>
+        <button class="btn-primary" onclick="nextRunStep(1)">Next →</button>
       </div>
     </div>
 
-    <div class="field">
-      <label>How often should tasks repeat?</label>
-      <select id="repeatPattern" onchange="handlePatternChange()">
-        <option value="every-day">Every day</option>
-        <option value="every-x-days" selected>Every few days (you choose the number)</option>
-        <option value="every-x-weeks">Every few weeks (you choose the number)</option>
-        <option value="specific-days">On specific days of the week</option>
-      </select>
-    </div>
+    <!-- Step 2: Settings -->
+    <div id="run-step-2" style="display:none">
+      <div class="section-label">Due dates &amp; settings</div>
 
-    <div class="field field-row-conditional visible" id="intervalField">
-      <label id="intervalLabel">How many days between each task?</label>
-      <input type="number" id="intervalX" value="3" min="1" max="365" onchange="updateTaskCount()" />
-      <div class="hint" id="intervalHint">e.g. 3 = every 3 days &nbsp;·&nbsp; 7 = once a week &nbsp;·&nbsp; 14 = every two weeks</div>
-    </div>
+      <div class="field">
+        <label>Do you want a due date on each task?</label>
+        <div class="toggle-group">
+          <button class="active" onclick="setHasDueDate(true)" id="hasDueDateYes">Yes</button>
+          <button onclick="setHasDueDate(false)" id="hasDueDateNo">No</button>
+        </div>
+      </div>
 
-    <div class="field field-row-conditional" id="dowPickerField">
-      <label>Which days of the week?</label>
-      <div class="hint" style="margin-bottom:10px">Click to select the days — tasks will be created on these days each week</div>
-      <div class="day-picker">
-        <button class="day-btn" onclick="toggleDay(0)" id="day-0">Sun</button>
-        <button class="day-btn" onclick="toggleDay(1)" id="day-1">Mon</button>
-        <button class="day-btn" onclick="toggleDay(2)" id="day-2">Tue</button>
-        <button class="day-btn" onclick="toggleDay(3)" id="day-3">Wed</button>
-        <button class="day-btn" onclick="toggleDay(4)" id="day-4">Thu</button>
-        <button class="day-btn" onclick="toggleDay(5)" id="day-5">Fri</button>
-        <button class="day-btn" onclick="toggleDay(6)" id="day-6">Sat</button>
+      <div class="field field-conditional visible" id="dueDateSettingField">
+        <label>How should the due date be calculated?</label>
+        <select id="dueDateSetting" onchange="handleDueDateChange()">
+          <option value="same">Same as the scheduled task date</option>
+          <option value="before">A set number of days before the task date</option>
+        </select>
+        <div class="hint" id="dueDateHint">The due date will match the date the task is scheduled for</div>
+      </div>
+
+      <div class="field field-conditional" id="daysBeforeField">
+        <label>How many days before?</label>
+        <input type="number" id="daysBefore" value="3" min="1" />
+        <div class="hint">e.g. task scheduled for Jan 10, enter 3 → due date set to Jan 7</div>
+      </div>
+
+      <hr class="divider" />
+      <div class="section-label">Post date field <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px">(optional)</span></div>
+
+      <div class="info-box">
+        <div class="info-title">What is this?</div>
+        <p>If your ClickUp list has a custom date field like "Post Date" or "Publish Date," this tool can fill it in automatically. <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank">See instructions for setting one up.</a></p>
+      </div>
+
+      <div class="field">
+        <label>Populate a custom post/publish date field?</label>
+        <div class="toggle-group">
+          <button class="active" onclick="setPostDate(false)" id="pdNo">No</button>
+          <button onclick="setPostDate(true)" id="pdYes">Yes</button>
+        </div>
+      </div>
+
+      <div class="field field-conditional" id="customFieldIdField">
+        <label>Which custom field?</label>
+        <select id="customFieldSelect">
+          <option value="">— select a field —</option>
+        </select>
+        <div class="hint" id="customFieldHint">These are the date-type custom fields on your list. <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">Don't see the right one?</a></div>
+      </div>
+
+      <hr class="divider" />
+      <div class="section-label">Optional extras</div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Assign to someone?</label>
+          <select id="assigneeSelect"><option value="">— no assignee —</option></select>
+        </div>
+        <div class="field">
+          <label>Task status?</label>
+          <select id="statusSelect"><option value="">— list default —</option></select>
+          <div class="hint">Leave blank to use your list's default</div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToStep(1)">← Back</button>
+        <button class="btn-primary" onclick="nextRunStep(2)">Review →</button>
       </div>
     </div>
 
-    <div class="field" id="skipWeekendsField">
-      <label>Skip Saturdays and Sundays?</label>
-      <div class="toggle-group">
-        <button class="active" onclick="setSkip(false)" id="skipNo">No — include weekends</button>
-        <button onclick="setSkip(true)" id="skipYes">Yes — weekdays only</button>
+    <!-- Step 3: Review & Run -->
+    <div id="run-step-3" style="display:none">
+      <div class="section-label">Review & Run</div>
+      <div id="errorBanner"></div>
+
+      <div class="task-count">
+        <div class="num" id="taskCountNum">—</div>
+        <div class="label">
+          <strong>Tasks that will be created</strong>
+          <span id="taskCountDesc">Go back to set your dates</span>
+        </div>
+      </div>
+
+      <div class="summary-card" id="summaryCard"></div>
+
+      <button class="run-btn" id="runBtn" onclick="runTasks()">Create Tasks in ClickUp</button>
+      <div style="text-align:center;margin-top:12px">
+        <button class="btn-ghost" onclick="goToStep(0)">← Go back and edit</button>
+      </div>
+
+      <div id="progressArea"></div>
+
+      <div id="logArea" style="margin-top:28px;display:none">
+        <div class="section-label" style="margin-bottom:12px">Results</div>
+        <div class="log-header"><span>Task Name</span><span>Details</span><span>Status</span></div>
+        <div class="log-container" id="logContainer"><div class="log-empty">No results yet</div></div>
       </div>
     </div>
 
-    <div id="taskCountPreview" style="display:none;background:var(--rust-light);border:1px solid rgba(123,75,58,0.2);border-radius:6px;padding:12px 16px;margin-top:8px">
-      <span style="font-size:13px;color:var(--rust-dark)">This will create <strong id="taskCountInline">0</strong> tasks — from <span id="taskCountFrom"></span> to <span id="taskCountTo"></span></span>
-    </div>
+  </div><!-- end view-run -->
 
-    <div class="nav-row">
-      <button class="btn-secondary" onclick="goTo(1)">← Back</button>
-      <button class="btn-primary" onclick="next(2)">Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 3: Settings -->
-  <div class="section" id="step-3">
-    <div class="section-label">Due dates &amp; post dates</div>
-
-    <div class="field">
-      <label>Do you want a due date on each task?</label>
-      <div class="toggle-group">
-        <button class="active" onclick="setHasDueDate(true)" id="hasDueDateYes">Yes</button>
-        <button onclick="setHasDueDate(false)" id="hasDueDateNo">No</button>
-      </div>
-    </div>
-
-    <div class="field field-row-conditional visible" id="dueDateSettingField">
-      <label>How should the due date be calculated?</label>
-      <select id="dueDateSetting" onchange="handleDueDateChange()">
-        <option value="same">Same as the scheduled task date</option>
-        <option value="before">A set number of days before the task date</option>
-      </select>
-      <div class="hint" id="dueDateHint">The due date will match the date the task is scheduled for</div>
-    </div>
-
-    <div class="field field-row-conditional" id="daysBeforeField">
-      <label>How many days before?</label>
-      <input type="number" id="daysBefore" value="3" min="1" />
-      <div class="hint">e.g. if the task is scheduled for January 10 and you enter 3, the due date will be set to January 7</div>
-    </div>
-
-    <hr class="divider" />
-    <div class="section-label">Post date custom field &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:12px">(optional)</span></div>
-
-    <div class="info-box">
-      <div class="info-title">What is this?</div>
-      <p>If your ClickUp list has a custom date field — like a "Post Date" or "Publish Date" field — this tool can automatically fill it in with the scheduled date for each task. This is separate from the due date above.<br /><br />If you don't have one yet or aren't sure what this means, <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank">follow these instructions</a> to set one up.</p>
-    </div>
-
-    <div class="field">
-      <label>Do you want to populate a custom post/publish date field?</label>
-      <div class="toggle-group">
-        <button class="active" onclick="setPostDate(false)" id="pdNo">No</button>
-        <button onclick="setPostDate(true)" id="pdYes">Yes</button>
-      </div>
-    </div>
-
-    <div class="field field-row-conditional" id="customFieldIdField">
-      <label>Which custom field?</label>
-      <select id="customFieldSelect">
-        <option value="">— select a field —</option>
-      </select>
-      <div class="hint" id="customFieldHint">These are the date-type custom fields on your list. Don't see the right one? <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">See instructions for setting one up.</a></div>
-    </div>
-
-    <hr class="divider" />
-    <div class="section-label">Optional extras</div>
-
-    <div class="field">
-      <label>Assign to someone? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-      <select id="assigneeSelect">
-        <option value="">— no assignee —</option>
-      </select>
-      <div class="hint" id="assigneeHint">These are the members of your ClickUp workspace</div>
-    </div>
-
-    <div class="field">
-      <label>Set a task status? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-      <select id="statusSelect">
-        <option value="">— use list default —</option>
-      </select>
-      <div class="hint">Leave as "use list default" if you're not sure — tasks will be created with your list's default status</div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn-secondary" onclick="goTo(2)">← Back</button>
-      <button class="btn-primary" onclick="next(3)">Review →</button>
-    </div>
-  </div>
-
-  <!-- Step 4: Review & Run -->
-  <div class="section" id="step-4">
-    <div class="section-label">Review & Run</div>
-    <div id="errorBanner"></div>
-
-    <div class="task-count">
-      <div class="num" id="taskCountNum">—</div>
-      <div class="label">
-        <strong>Tasks that will be created</strong>
-        <span id="taskCountDesc">Go back to Schedule to set your dates</span>
-      </div>
-    </div>
-
-    <div class="summary-card" id="summaryCard"></div>
-
-    <button class="run-btn" id="runBtn" onclick="runTasks()">Create Tasks in ClickUp</button>
-    <div style="text-align:center;margin-top:12px">
-      <button class="btn-ghost" onclick="goTo(0)">← Go back and edit</button>
-    </div>
-
-    <div id="progressArea"></div>
-
-    <div id="logArea" style="margin-top:28px;display:none">
-      <div class="section-label" style="margin-bottom:12px">Results</div>
-      <div class="log-header">
-        <span>Task Name</span>
-        <span>Details</span>
-        <span>Status</span>
-      </div>
-      <div class="log-container" id="logContainer">
-        <div class="log-empty">No results yet</div>
-      </div>
-    </div>
-  </div>
-</div>
+</div><!-- end app -->
 
 <div class="footer">
   Built by <a href="https://shinebrightvirtual.com" target="_blank">Shine Bright Virtual</a>
   &nbsp;·&nbsp; <a href="https://bulktaskcreator.com" target="_blank">bulktaskcreator.com</a>
 </div>
 
-<!-- Save preset modal -->
-<div id="presetModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:none;align-items:center;justify-content:center">
-  <div style="background:var(--white);border-radius:10px;padding:28px;width:360px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2)">
-    <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--olive);margin-bottom:8px">Save preset</div>
-    <p style="font-size:13px;color:var(--slate);margin-bottom:16px">Give this preset a name that describes the schedule and naming pattern — e.g. "Post every M/W/F" or "Weekly check-ins". Your list will be picked fresh each time you load it.</p>
-    <input type="text" id="presetNameInput" placeholder="e.g. Post every M/W/F" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:16px" />
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn-secondary" onclick="hideModal()">Cancel</button>
-      <button class="btn-primary" onclick="savePreset()">Save</button>
+<!-- ── CREATE SCHEDULE MODAL ──────────────────────────────── -->
+<div class="modal-overlay" id="scheduleModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Create a posting schedule</div>
+    <div class="modal-subtitle" id="modalSubtitle">Save your repeat pattern and task naming so you can load it any time.</div>
+
+    <div class="modal-steps">
+      <div class="modal-step active" id="mstep-0">Name</div>
+      <div class="modal-step" id="mstep-1">Pattern</div>
+      <div class="modal-step" id="mstep-2">Task names</div>
+    </div>
+
+    <!-- Modal Step 0: Name -->
+    <div id="modal-step-0">
+      <div class="field">
+        <label>What do you want to call this schedule?</label>
+        <input type="text" id="scheduleNameInput" placeholder="e.g. Post every M/W/F" />
+        <div class="hint">Name it after the pattern — you'll see this in your schedule list</div>
+      </div>
+    </div>
+
+    <!-- Modal Step 1: Pattern -->
+    <div id="modal-step-1" style="display:none">
+      <div class="field">
+        <label>How often should tasks repeat?</label>
+        <select id="mRepeatPattern" onchange="handleMPatternChange()">
+          <option value="every-day">Every day</option>
+          <option value="every-x-days" selected>Every few days</option>
+          <option value="every-x-weeks">Every few weeks</option>
+          <option value="specific-days">Specific days of the week</option>
+        </select>
+      </div>
+
+      <div class="field field-conditional visible" id="mIntervalField">
+        <label id="mIntervalLabel">How many days between each task?</label>
+        <input type="number" id="mIntervalX" value="3" min="1" max="365" />
+        <div class="hint" id="mIntervalHint">e.g. 3 = every 3 days · 7 = weekly · 14 = every two weeks</div>
+      </div>
+
+      <div class="field field-conditional" id="mDowPickerField">
+        <label>Which days of the week?</label>
+        <div class="day-picker" style="margin-top:8px">
+          <button class="day-btn" onclick="toggleMDay(0)" id="mday-0">Sun</button>
+          <button class="day-btn" onclick="toggleMDay(1)" id="mday-1">Mon</button>
+          <button class="day-btn" onclick="toggleMDay(2)" id="mday-2">Tue</button>
+          <button class="day-btn" onclick="toggleMDay(3)" id="mday-3">Wed</button>
+          <button class="day-btn" onclick="toggleMDay(4)" id="mday-4">Thu</button>
+          <button class="day-btn" onclick="toggleMDay(5)" id="mday-5">Fri</button>
+          <button class="day-btn" onclick="toggleMDay(6)" id="mday-6">Sat</button>
+        </div>
+      </div>
+
+      <div class="field" id="mSkipWeekendsField">
+        <label>Skip Saturdays and Sundays?</label>
+        <div class="toggle-group">
+          <button class="active" onclick="setMSkip(false)" id="mSkipNo">No</button>
+          <button onclick="setMSkip(true)" id="mSkipYes">Yes — weekdays only</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Step 2: Task Names -->
+    <div id="modal-step-2" style="display:none">
+      <div class="field">
+        <label>Task title format</label>
+        <div class="toggle-group" id="mNamingToggle">
+          <button class="active" onclick="setMNaming('prefix')">Custom text + date</button>
+          <button onclick="setMNaming('date')">Date only</button>
+          <button onclick="setMNaming('same')">Same title every time</button>
+        </div>
+        <div class="hint" id="mNamingHint">Each task gets your custom text followed by the date</div>
+      </div>
+
+      <div class="field" id="mPrefixField">
+        <label id="mPrefixLabel">Custom text</label>
+        <input type="text" id="mPrefix" placeholder="e.g. Weekly Review:" oninput="updateMPreview()" />
+      </div>
+
+      <div class="field">
+        <label>Include the day of the week?</label>
+        <div class="toggle-group">
+          <button class="active" onclick="setMDow(false)" id="mDowNo">No — just the date</button>
+          <button onclick="setMDow(true)" id="mDowYes">Yes — add the weekday</button>
+        </div>
+      </div>
+
+      <div class="preview-box">
+        <div class="preview-label">Task name preview</div>
+        <div class="preview-value" id="mPreviewText">"Weekly Review: January 6, 2025"</div>
+      </div>
+    </div>
+
+    <div class="modal-nav">
+      <button class="btn-secondary" id="modalBackBtn" onclick="modalBack()" style="visibility:hidden">← Back</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-ghost" onclick="closeScheduleModal()">Cancel</button>
+        <button class="btn-primary" id="modalNextBtn" onclick="modalNext()">Next →</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+// ── State ─────────────────────────────────────────────────────
 var state={
   namingStyle:'prefix',includeDow:false,skipWeekends:false,
   selectedDays:[],setPostDate:false,hasDueDate:true,dueDateSetting:'same',
   running:false,
-  listStatuses:[],listMembers:[],listCustomFields:[]
+  listStatuses:[],listMembers:[],listCustomFields:[],
+  selectedSchedule:null
 };
 
-// ── Presets ──────────────────────────────────────────────────
+var modalState={
+  step:0,
+  namingStyle:'prefix',includeDow:false,skipWeekends:false,
+  selectedDays:[],editingName:null
+};
 
-function getPresets(){
-  try{return JSON.parse(localStorage.getItem('sbv_cu_presets')||'{}');}catch(e){return {};}
-}
+var allLists=[];
+var currentRunStep=0;
 
-function savePresets(p){
-  try{localStorage.setItem('sbv_cu_presets',JSON.stringify(p));}catch(e){}
-}
-
-function refreshPresetDropdown(){
-  var p=getPresets();var sel=document.getElementById('presetSelect');
-  var cur=sel.value;
-  sel.innerHTML='<option value="">— load a saved schedule —</option>';
-  Object.keys(p).sort().forEach(function(name){
-    var o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);
-  });
-  if(cur&&p[cur])sel.value=cur;
-  document.getElementById('deletePresetBtn').style.display=sel.value?'inline-block':'none';
-}
-
-function showSavePreset(){
-  document.getElementById('presetNameInput').value='';
-  document.getElementById('presetModal').style.display='flex';
-  setTimeout(function(){document.getElementById('presetNameInput').focus();},50);
-}
-
-function hideModal(){
-  document.getElementById('presetModal').style.display='none';
-}
-
-function savePreset(){
-  var name=document.getElementById('presetNameInput').value.trim();
-  if(!name){alert('Please enter a name for this preset.');return;}
-  var p=getPresets();
-  p[name]=captureState();
-  savePresets(p);
-  refreshPresetDropdown();
-  document.getElementById('presetSelect').value=name;
-  document.getElementById('deletePresetBtn').style.display='inline-block';
-  hideModal();
-}
-
-function loadPreset(){
-  var name=document.getElementById('presetSelect').value;
-  document.getElementById('deletePresetBtn').style.display=name?'inline-block':'none';
-  if(!name)return;
-  var p=getPresets();
-  if(!p[name])return;
-  applyState(p[name]);
-}
-
-function deletePreset(){
-  var name=document.getElementById('presetSelect').value;
-  if(!name)return;
-  if(!confirm('Delete preset "'+name+'"?'))return;
-  var p=getPresets();delete p[name];
-  savePresets(p);
-  refreshPresetDropdown();
-}
-
-function captureState(){
-  // Presets save schedule + naming only — list is always picked fresh
-  return {
-    namingStyle:state.namingStyle,
-    prefix:document.getElementById('prefix').value,
-    includeDow:state.includeDow,
-    repeatPattern:v('repeatPattern'),
-    intervalX:document.getElementById('intervalX').value,
-    selectedDays:state.selectedDays.slice(),
-    skipWeekends:state.skipWeekends,
-    hasDueDate:state.hasDueDate,
-    dueDateSetting:v('dueDateSetting'),
-    daysBefore:document.getElementById('daysBefore').value,
-    setPostDate:state.setPostDate
-  };
-}
-
-function applyState(s){
-  // Restore naming settings
-  if(s.namingStyle)setNaming(s.namingStyle);
-  if(s.prefix)document.getElementById('prefix').value=s.prefix;
-  if(s.includeDow!==undefined)setDow(s.includeDow);
-
-  // Restore schedule settings
-  if(s.repeatPattern){document.getElementById('repeatPattern').value=s.repeatPattern;handlePatternChange();}
-  if(s.intervalX)document.getElementById('intervalX').value=s.intervalX;
-  if(s.selectedDays){
-    state.selectedDays=[];
-    s.selectedDays.forEach(function(d){toggleDay(d);});
-  }
-  if(s.skipWeekends!==undefined)setSkip(s.skipWeekends);
-  if(s.hasDueDate!==undefined)setHasDueDate(s.hasDueDate);
-  if(s.dueDateSetting){document.getElementById('dueDateSetting').value=s.dueDateSetting;handleDueDateChange();}
-  if(s.daysBefore)document.getElementById('daysBefore').value=s.daysBefore;
-  if(s.setPostDate!==undefined)setPostDate(s.setPostDate);
-
-  // Clear list selection — user picks their list fresh each time
-  clearSelectedList(true);
-  document.getElementById('listId').value='';
-
-  updatePreview();
-  updateTaskCount();
-
-  // Navigate to step 1 so they see the naming settings loaded
-  goTo(0);
-}
-
-// ── List data fetch ──────────────────────────────────────────
-
-function clearListData(){
-  state.listStatuses=[];state.listMembers=[];state.listCustomFields=[];
-  document.getElementById('fetchStatusMsg').innerHTML='';
-  populateStatusDropdown([]);
-  populateMemberDropdown([]);
-  populateCustomFieldDropdown([]);
-}
-
-async function fetchListData(callback){
-  var token=v('apiToken');var listId=v('listId');
-  if(!token||!listId){
-    if(callback)callback();
-    return;
-  }
-  var msg=document.getElementById('fetchStatusMsg');
-  msg.innerHTML='<div class="fetch-status loading"><span class="spinner" style="width:12px;height:12px;border-width:2px"></span> Loading list info...</div>';
-
-  try{
-    // Fetch list details (statuses + members)
-    var listResp=await fetch('https://api.clickup.com/api/v2/list/'+listId,{
-      headers:{'Authorization':token}
-    });
-    var listData=await listResp.json();
-
-    if(!listResp.ok){
-      msg.innerHTML='<div class="fetch-status error">Could not load list — check your API Token and List ID</div>';
-      if(callback)callback();
-      return;
-    }
-
-    // Statuses
-    var statuses=listData.statuses||[];
-    state.listStatuses=statuses;
-    populateStatusDropdown(statuses);
-
-    // Members from space
-    var members=[];
-    try{
-      var spaceId=listData.space&&listData.space.id;
-      if(spaceId){
-        var membersResp=await fetch('https://api.clickup.com/api/v2/space/'+spaceId+'/member',{
-          headers:{'Authorization':token}
-        });
-        var membersData=await membersResp.json();
-        members=membersData.members||[];
-      }
-    }catch(e){}
-    state.listMembers=members;
-    populateMemberDropdown(members);
-
-    // Custom fields
-    var fieldsResp=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/field',{
-      headers:{'Authorization':token}
-    });
-    var fieldsData=await fieldsResp.json();
-    var dateFields=(fieldsData.fields||[]).filter(function(f){return f.type==='date';});
-    state.listCustomFields=dateFields;
-    populateCustomFieldDropdown(dateFields);
-
-    var parts=[];
-    if(statuses.length)parts.push(statuses.length+' statuses');
-    if(members.length)parts.push(members.length+' members');
-    if(dateFields.length)parts.push(dateFields.length+' date field'+(dateFields.length!==1?'s':''));
-    msg.innerHTML='<div class="fetch-status success">✓ Loaded: '+parts.join(', ')+(listData.name?' from "'+listData.name+'"':'')+' </div>';
-
-    if(callback)callback();
-  }catch(e){
-    msg.innerHTML='<div class="fetch-status error">Something went wrong loading the list. Check your connection and try again.</div>';
-    if(callback)callback();
-  }
-}
-
-function populateStatusDropdown(statuses){
-  var sel=document.getElementById('statusSelect');
-  var cur=sel.value;
-  sel.innerHTML='<option value="">— use list default —</option>';
-  statuses.forEach(function(s){
-    var o=document.createElement('option');
-    o.value=s.status;o.textContent=s.status;
-    sel.appendChild(o);
-  });
-  if(cur)sel.value=cur;
-}
-
-function populateMemberDropdown(members){
-  var sel=document.getElementById('assigneeSelect');
-  var cur=sel.value;
-  sel.innerHTML='<option value="">— no assignee —</option>';
-  members.forEach(function(m){
-    var o=document.createElement('option');
-    o.value=m.id||m.user&&m.user.id;
-    o.textContent=(m.username||m.user&&m.user.username||'Member '+o.value);
-    sel.appendChild(o);
-  });
-  if(cur)sel.value=cur;
-}
-
-function populateCustomFieldDropdown(fields){
-  var sel=document.getElementById('customFieldSelect');
-  var cur=sel.value;
-  sel.innerHTML='<option value="">— select a field —</option>';
-  fields.forEach(function(f){
-    var o=document.createElement('option');
-    o.value=f.id;o.textContent=f.name;
-    sel.appendChild(o);
-  });
-  if(cur)sel.value=cur;
-  if(fields.length===0&&state.setPostDate){
-    document.getElementById('customFieldHint').innerHTML='No date-type custom fields found on this list. <a href="https://shinebrightvirtual.com/clickup-custom-field-instructions" target="_blank" style="color:var(--rust)">Here\'s how to create one.</a>';
-  }
-}
-
-// ── Navigation ───────────────────────────────────────────────
-
-function goTo(s){
-  document.querySelectorAll('.section').forEach(function(el,i){el.classList.toggle('active',i===s);});
-  document.querySelectorAll('.progress-step').forEach(function(el,i){el.classList.toggle('active',i===s);el.classList.toggle('done',i<s);});
-  if(s===4)buildSummary();
+// ── Views ─────────────────────────────────────────────────────
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
 
-function next(from){
-  var e=validate(from);if(e){alert(e);return;}
-  // Fetch list data when leaving step 0 if not already loaded
-  if(from===0&&state.listStatuses.length===0){
-    fetchListData(function(){goTo(1);});
-    return;
-  }
-  goTo(from+1);
+// ── Home / Schedules ──────────────────────────────────────────
+function getSchedules(){
+  try{return JSON.parse(localStorage.getItem('btc_schedules')||'[]');}catch(e){return[];}
 }
 
-function validate(s){
-  if(s===0){if(!v('apiToken'))return'Please enter your API Token.';if(!v('listId'))return'Please enter your List ID.';}
-  if(s===2){
+function saveSchedules(s){
+  try{localStorage.setItem('btc_schedules',JSON.stringify(s));}catch(e){}
+}
+
+function renderSchedules(){
+  var schedules=getSchedules();
+  var grid=document.getElementById('schedules-grid');
+  if(schedules.length===0){
+    grid.innerHTML='<div class="empty-schedules"><p>No schedules saved yet. Create your first one to get started.</p></div>';
+    return;
+  }
+  grid.innerHTML=schedules.map(function(s,i){
+    var selected=state.selectedSchedule&&state.selectedSchedule.name===s.name;
+    return '<div class="schedule-card'+(selected?' selected':'')+'" id="scard-'+i+'" onclick="selectSchedule('+i+')">'
+      +'<div class="schedule-card-info"><div class="name">'+escHtml(s.name)+'</div><div class="pattern">'+escHtml(patternSummary(s))+'</div></div>'
+      +'<div class="schedule-card-actions">'
+      +'<button class="btn-icon" title="Edit" onclick="event.stopPropagation();editSchedule('+i+')">✎</button>'
+      +'<button class="btn-icon" title="Delete" onclick="event.stopPropagation();deleteSchedule('+i+')">✕</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+function patternSummary(s){
+  var p=s.repeatPattern;
+  if(p==='every-day')return 'Every day'+(s.skipWeekends?' (weekdays only)':'');
+  if(p==='every-x-days')return 'Every '+s.intervalX+' days'+(s.skipWeekends?' (weekdays only)':'');
+  if(p==='every-x-weeks')return 'Every '+s.intervalX+' week'+(s.intervalX>1?'s':'')+(s.skipWeekends?' (weekdays only)':'');
+  if(p==='specific-days'){
+    var names=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return (s.selectedDays||[]).map(function(d){return names[d];}).join(', ');
+  }
+  return p;
+}
+
+function selectSchedule(i){
+  var schedules=getSchedules();
+  state.selectedSchedule=schedules[i];
+  renderSchedules();
+  var banner=document.getElementById('selectedScheduleBanner');
+  banner.style.display='block';
+  document.getElementById('selectedScheduleName').textContent=schedules[i].name;
+  document.getElementById('selectedSchedulePattern').textContent=patternSummary(schedules[i]);
+  var btn=document.getElementById('startRunBtn');
+  btn.disabled=false;
+  btn.style.opacity='1';
+  btn.style.cursor='pointer';
+}
+
+function startRun(){
+  if(!state.selectedSchedule)return;
+  applyScheduleToRun(state.selectedSchedule);
+  showView('view-run');
+  goToStep(0);
+}
+
+function applyScheduleToRun(s){
+  if(s.namingStyle)setNaming(s.namingStyle);
+  if(s.prefix)document.getElementById('prefix').value=s.prefix;
+  if(s.includeDow!==undefined)setDow(s.includeDow);
+  if(s.repeatPattern){document.getElementById('repeatPattern').value=s.repeatPattern;handlePatternChange();}
+  if(s.intervalX)document.getElementById('intervalX').value=s.intervalX;
+  state.selectedDays=[];
+  (s.selectedDays||[]).forEach(function(d){toggleDay(d);});
+  if(s.skipWeekends!==undefined)setSkip(s.skipWeekends);
+  updatePreview();
+
+  var note=document.getElementById('loadedScheduleNote');
+  note.style.display='block';
+  document.getElementById('loadedScheduleNoteName').textContent='"'+s.name+'"';
+}
+
+function deleteSchedule(i){
+  var schedules=getSchedules();
+  if(!confirm('Delete "'+schedules[i].name+'"?'))return;
+  if(state.selectedSchedule&&state.selectedSchedule.name===schedules[i].name){
+    state.selectedSchedule=null;
+    document.getElementById('selectedScheduleBanner').style.display='none';
+    var btn=document.getElementById('startRunBtn');
+    btn.disabled=true;btn.style.opacity='0.4';btn.style.cursor='not-allowed';
+  }
+  schedules.splice(i,1);
+  saveSchedules(schedules);
+  renderSchedules();
+}
+
+function editSchedule(i){
+  var schedules=getSchedules();
+  var s=schedules[i];
+  modalState.editingName=s.name;
+  openScheduleModal(s);
+}
+
+// ── Schedule Modal ────────────────────────────────────────────
+function openScheduleModal(existing){
+  modalState.step=0;
+  modalState.selectedDays=existing?(existing.selectedDays||[]).slice():[];
+  modalState.namingStyle=existing?existing.namingStyle:'prefix';
+  modalState.includeDow=existing?existing.includeDow:false;
+  modalState.skipWeekends=existing?existing.skipWeekends:false;
+
+  document.getElementById('modalTitle').textContent=existing?'Edit schedule':'Create a posting schedule';
+  document.getElementById('modalNextBtn').textContent='Next →';
+  document.getElementById('scheduleNameInput').value=existing?existing.name:'';
+
+  if(existing){
+    if(existing.repeatPattern){document.getElementById('mRepeatPattern').value=existing.repeatPattern;handleMPatternChange();}
+    if(existing.intervalX)document.getElementById('mIntervalX').value=existing.intervalX;
+    existing.selectedDays&&existing.selectedDays.forEach(function(d){
+      document.getElementById('mday-'+d).classList.add('selected');
+    });
+    setMSkip(existing.skipWeekends||false);
+    setMNaming(existing.namingStyle||'prefix');
+    if(existing.prefix)document.getElementById('mPrefix').value=existing.prefix;
+    setMDow(existing.includeDow||false);
+  } else {
+    document.getElementById('mRepeatPattern').value='every-x-days';
+    document.getElementById('mIntervalX').value='3';
+    [0,1,2,3,4,5,6].forEach(function(d){document.getElementById('mday-'+d).classList.remove('selected');});
+    setMSkip(false);
+    setMNaming('prefix');
+    document.getElementById('mPrefix').value='';
+    setMDow(false);
+    handleMPatternChange();
+  }
+
+  goToModalStep(0);
+  document.getElementById('scheduleModal').classList.add('open');
+  setTimeout(function(){document.getElementById('scheduleNameInput').focus();},100);
+}
+
+function closeScheduleModal(){
+  document.getElementById('scheduleModal').classList.remove('open');
+  modalState.editingName=null;
+}
+
+function goToModalStep(s){
+  modalState.step=s;
+  [0,1,2].forEach(function(i){
+    document.getElementById('modal-step-'+i).style.display=i===s?'block':'none';
+    var ms=document.getElementById('mstep-'+i);
+    ms.className='modal-step'+(i===s?' active':(i<s?' done':''));
+  });
+  document.getElementById('modalBackBtn').style.visibility=s>0?'visible':'hidden';
+  document.getElementById('modalNextBtn').textContent=s===2?'Save schedule':'Next →';
+}
+
+function modalBack(){goToModalStep(modalState.step-1);}
+
+function modalNext(){
+  if(modalState.step===0){
+    var name=document.getElementById('scheduleNameInput').value.trim();
+    if(!name){alert('Please give this schedule a name.');return;}
+    goToModalStep(1);
+  } else if(modalState.step===1){
+    if(document.getElementById('mRepeatPattern').value==='specific-days'&&modalState.selectedDays.length===0){
+      alert('Please select at least one day of the week.');return;
+    }
+    goToModalStep(2);
+    updateMPreview();
+  } else {
+    saveScheduleFromModal();
+  }
+}
+
+function saveScheduleFromModal(){
+  var name=document.getElementById('scheduleNameInput').value.trim();
+  var schedules=getSchedules();
+
+  // If editing, remove old entry
+  if(modalState.editingName){
+    schedules=schedules.filter(function(s){return s.name!==modalState.editingName;});
+  }
+
+  var schedule={
+    name:name,
+    repeatPattern:document.getElementById('mRepeatPattern').value,
+    intervalX:parseInt(document.getElementById('mIntervalX').value)||3,
+    selectedDays:modalState.selectedDays.slice(),
+    skipWeekends:modalState.skipWeekends,
+    namingStyle:modalState.namingStyle,
+    prefix:document.getElementById('mPrefix').value.trim(),
+    includeDow:modalState.includeDow
+  };
+
+  schedules.push(schedule);
+  saveSchedules(schedules);
+  closeScheduleModal();
+  renderSchedules();
+
+  // Auto-select the saved schedule
+  selectSchedule(schedules.length-1);
+}
+
+// Modal state helpers
+function handleMPatternChange(){
+  var p=document.getElementById('mRepeatPattern').value;
+  var showInterval=(p==='every-x-days'||p==='every-x-weeks');
+  var showDow=(p==='specific-days');
+  document.getElementById('mIntervalField').classList.toggle('visible',showInterval);
+  document.getElementById('mDowPickerField').classList.toggle('visible',showDow);
+  document.getElementById('mSkipWeekendsField').style.display=showDow?'none':'block';
+  if(p==='every-x-weeks'){
+    document.getElementById('mIntervalLabel').textContent='How many weeks between each task?';
+    document.getElementById('mIntervalHint').textContent='e.g. 1 = every week · 2 = every two weeks · 4 = once a month';
+  } else {
+    document.getElementById('mIntervalLabel').textContent='How many days between each task?';
+    document.getElementById('mIntervalHint').textContent='e.g. 3 = every 3 days · 7 = weekly · 14 = every two weeks';
+  }
+}
+
+function toggleMDay(d){
+  var i=modalState.selectedDays.indexOf(d);
+  if(i===-1)modalState.selectedDays.push(d);else modalState.selectedDays.splice(i,1);
+  document.getElementById('mday-'+d).classList.toggle('selected',modalState.selectedDays.indexOf(d)!==-1);
+}
+
+function setMSkip(val){
+  modalState.skipWeekends=val;
+  document.getElementById('mSkipYes').classList.toggle('active',val);
+  document.getElementById('mSkipNo').classList.toggle('active',!val);
+}
+
+function setMNaming(style){
+  modalState.namingStyle=style;
+  document.querySelectorAll('#mNamingToggle button').forEach(function(b,i){b.classList.toggle('active',['prefix','date','same'][i]===style);});
+  document.getElementById('mPrefixField').style.display=style==='date'?'none':'block';
+  document.getElementById('mPrefixLabel').textContent=style==='same'?'Task title':'Custom text';
+  document.getElementById('mPrefix').placeholder=style==='same'?'e.g. Content Post':'e.g. Weekly Review:';
+  var hints={prefix:'Each task gets your custom text followed by the date',date:'Tasks named by date only',same:'Every task will use this exact title'};
+  document.getElementById('mNamingHint').textContent=hints[style];
+  updateMPreview();
+}
+
+function setMDow(val){
+  modalState.includeDow=val;
+  document.getElementById('mDowYes').classList.toggle('active',val);
+  document.getElementById('mDowNo').classList.toggle('active',!val);
+  updateMPreview();
+}
+
+function updateMPreview(){
+  var sample=new Date(2025,0,6);
+  var dateStr=modalState.includeDow
+    ?sample.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})
+    :sample.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var prefix=document.getElementById('mPrefix').value.trim();
+  var result;
+  if(modalState.namingStyle==='date')result=dateStr;
+  else if(modalState.namingStyle==='same')result=prefix||'Your task title here';
+  else result=prefix?prefix+' '+dateStr:dateStr;
+  document.getElementById('mPreviewText').textContent='"'+result+'"';
+}
+
+// ── Run flow ──────────────────────────────────────────────────
+function goToStep(s){
+  currentRunStep=s;
+  [0,1,2,3].forEach(function(i){
+    document.getElementById('run-step-'+i).style.display=i===s?'block':'none';
+  });
+  document.querySelectorAll('.progress-step').forEach(function(el,i){
+    el.classList.toggle('active',i===s);
+    el.classList.toggle('done',i<s);
+  });
+  if(s===3)buildSummary();
+  window.scrollTo(0,0);
+}
+
+function nextRunStep(from){
+  var e=validateRun(from);
+  if(e){alert(e);return;}
+  if(from===0&&state.listStatuses.length===0){
+    fetchListData(function(){goToStep(1);});
+    return;
+  }
+  goToStep(from+1);
+}
+
+function validateRun(s){
+  if(s===0){
+    if(!v('apiToken'))return'Please enter your API Token.';
+    if(!v('listId'))return'Please select a list.';
+  }
+  if(s===1){
     if(!v('startDate'))return'Please choose a first task date.';
     if(!v('endDate'))return'Please choose a last task date.';
-    if(parseDate(v('startDate'))>parseDate(v('endDate')))return'The first task date must be before the last task date.';
+    if(parseDate(v('startDate'))>parseDate(v('endDate')))return'First task date must be before last task date.';
     if(v('repeatPattern')==='specific-days'&&state.selectedDays.length===0)return'Please select at least one day of the week.';
   }
-  if(s===3){if(state.setPostDate&&!v('customFieldSelect'))return'Please select a custom field, or turn off the post date option.';}
+  if(s===2){
+    if(state.setPostDate&&!v('customFieldSelect'))return'Please select a custom field or turn off the post date option.';
+  }
   return null;
 }
 
-function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
-
-// ── Naming ────────────────────────────────────────────────────
-
+// ── Naming (run view) ─────────────────────────────────────────
 function setNaming(style){
   state.namingStyle=style;
   document.querySelectorAll('#namingToggle button').forEach(function(b,i){b.classList.toggle('active',['prefix','date','same'][i]===style);});
-  var hints={
-    prefix:'Each task gets your custom text followed by the date — e.g. "Weekly Review: January 6, 2025"',
-    date:'Tasks will be named by date only — no custom text',
-    same:'Every task will have exactly the same title — useful when the date is already set as a due date'
-  };
+  var hints={prefix:'Each task gets your custom text followed by the date',date:'Tasks will be named by date only',same:'Every task will have exactly the same title'};
   document.getElementById('namingHint').textContent=hints[style];
   document.getElementById('prefixField').style.display=style==='date'?'none':'block';
   document.getElementById('prefixLabel').textContent=style==='same'?'Task title':'Custom text';
   document.getElementById('prefix').placeholder=style==='same'?'e.g. Content Post':'e.g. Weekly Review:';
-  document.getElementById('prefixHint').textContent=style==='same'?'Every single task will use this exact title':'This text will appear at the start of every task name, before the date';
+  document.getElementById('prefixHint').textContent=style==='same'?'Every task will use this exact title':'This text will appear at the start of every task name, before the date';
   updatePreview();
 }
 
@@ -770,8 +972,7 @@ function updatePreview(){
   document.getElementById('previewText').textContent='"'+result+'"';
 }
 
-// ── Schedule ──────────────────────────────────────────────────
-
+// ── Schedule (run view) ───────────────────────────────────────
 function handlePatternChange(){
   var p=v('repeatPattern');
   var showInterval=(p==='every-x-days'||p==='every-x-weeks');
@@ -784,7 +985,7 @@ function handlePatternChange(){
     document.getElementById('intervalHint').textContent='e.g. 1 = every week · 2 = every two weeks · 4 = once a month';
   } else {
     document.getElementById('intervalLabel').textContent='How many days between each task?';
-    document.getElementById('intervalHint').textContent='e.g. 3 = every 3 days · 7 = once a week · 14 = every two weeks';
+    document.getElementById('intervalHint').textContent='e.g. 3 = every 3 days · 7 = weekly · 14 = every two weeks';
   }
   updateTaskCount();
 }
@@ -804,7 +1005,6 @@ function setSkip(val){
 }
 
 // ── Settings ──────────────────────────────────────────────────
-
 function setHasDueDate(val){
   state.hasDueDate=val;
   document.getElementById('hasDueDateYes').classList.toggle('active',val);
@@ -818,10 +1018,7 @@ function handleDueDateChange(){
   var s=v('dueDateSetting');
   state.dueDateSetting=s;
   document.getElementById('daysBeforeField').classList.toggle('visible',s==='before');
-  var hints={
-    same:'The due date will match the date the task is scheduled for',
-    before:'The due date will be set a few days before the scheduled date — great for giving yourself a buffer'
-  };
+  var hints={same:'The due date will match the scheduled task date',before:'The due date will be set before the scheduled date'};
   document.getElementById('dueDateHint').textContent=hints[s]||'';
 }
 
@@ -832,17 +1029,241 @@ function setPostDate(val){
   document.getElementById('customFieldIdField').classList.toggle('visible',val);
 }
 
-// ── Date helpers ──────────────────────────────────────────────
-
-function parseDate(str){
-  var p=str.split('-');return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+// ── List browser ──────────────────────────────────────────────
+function clearListData(){
+  state.listStatuses=[];state.listMembers=[];state.listCustomFields=[];
+  document.getElementById('fetchStatusMsg').innerHTML='';
+  populateStatusDropdown([]);populateMemberDropdown([]);populateCustomFieldDropdown([]);
 }
 
+async function fetchListData(callback){
+  var token=v('apiToken');var listId=v('listId');
+  if(!token||!listId){if(callback)callback();return;}
+  try{
+    var resp=await fetch('https://api.clickup.com/api/v2/list/'+listId,{headers:{'Authorization':token}});
+    var data=await resp.json();
+    if(!resp.ok){if(callback)callback();return;}
+    populateStatusDropdown(data.statuses||[]);
+    var members=[];
+    try{
+      var spaceId=data.space&&data.space.id;
+      if(spaceId){
+        var mr=await fetch('https://api.clickup.com/api/v2/space/'+spaceId+'/member',{headers:{'Authorization':token}});
+        var md=await mr.json();members=md.members||[];
+      }
+    }catch(e){}
+    populateMemberDropdown(members);
+    var fr=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/field',{headers:{'Authorization':token}});
+    var fd=await fr.json();
+    populateCustomFieldDropdown((fd.fields||[]).filter(function(f){return f.type==='date';}));
+    if(callback)callback();
+  }catch(e){if(callback)callback();}
+}
+
+function populateStatusDropdown(statuses){
+  var sel=document.getElementById('statusSelect');var cur=sel.value;
+  sel.innerHTML='<option value="">— list default —</option>';
+  statuses.forEach(function(s){var o=document.createElement('option');o.value=s.status;o.textContent=s.status;sel.appendChild(o);});
+  if(cur)sel.value=cur;
+}
+
+function populateMemberDropdown(members){
+  var sel=document.getElementById('assigneeSelect');var cur=sel.value;
+  sel.innerHTML='<option value="">— no assignee —</option>';
+  members.forEach(function(m){
+    var o=document.createElement('option');
+    o.value=m.id||(m.user&&m.user.id);
+    o.textContent=m.username||(m.user&&m.user.username)||'Member';
+    sel.appendChild(o);
+  });
+  if(cur)sel.value=cur;
+}
+
+function populateCustomFieldDropdown(fields){
+  var sel=document.getElementById('customFieldSelect');var cur=sel.value;
+  sel.innerHTML='<option value="">— select a field —</option>';
+  fields.forEach(function(f){var o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});
+  if(cur)sel.value=cur;
+}
+
+async function loadWorkspaces(){
+  var token=v('apiToken');
+  if(!token){alert('Please enter your API Token first.');return;}
+  document.getElementById('listCascadeArea').style.display='block';
+  document.getElementById('browseListsBtn').style.display='none';
+  setListPickerStatus('<span class="spinner"></span> Loading your workspaces...','loading');
+  try{
+    var resp=await fetch('https://api.clickup.com/api/v2/team',{method:'GET',headers:{'Authorization':token,'Content-Type':'application/json'}});
+    if(!resp.ok){var e=await resp.json().catch(function(){return{};});throw new Error(e.err||'Error '+resp.status);}
+    var data=await resp.json();
+    var teams=data.teams||[];
+    var wsSel=document.getElementById('workspaceSelect');
+    wsSel.innerHTML='<option value="">— select a workspace —</option>';
+    teams.forEach(function(t){var o=document.createElement('option');o.value=t.id;o.textContent=t.name;wsSel.appendChild(o);});
+    if(teams.length===1){wsSel.value=teams[0].id;onWorkspaceChange();}
+    else setListPickerStatus(teams.length+' workspaces found','success');
+  }catch(e){
+    document.getElementById('browseListsBtn').style.display='block';
+    document.getElementById('listCascadeArea').style.display='none';
+    setListPickerStatus('Could not connect — '+e.message,'error');
+  }
+}
+
+async function onWorkspaceChange(){
+  var token=v('apiToken');var wsId=document.getElementById('workspaceSelect').value;
+  if(!wsId)return;
+  resetCascadeFrom('spaceField');allLists=[];
+  document.getElementById('listSearchArea').style.display='none';
+  document.getElementById('listSearchInput').value='';
+  setListPickerStatus('<span class="spinner"></span> Loading spaces...','loading');
+  try{
+    var resp=await fetch('https://api.clickup.com/api/v2/team/'+wsId+'/space?archived=false',{headers:{'Authorization':token}});
+    var data=await resp.json();if(!resp.ok)throw new Error(data.err||'Error');
+    var spaces=data.spaces||[];
+    var sel=document.getElementById('spaceSelect');
+    sel.innerHTML='<option value="">— select a space —</option>';
+    spaces.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent=s.name;sel.appendChild(o);});
+    document.getElementById('spaceField').style.display='block';
+    await loadAllListsForSearch(token,spaces);
+    setListPickerStatus('','');
+  }catch(e){setListPickerStatus('Could not load spaces','error');}
+}
+
+async function loadAllListsForSearch(token,spaces){
+  allLists=[];
+  for(var i=0;i<spaces.length;i++){
+    var s=spaces[i];
+    try{
+      var flr=await fetch('https://api.clickup.com/api/v2/space/'+s.id+'/list?archived=false',{headers:{'Authorization':token}});
+      var fld=await flr.json();
+      (fld.lists||[]).forEach(function(l){allLists.push({id:l.id,name:l.name,path:s.name,spaceId:s.id});});
+      var fr=await fetch('https://api.clickup.com/api/v2/space/'+s.id+'/folder?archived=false',{headers:{'Authorization':token}});
+      var fd=await fr.json();
+      for(var j=0;j<(fd.folders||[]).length;j++){
+        var f=fd.folders[j];
+        var lr=await fetch('https://api.clickup.com/api/v2/folder/'+f.id+'/list?archived=false',{headers:{'Authorization':token}});
+        var ld=await lr.json();
+        (ld.lists||[]).forEach(function(l){allLists.push({id:l.id,name:l.name,path:s.name+' / '+f.name,spaceId:s.id});});
+      }
+    }catch(e){}
+  }
+  if(allLists.length>0)document.getElementById('listSearchArea').style.display='block';
+}
+
+async function onSpaceChange(){
+  var token=v('apiToken');var spaceId=document.getElementById('spaceSelect').value;
+  if(!spaceId)return;
+  resetCascadeFrom('folderField');clearSelectedList(true);
+  setListPickerStatus('<span class="spinner"></span> Loading...','loading');
+  try{
+    var fr=await fetch('https://api.clickup.com/api/v2/space/'+spaceId+'/folder?archived=false',{headers:{'Authorization':token}});
+    var fd=await fr.json();
+    var folders=fd.folders||[];
+    var fSel=document.getElementById('folderSelect');
+    fSel.innerHTML='<option value="">— no folder / show all lists —</option>';
+    folders.forEach(function(f){var o=document.createElement('option');o.value=f.id;o.textContent=f.name;fSel.appendChild(o);});
+    document.getElementById('folderField').style.display='block';
+    await loadListsForPicker(token,spaceId,null);
+    setListPickerStatus('','');
+  }catch(e){setListPickerStatus('Could not load folders','error');}
+}
+
+async function onFolderChange(){
+  var token=v('apiToken');
+  var spaceId=document.getElementById('spaceSelect').value;
+  var folderId=document.getElementById('folderSelect').value||null;
+  resetCascadeFrom('listField');clearSelectedList(true);
+  await loadListsForPicker(token,spaceId,folderId);
+}
+
+async function loadListsForPicker(token,spaceId,folderId){
+  setListPickerStatus('<span class="spinner"></span> Loading lists...','loading');
+  try{
+    var url=folderId
+      ?'https://api.clickup.com/api/v2/folder/'+folderId+'/list?archived=false'
+      :'https://api.clickup.com/api/v2/space/'+spaceId+'/list?archived=false';
+    var resp=await fetch(url,{headers:{'Authorization':token}});
+    var data=await resp.json();
+    var lists=data.lists||[];
+    var lSel=document.getElementById('listSelect');
+    lSel.innerHTML='<option value="">— select a list —</option>';
+    lists.forEach(function(l){var o=document.createElement('option');o.value=l.id;o.textContent=l.name;lSel.appendChild(o);});
+    document.getElementById('listField').style.display='block';
+    setListPickerStatus(lists.length===0?'No lists found here':'',(lists.length===0?'error':''));
+  }catch(e){setListPickerStatus('Could not load lists','error');}
+}
+
+function onListChange(){
+  var sel=document.getElementById('listSelect');var id=sel.value;if(!id)return;
+  var name=sel.options[sel.selectedIndex].text;
+  var space=document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex];
+  var folder=document.getElementById('folderSelect').value?document.getElementById('folderSelect').options[document.getElementById('folderSelect').selectedIndex].text:'';
+  var path=(space?space.text:'')+(folder?' / '+folder:'');
+  selectList(id,name,path);
+}
+
+function filterLists(){
+  var query=document.getElementById('listSearchInput').value.trim().toLowerCase();
+  var results=document.getElementById('listSearchResults');
+  if(!query){results.style.display='none';return;}
+  var matches=allLists.filter(function(l){return l.name.toLowerCase().indexOf(query)!==-1||l.path.toLowerCase().indexOf(query)!==-1;});
+  if(matches.length===0){
+    results.innerHTML='<div style="padding:12px 14px;font-size:13px;color:var(--muted)">No lists match "'+escHtml(query)+'"</div>';
+  } else {
+    results.innerHTML=matches.slice(0,20).map(function(l){
+      var oc='selectList(\''+l.id+'\',\''+escHtml(l.name).replace(/'/g,'&#39;')+'\',\''+escHtml(l.path).replace(/'/g,'&#39;')+'\')';
+      return '<div onclick="'+oc+'" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--cream);font-size:13px;background:var(--white)" onmouseover="this.style.background=\'var(--cream-light)\'" onmouseout="this.style.background=\'var(--white)\'"><div style="font-weight:500;color:var(--olive)">'+escHtml(l.name)+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px">'+escHtml(l.path)+'</div></div>';
+    }).join('');
+  }
+  results.style.display='block';
+}
+
+function selectList(id,name,path){
+  document.getElementById('listId').value=id;
+  document.getElementById('selectedListName').textContent=name;
+  document.getElementById('selectedListPath').textContent=path;
+  document.getElementById('selectedListDisplay').style.display='block';
+  document.getElementById('listCascadeArea').style.display='none';
+  document.getElementById('listSearchResults').style.display='none';
+  setListPickerStatus('','');
+}
+
+function clearSelectedList(silent){
+  document.getElementById('listId').value='';
+  document.getElementById('selectedListDisplay').style.display='none';
+  if(!silent)document.getElementById('listCascadeArea').style.display='block';
+}
+
+function resetCascadeFrom(fromFieldId){
+  var fields=['spaceField','folderField','listField'];
+  var from=fields.indexOf(fromFieldId);
+  if(from===-1)return;
+  for(var i=from;i<fields.length;i++){
+    var f=document.getElementById(fields[i]);
+    if(f)f.style.display='none';
+    var selId=fields[i].replace('Field','Select');
+    var sel=document.getElementById(selId);
+    if(sel)sel.innerHTML='<option value="">—</option>';
+  }
+  clearSelectedList(true);
+}
+
+function setListPickerStatus(msg,type){
+  var el=document.getElementById('listPickerStatus');
+  if(!msg){el.innerHTML='';return;}
+  var colors={loading:'var(--muted)',success:'var(--green)',error:'var(--red)'};
+  el.innerHTML='<div style="font-size:12px;color:'+(colors[type]||'var(--muted)')+';margin-top:6px;display:flex;align-items:center;gap:4px">'+msg+'</div>';
+}
+
+// ── Date helpers ──────────────────────────────────────────────
+function parseDate(str){var p=str.split('-');return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));}
+function fmtDate(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function fmtDateFull(d){return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
+function fmtDateWithDay(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
+
 function buildDateList(){
-  var start=parseDate(v('startDate'));
-  var end=parseDate(v('endDate'));
-  var pattern=v('repeatPattern');
-  var interval=parseInt(document.getElementById('intervalX').value)||1;
+  var start=parseDate(v('startDate'));var end=parseDate(v('endDate'));
+  var pattern=v('repeatPattern');var interval=parseInt(document.getElementById('intervalX').value)||1;
   var dates=[];var cur=new Date(start);
   while(cur<=end){
     var dow=cur.getDay();var isWeekend=(dow===0||dow===6);var include=false;
@@ -858,10 +1279,6 @@ function buildDateList(){
   }
   return dates;
 }
-
-function fmtDate(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
-function fmtDateFull(d){return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
-function fmtDateWithDay(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
 
 function buildTaskName(date){
   var dateStr=state.includeDow?fmtDateWithDay(date):fmtDateFull(date);
@@ -888,390 +1305,97 @@ function updateTaskCount(){
 }
 
 // ── Summary ───────────────────────────────────────────────────
-
 function buildSummary(){
   updateTaskCount();
   var namingLabels={prefix:'Custom text + date',date:'Date only',same:'Same title every time'};
   var patternEl=document.getElementById('repeatPattern');
   var dueEl=document.getElementById('dueDateSetting');
   var statusEl=document.getElementById('statusSelect');
-  var statusLabel=statusEl.options[statusEl.selectedIndex]?statusEl.options[statusEl.selectedIndex].text:'List default';
   var assigneeEl=document.getElementById('assigneeSelect');
-  var assigneeLabel=assigneeEl.options[assigneeEl.selectedIndex]?assigneeEl.options[assigneeEl.selectedIndex].text:'None';
   var cfEl=document.getElementById('customFieldSelect');
-  var cfLabel=cfEl.options[cfEl.selectedIndex]?cfEl.options[cfEl.selectedIndex].text:'None';
-
   var rows=[
-    ['ClickUp List ID',v('listId')||'—'],
+    ['List',document.getElementById('selectedListName').textContent||v('listId')||'—'],
     ['Task title format',namingLabels[state.namingStyle]],
     [state.namingStyle==='same'?'Task title':'Custom text',document.getElementById('prefix').value||'—'],
-    ['Include day of week',state.includeDow?'Yes':'No'],
     ['First task date',v('startDate')?fmtDate(parseDate(v('startDate'))):'—'],
     ['Last task date',v('endDate')?fmtDate(parseDate(v('endDate'))):'—'],
     ['Repeat pattern',patternEl.options[patternEl.selectedIndex].text],
     ['Skip weekends',state.skipWeekends?'Yes':'No'],
     ['Due date',!state.hasDueDate?'None':dueEl.options[dueEl.selectedIndex].text],
-    ['Post date field',state.setPostDate?cfLabel:'No'],
-    ['Assignee',assigneeLabel],
-    ['Task status',statusLabel],
+    ['Post date field',state.setPostDate?(cfEl.options[cfEl.selectedIndex]?cfEl.options[cfEl.selectedIndex].text:'—'):'No'],
+    ['Assignee',assigneeEl.options[assigneeEl.selectedIndex]?assigneeEl.options[assigneeEl.selectedIndex].text:'None'],
+    ['Status',statusEl.options[statusEl.selectedIndex]?statusEl.options[statusEl.selectedIndex].text:'List default'],
   ];
   var html='<h3>Your settings</h3>';
   rows.forEach(function(r){html+='<div class="summary-row"><span class="key">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>';});
   if(v('startDate')&&v('endDate')){
-    try{
-      var dates=buildDateList();
-      if(dates.length>0)html+='<div style="margin-top:8px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);font-style:italic">First task will be named: "'+buildTaskName(dates[0])+'"</div>';
-    }catch(e){}
+    try{var dates=buildDateList();if(dates.length>0)html+='<div style="margin-top:8px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);font-style:italic">First task: "'+buildTaskName(dates[0])+'"</div>';}catch(e){}
   }
   document.getElementById('summaryCard').innerHTML=html;
 }
 
-// ── Run ───────────────────────────────────────────────────────
-
+// ── Run tasks ─────────────────────────────────────────────────
 function addLogRow(taskName,status,detail){
   var container=document.getElementById('logContainer');
-  var empty=container.querySelector('.log-empty');
-  if(empty)empty.remove();
+  var empty=container.querySelector('.log-empty');if(empty)empty.remove();
   var row=document.createElement('div');row.className='log-row';
   var sc=status==='Created'?'status-ok':'status-err';
   row.innerHTML='<span style="color:var(--olive);word-break:break-word">'+taskName+'</span><span style="color:var(--muted);font-size:11px;word-break:break-all">'+detail+'</span><span class="'+sc+'">'+status+'</span>';
-  document.getElementById('logContainer').appendChild(row);
-  document.getElementById('logContainer').scrollTop=document.getElementById('logContainer').scrollHeight;
+  container.appendChild(row);container.scrollTop=container.scrollHeight;
 }
 
 async function runTasks(){
   if(state.running)return;
-  var errs=validate(0)||validate(2)||validate(3);
+  var errs=validateRun(0)||validateRun(1)||validateRun(2);
   if(errs){document.getElementById('errorBanner').innerHTML='<div class="error-banner">'+errs+'</div>';return;}
   document.getElementById('errorBanner').innerHTML='';
   var dates=buildDateList();
-  if(dates.length===0){document.getElementById('errorBanner').innerHTML='<div class="error-banner">No tasks to create — check your schedule settings and try again.</div>';return;}
-
+  if(dates.length===0){document.getElementById('errorBanner').innerHTML='<div class="error-banner">No tasks to create — check your schedule settings.</div>';return;}
   state.running=true;
   document.getElementById('runBtn').disabled=true;
   document.getElementById('logArea').style.display='block';
   document.getElementById('logContainer').innerHTML='<div class="log-empty">Working...</div>';
-
-  var apiToken=v('apiToken'),listId=v('listId');
-  var dueSetting=v('dueDateSetting');
+  var apiToken=v('apiToken'),listId=v('listId'),dueSetting=v('dueDateSetting');
   var daysBefore=parseInt(document.getElementById('daysBefore').value)||0;
-  var assigneeId=v('assigneeSelect');
-  var taskStatus=v('statusSelect');
-  var customFieldId=v('customFieldSelect');
+  var assigneeId=v('assigneeSelect'),taskStatus=v('statusSelect'),customFieldId=v('customFieldSelect');
   var success=0,fail=0;
-
-  document.getElementById('progressArea').innerHTML='<div class="progress-indicator"><span class="spinner"></span> Creating tasks... <span id="progressCount">0 of '+dates.length+'</span></div>';
-
+  document.getElementById('progressArea').innerHTML='<div style="text-align:center;padding:20px;color:var(--slate);font-size:13px"><span class="spinner"></span> Creating tasks... <span id="progressCount">0 of '+dates.length+'</span></div>';
   for(var i=0;i<dates.length;i++){
-    var taskDate=dates[i];
-    var taskName=buildTaskName(taskDate);
-    var payload={name:taskName};
-
+    var taskDate=dates[i];var taskName=buildTaskName(taskDate);var payload={name:taskName};
     if(state.hasDueDate){
       if(dueSetting==='same'){payload.due_date=taskDate.getTime();payload.due_date_time=false;}
-      else if(dueSetting==='before'&&daysBefore>0){
-        var dd=new Date(taskDate);dd.setDate(dd.getDate()-daysBefore);
-        payload.due_date=dd.getTime();payload.due_date_time=false;
-      }
+      else if(dueSetting==='before'&&daysBefore>0){var dd=new Date(taskDate);dd.setDate(dd.getDate()-daysBefore);payload.due_date=dd.getTime();payload.due_date_time=false;}
     }
     if(assigneeId)payload.assignees=[parseInt(assigneeId)];
     if(taskStatus)payload.status=taskStatus;
     if(state.setPostDate&&customFieldId)payload.custom_fields=[{id:customFieldId,value:taskDate.getTime()}];
-
     try{
-      var resp=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/task',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':apiToken},
-        body:JSON.stringify(payload)
-      });
+      var resp=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/task',{method:'POST',headers:{'Content-Type':'application/json','Authorization':apiToken},body:JSON.stringify(payload)});
       var result=await resp.json();
       if(resp.ok){success++;addLogRow(taskName,'Created','Task ID: '+result.id);}
       else{fail++;addLogRow(taskName,'Failed',(result.err||resp.status));}
     }catch(e){fail++;addLogRow(taskName,'Error',e.message);}
-
     document.getElementById('progressCount').textContent=(i+1)+' of '+dates.length;
     await new Promise(function(r){setTimeout(r,150);});
   }
-
   document.getElementById('progressArea').innerHTML='';
   var banner=success>0
-    ?'<div class="success-banner">All done! '+success+' task'+(success!==1?'s':'')+' created in ClickUp'+(fail>0?' ('+fail+' failed — see log below)':'')+'. Head to your list to see them.</div>'
-    :'<div class="error-banner">Something went wrong — no tasks were created. Double-check your API Token and List ID and try again.</div>';
+    ?'<div class="success-banner">All done! '+success+' task'+(success!==1?'s':'')+' created'+(fail>0?' ('+fail+' failed — see log)':'')+'. Head to your ClickUp list to see them.</div>'
+    :'<div class="error-banner">Something went wrong — no tasks were created. Double-check your API Token and List ID.</div>';
   document.getElementById('errorBanner').innerHTML=banner;
-  state.running=false;
-  document.getElementById('runBtn').disabled=false;
+  state.running=false;document.getElementById('runBtn').disabled=false;
 }
 
-
-// ── Workspace / List Browser ──────────────────────────────────
-
-var allLists = []; // flat list of all lists for search: {id, name, path, spaceId, workspaceId}
-
-async function loadWorkspaces(){
-  var token = v('apiToken');
-  if(!token){ alert('Please enter your API Token first.'); return; }
-
-  document.getElementById('listCascadeArea').style.display = 'block';
-  document.getElementById('browseListsBtn').style.display = 'none';
-  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading your workspaces...', 'loading');
-
-  try {
-    var resp = await fetch('https://api.clickup.com/api/v2/team', {
-      method: 'GET',
-      headers: { 'Authorization': token, 'Content-Type': 'application/json' }
-    });
-    if(!resp.ok){
-      var errData = await resp.json().catch(function(){return {};});
-      throw new Error(errData.err || 'Error ' + resp.status + ' — check your API Token');
-    }
-    var data = await resp.json();
-
-    var teams = data.teams || [];
-    var wsSel = document.getElementById('workspaceSelect');
-    wsSel.innerHTML = '<option value="">— select a workspace —</option>';
-    teams.forEach(function(t){
-      var o = document.createElement('option');
-      o.value = t.id; o.textContent = t.name;
-      wsSel.appendChild(o);
-    });
-
-    // Auto-select if only one workspace
-    if(teams.length === 1){
-      wsSel.value = teams[0].id;
-      onWorkspaceChange();
-    } else {
-      setListPickerStatus(teams.length + ' workspaces found — select one to continue', 'success');
-    }
-  } catch(e){
-    document.getElementById('browseListsBtn').style.display = 'block';
-    document.getElementById('listCascadeArea').style.display = 'none';
-    document.getElementById('listSearchArea').style.display = 'none';
-    setListPickerStatus('Could not connect to ClickUp — ' + e.message, 'error');
-  }
-}
-
-async function onWorkspaceChange(){
-  var token = v('apiToken');
-  var wsId = document.getElementById('workspaceSelect').value;
-  if(!wsId) return;
-
-  // Reset downstream
-  resetField('spaceField'); resetField('folderField'); resetField('listField');
-  clearSelectedList(true);
-  allLists = [];
-  document.getElementById('listSearchResults').style.display = 'none';
-  document.getElementById('listSearchInput').value = '';
-
-  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading spaces...', 'loading');
-
-  try {
-    var resp = await fetch('https://api.clickup.com/api/v2/team/' + wsId + '/space?archived=false', {
-      headers: { 'Authorization': token }
-    });
-    var data = await resp.json();
-    if(!resp.ok) throw new Error(data.err || 'Could not load spaces');
-
-    var spaces = data.spaces || [];
-    var sel = document.getElementById('spaceSelect');
-    sel.innerHTML = '<option value="">— select a space —</option>';
-    spaces.forEach(function(s){
-      var o = document.createElement('option');
-      o.value = s.id; o.textContent = s.name;
-      o.dataset.name = s.name;
-      sel.appendChild(o);
-    });
-    document.getElementById('spaceField').style.display = 'block';
-
-    // Pre-load all lists for search
-    await loadAllListsForSearch(token, wsId, spaces);
-    if(allLists.length > 0) document.getElementById('listSearchArea').style.display = 'block';
-    setListPickerStatus('', '');
-  } catch(e){
-    setListPickerStatus('Could not load spaces. Try again.', 'error');
-  }
-}
-
-async function loadAllListsForSearch(token, wsId, spaces){
-  allLists = [];
-  document.getElementById('listSearchArea').style.display = 'none';
-  for(var i = 0; i < spaces.length; i++){
-    var s = spaces[i];
-    try {
-      // Folderless lists
-      var flResp = await fetch('https://api.clickup.com/api/v2/space/' + s.id + '/list?archived=false', {
-        headers: { 'Authorization': token }
-      });
-      var flData = await flResp.json();
-      (flData.lists || []).forEach(function(l){
-        allLists.push({ id: l.id, name: l.name, path: s.name, spaceId: s.id, spaceName: s.name, folderId: null, folderName: null });
-      });
-
-      // Folders + their lists
-      var fResp = await fetch('https://api.clickup.com/api/v2/space/' + s.id + '/folder?archived=false', {
-        headers: { 'Authorization': token }
-      });
-      var fData = await fResp.json();
-      for(var j = 0; j < (fData.folders || []).length; j++){
-        var f = fData.folders[j];
-        var lResp = await fetch('https://api.clickup.com/api/v2/folder/' + f.id + '/list?archived=false', {
-          headers: { 'Authorization': token }
-        });
-        var lData = await lResp.json();
-        (lData.lists || []).forEach(function(l){
-          allLists.push({ id: l.id, name: l.name, path: s.name + ' / ' + f.name, spaceId: s.id, spaceName: s.name, folderId: f.id, folderName: f.name });
-        });
-      }
-    } catch(e){}
-  }
-}
-
-async function onSpaceChange(){
-  var token = v('apiToken');
-  var spaceId = document.getElementById('spaceSelect').value;
-  if(!spaceId) return;
-
-  resetField('folderField'); resetField('listField');
-  clearSelectedList(true);
-  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading folders and lists...', 'loading');
-
-  try {
-    var spaceName = document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex].text;
-
-    // Load folders
-    var fResp = await fetch('https://api.clickup.com/api/v2/space/' + spaceId + '/folder?archived=false', {
-      headers: { 'Authorization': token }
-    });
-    var fData = await fResp.json();
-    var folders = fData.folders || [];
-
-    var fSel = document.getElementById('folderSelect');
-    fSel.innerHTML = '<option value="">— no folder / show all lists —</option>';
-    folders.forEach(function(f){
-      var o = document.createElement('option');
-      o.value = f.id; o.textContent = f.name;
-      fSel.appendChild(o);
-    });
-    document.getElementById('folderField').style.display = 'block';
-
-    // Load folderless lists
-    await loadListsForSpace(token, spaceId, null, spaceName);
-    setListPickerStatus('', '');
-  } catch(e){
-    setListPickerStatus('Could not load folders. Try again.', 'error');
-  }
-}
-
-async function onFolderChange(){
-  var token = v('apiToken');
-  var spaceId = document.getElementById('spaceSelect').value;
-  var folderId = document.getElementById('folderSelect').value;
-  var spaceName = document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex].text;
-  resetField('listField');
-  clearSelectedList(true);
-  await loadListsForSpace(token, spaceId, folderId || null, spaceName);
-}
-
-async function loadListsForSpace(token, spaceId, folderId, spaceName){
-  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading lists...', 'loading');
-  try {
-    var url = folderId
-      ? 'https://api.clickup.com/api/v2/folder/' + folderId + '/list?archived=false'
-      : 'https://api.clickup.com/api/v2/space/' + spaceId + '/list?archived=false';
-
-    var resp = await fetch(url, { headers: { 'Authorization': token } });
-    var data = await resp.json();
-    var lists = data.lists || [];
-
-    var lSel = document.getElementById('listSelect');
-    lSel.innerHTML = '<option value="">— select a list —</option>';
-    lists.forEach(function(l){
-      var o = document.createElement('option');
-      o.value = l.id; o.textContent = l.name;
-      lSel.appendChild(o);
-    });
-    document.getElementById('listField').style.display = 'block';
-
-    if(lists.length === 0){
-      setListPickerStatus('No lists found here. Try a different folder or space.', 'error');
-    } else {
-      setListPickerStatus('', '');
-    }
-  } catch(e){
-    setListPickerStatus('Could not load lists. Try again.', 'error');
-  }
-}
-
-function onListChange(){
-  var sel = document.getElementById('listSelect');
-  var listId = sel.value;
-  if(!listId) return;
-  var listName = sel.options[sel.selectedIndex].text;
-  var spaceName = document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex] ? document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex].text : '';
-  var folderName = document.getElementById('folderSelect').value ? document.getElementById('folderSelect').options[document.getElementById('folderSelect').selectedIndex].text : '';
-  var path = spaceName + (folderName ? ' / ' + folderName : '');
-  selectList(listId, listName, path);
-}
-
-function filterLists(){
-  var query = document.getElementById('listSearchInput').value.trim().toLowerCase();
-  var results = document.getElementById('listSearchResults');
-  if(!query){ results.style.display = 'none'; return; }
-
-  var matches = allLists.filter(function(l){ return l.name.toLowerCase().indexOf(query) !== -1 || l.path.toLowerCase().indexOf(query) !== -1; });
-  if(matches.length === 0){
-    results.innerHTML = '<div style="padding:12px 14px;font-size:13px;color:var(--muted)">No lists match "' + query + '"</div>';
-  } else {
-    results.innerHTML = matches.slice(0, 20).map(function(l){
-      var oc = 'selectList(\'' + l.id + '\',\'' + escHtml(l.name).replace(/'/g,'&#39;') + '\',\'' + escHtml(l.path).replace(/'/g,'&#39;') + '\')';
-      return '<div onclick="' + oc + '" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--cream);font-size:13px;background:var(--white)" onmouseover="this.style.background=\'var(--cream-light)\'" onmouseout="this.style.background=\'var(--white)\'"><div style="font-weight:500;color:var(--olive)">' + escHtml(l.name) + '</div><div style="font-size:11px;color:var(--muted);margin-top:2px">' + escHtml(l.path) + '</div></div>';
-    }).join('');
-  }
-  results.style.display = 'block';
-}
-
-function escHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-
-function selectList(id, name, path){
-  document.getElementById('listId').value = id;
-  document.getElementById('selectedListName').textContent = name;
-  document.getElementById('selectedListPath').textContent = path;
-  document.getElementById('selectedListDisplay').style.display = 'block';
-  document.getElementById('listCascadeArea').style.display = 'none';
-  document.getElementById('listSearchArea').style.display = 'none';
-  document.getElementById('listSearchResults').style.display = 'none';
-  setListPickerStatus('', '');
-  clearListData();
-}
-
-function clearSelectedList(silent){
-  document.getElementById('listId').value = '';
-  document.getElementById('selectedListDisplay').style.display = 'none';
-  if(!silent){
-    document.getElementById('listCascadeArea').style.display = 'block';
-    document.getElementById('listSearchArea').style.display = allLists.length > 0 ? 'block' : 'none';
-    document.getElementById('listCascadeArea').style.display = 'block';
-  }
-}
-
-function resetField(fieldId){
-  var field = document.getElementById(fieldId);
-  if(field) field.style.display = 'none';
-  var selId = fieldId.replace('Field','Select');
-  var sel = document.getElementById(selId);
-  if(sel) sel.innerHTML = '<option value="">—</option>';
-}
-
-function setListPickerStatus(msg, type){
-  var el = document.getElementById('listPickerStatus');
-  if(!msg){ el.innerHTML = ''; return; }
-  var colors = { loading: 'var(--muted)', success: 'var(--green)', error: 'var(--red)' };
-  el.innerHTML = '<div style="font-size:12px;color:' + (colors[type]||'var(--muted)') + ';margin-top:4px;display:flex;align-items:center;gap:4px">' + msg + '</div>';
-}
+// ── Helpers ───────────────────────────────────────────────────
+function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function escHtml(str){return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ── Init ──────────────────────────────────────────────────────
 handlePatternChange();
+handleMPatternChange();
 updatePreview();
-refreshPresetDropdown();
+updateMPreview();
+renderSchedules();
 </script>
 </body>
 </html>
