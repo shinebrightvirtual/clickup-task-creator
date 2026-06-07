@@ -162,14 +162,62 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
     </div>
 
     <div class="field">
-      <label>List ID</label>
-      <div style="display:flex;gap:8px;align-items:flex-start">
-        <div style="flex:1">
-          <input type="text" id="listId" placeholder="e.g. 901327450596" oninput="clearListData()" />
-          <div class="hint">Open the ClickUp list where you want tasks created. Look at the URL — the List ID is the long number after /li/ in the address bar.</div>
+      <label>Where do you want the tasks created?</label>
+      <div id="listPickerArea">
+        <button class="btn-small" id="browseListsBtn" onclick="loadWorkspaces()" style="margin-bottom:10px">Browse my lists</button>
+
+        <!-- Search box -->
+        <div id="listSearchArea" style="display:none;margin-bottom:10px">
+          <div style="position:relative">
+            <input type="text" id="listSearchInput" placeholder="Search lists by name..." oninput="filterLists()" style="padding-left:32px" />
+            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px">⌕</span>
+          </div>
+          <div id="listSearchResults" style="background:var(--white);border:1px solid var(--border);border-radius:6px;margin-top:6px;max-height:200px;overflow-y:auto;display:none"></div>
         </div>
-        <button class="btn-small" style="margin-top:1px;white-space:nowrap" onclick="fetchListData()">Load list info</button>
+
+        <!-- Cascading pickers -->
+        <div id="listCascadeArea" style="display:none">
+          <div class="field" style="margin-bottom:12px" id="workspaceField">
+            <label style="font-size:12px;color:var(--muted)">Workspace</label>
+            <select id="workspaceSelect" onchange="onWorkspaceChange()">
+              <option value="">— select a workspace —</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:12px;display:none" id="spaceField">
+            <label style="font-size:12px;color:var(--muted)">Space</label>
+            <select id="spaceSelect" onchange="onSpaceChange()">
+              <option value="">— select a space —</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:12px;display:none" id="folderField">
+            <label style="font-size:12px;color:var(--muted)">Folder <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+            <select id="folderSelect" onchange="onFolderChange()">
+              <option value="">— no folder / show all lists —</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:12px;display:none" id="listField">
+            <label style="font-size:12px;color:var(--muted)">List</label>
+            <select id="listSelect" onchange="onListChange()">
+              <option value="">— select a list —</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Selected list display -->
+        <div id="selectedListDisplay" style="display:none;background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-top:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:13px;font-weight:500;color:var(--olive)" id="selectedListName"></div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px" id="selectedListPath"></div>
+            </div>
+            <button class="btn-ghost" onclick="clearSelectedList()" style="font-size:11px;color:var(--rust)">Change</button>
+          </div>
+        </div>
+
+        <div id="listPickerStatus" style="margin-top:8px"></div>
       </div>
+      <!-- Hidden input to store selected list ID -->
+      <input type="hidden" id="listId" />
       <div id="fetchStatusMsg"></div>
     </div>
 
@@ -945,6 +993,262 @@ async function runTasks(){
   document.getElementById('errorBanner').innerHTML=banner;
   state.running=false;
   document.getElementById('runBtn').disabled=false;
+}
+
+
+// ── Workspace / List Browser ──────────────────────────────────
+
+var allLists = []; // flat list of all lists for search: {id, name, path, spaceId, workspaceId}
+
+async function loadWorkspaces(){
+  var token = v('apiToken');
+  if(!token){ alert('Please enter your API Token first.'); return; }
+
+  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading your workspaces...', 'loading');
+  document.getElementById('listCascadeArea').style.display = 'block';
+  document.getElementById('listSearchArea').style.display = 'block';
+  document.getElementById('browseListsBtn').style.display = 'none';
+
+  try {
+    var resp = await fetch('https://api.clickup.com/api/v2/team', {
+      headers: { 'Authorization': token }
+    });
+    var data = await resp.json();
+    if(!resp.ok) throw new Error(data.err || 'Could not load workspaces');
+
+    var teams = data.teams || [];
+    var wsSel = document.getElementById('workspaceSelect');
+    wsSel.innerHTML = '<option value="">— select a workspace —</option>';
+    teams.forEach(function(t){
+      var o = document.createElement('option');
+      o.value = t.id; o.textContent = t.name;
+      wsSel.appendChild(o);
+    });
+
+    // Auto-select if only one workspace
+    if(teams.length === 1){
+      wsSel.value = teams[0].id;
+      onWorkspaceChange();
+    } else {
+      setListPickerStatus(teams.length + ' workspaces found — select one to continue', 'success');
+    }
+  } catch(e){
+    setListPickerStatus('Could not load workspaces. Check your API Token and try again.', 'error');
+  }
+}
+
+async function onWorkspaceChange(){
+  var token = v('apiToken');
+  var wsId = document.getElementById('workspaceSelect').value;
+  if(!wsId) return;
+
+  // Reset downstream
+  resetField('spaceField'); resetField('folderField'); resetField('listField');
+  clearSelectedList(true);
+  allLists = [];
+  document.getElementById('listSearchResults').style.display = 'none';
+  document.getElementById('listSearchInput').value = '';
+
+  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading spaces...', 'loading');
+
+  try {
+    var resp = await fetch('https://api.clickup.com/api/v2/team/' + wsId + '/space?archived=false', {
+      headers: { 'Authorization': token }
+    });
+    var data = await resp.json();
+    if(!resp.ok) throw new Error(data.err || 'Could not load spaces');
+
+    var spaces = data.spaces || [];
+    var sel = document.getElementById('spaceSelect');
+    sel.innerHTML = '<option value="">— select a space —</option>';
+    spaces.forEach(function(s){
+      var o = document.createElement('option');
+      o.value = s.id; o.textContent = s.name;
+      o.dataset.name = s.name;
+      sel.appendChild(o);
+    });
+    document.getElementById('spaceField').style.display = 'block';
+
+    // Pre-load all lists for search
+    await loadAllListsForSearch(token, wsId, spaces);
+    setListPickerStatus('', '');
+  } catch(e){
+    setListPickerStatus('Could not load spaces. Try again.', 'error');
+  }
+}
+
+async function loadAllListsForSearch(token, wsId, spaces){
+  allLists = [];
+  for(var i = 0; i < spaces.length; i++){
+    var s = spaces[i];
+    try {
+      // Folderless lists
+      var flResp = await fetch('https://api.clickup.com/api/v2/space/' + s.id + '/list?archived=false', {
+        headers: { 'Authorization': token }
+      });
+      var flData = await flResp.json();
+      (flData.lists || []).forEach(function(l){
+        allLists.push({ id: l.id, name: l.name, path: s.name, spaceId: s.id, spaceName: s.name, folderId: null, folderName: null });
+      });
+
+      // Folders + their lists
+      var fResp = await fetch('https://api.clickup.com/api/v2/space/' + s.id + '/folder?archived=false', {
+        headers: { 'Authorization': token }
+      });
+      var fData = await fResp.json();
+      for(var j = 0; j < (fData.folders || []).length; j++){
+        var f = fData.folders[j];
+        var lResp = await fetch('https://api.clickup.com/api/v2/folder/' + f.id + '/list?archived=false', {
+          headers: { 'Authorization': token }
+        });
+        var lData = await lResp.json();
+        (lData.lists || []).forEach(function(l){
+          allLists.push({ id: l.id, name: l.name, path: s.name + ' / ' + f.name, spaceId: s.id, spaceName: s.name, folderId: f.id, folderName: f.name });
+        });
+      }
+    } catch(e){}
+  }
+}
+
+async function onSpaceChange(){
+  var token = v('apiToken');
+  var spaceId = document.getElementById('spaceSelect').value;
+  if(!spaceId) return;
+
+  resetField('folderField'); resetField('listField');
+  clearSelectedList(true);
+  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading folders and lists...', 'loading');
+
+  try {
+    var spaceName = document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex].text;
+
+    // Load folders
+    var fResp = await fetch('https://api.clickup.com/api/v2/space/' + spaceId + '/folder?archived=false', {
+      headers: { 'Authorization': token }
+    });
+    var fData = await fResp.json();
+    var folders = fData.folders || [];
+
+    var fSel = document.getElementById('folderSelect');
+    fSel.innerHTML = '<option value="">— no folder / show all lists —</option>';
+    folders.forEach(function(f){
+      var o = document.createElement('option');
+      o.value = f.id; o.textContent = f.name;
+      fSel.appendChild(o);
+    });
+    document.getElementById('folderField').style.display = 'block';
+
+    // Load folderless lists
+    await loadListsForSpace(token, spaceId, null, spaceName);
+    setListPickerStatus('', '');
+  } catch(e){
+    setListPickerStatus('Could not load folders. Try again.', 'error');
+  }
+}
+
+async function onFolderChange(){
+  var token = v('apiToken');
+  var spaceId = document.getElementById('spaceSelect').value;
+  var folderId = document.getElementById('folderSelect').value;
+  var spaceName = document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex].text;
+  resetField('listField');
+  clearSelectedList(true);
+  await loadListsForSpace(token, spaceId, folderId || null, spaceName);
+}
+
+async function loadListsForSpace(token, spaceId, folderId, spaceName){
+  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading lists...', 'loading');
+  try {
+    var url = folderId
+      ? 'https://api.clickup.com/api/v2/folder/' + folderId + '/list?archived=false'
+      : 'https://api.clickup.com/api/v2/space/' + spaceId + '/list?archived=false';
+
+    var resp = await fetch(url, { headers: { 'Authorization': token } });
+    var data = await resp.json();
+    var lists = data.lists || [];
+
+    var lSel = document.getElementById('listSelect');
+    lSel.innerHTML = '<option value="">— select a list —</option>';
+    lists.forEach(function(l){
+      var o = document.createElement('option');
+      o.value = l.id; o.textContent = l.name;
+      lSel.appendChild(o);
+    });
+    document.getElementById('listField').style.display = 'block';
+
+    if(lists.length === 0){
+      setListPickerStatus('No lists found here. Try a different folder or space.', 'error');
+    } else {
+      setListPickerStatus('', '');
+    }
+  } catch(e){
+    setListPickerStatus('Could not load lists. Try again.', 'error');
+  }
+}
+
+function onListChange(){
+  var sel = document.getElementById('listSelect');
+  var listId = sel.value;
+  if(!listId) return;
+  var listName = sel.options[sel.selectedIndex].text;
+  var spaceName = document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex] ? document.getElementById('spaceSelect').options[document.getElementById('spaceSelect').selectedIndex].text : '';
+  var folderName = document.getElementById('folderSelect').value ? document.getElementById('folderSelect').options[document.getElementById('folderSelect').selectedIndex].text : '';
+  var path = spaceName + (folderName ? ' / ' + folderName : '');
+  selectList(listId, listName, path);
+}
+
+function filterLists(){
+  var query = document.getElementById('listSearchInput').value.trim().toLowerCase();
+  var results = document.getElementById('listSearchResults');
+  if(!query){ results.style.display = 'none'; return; }
+
+  var matches = allLists.filter(function(l){ return l.name.toLowerCase().indexOf(query) !== -1 || l.path.toLowerCase().indexOf(query) !== -1; });
+  if(matches.length === 0){
+    results.innerHTML = '<div style="padding:12px 14px;font-size:13px;color:var(--muted)">No lists match "' + query + '"</div>';
+  } else {
+    results.innerHTML = matches.slice(0, 20).map(function(l){
+      return '<div onclick="selectList('' + l.id + '','' + escHtml(l.name) + '','' + escHtml(l.path) + '')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--cream);font-size:13px" onmouseover="this.style.background='var(--cream-light)'" onmouseout="this.style.background=''"><div style="font-weight:500;color:var(--olive)">' + escHtml(l.name) + '</div><div style="font-size:11px;color:var(--muted);margin-top:2px">' + escHtml(l.path) + '</div></div>';
+    }).join('');
+  }
+  results.style.display = 'block';
+}
+
+function escHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+function selectList(id, name, path){
+  document.getElementById('listId').value = id;
+  document.getElementById('selectedListName').textContent = name;
+  document.getElementById('selectedListPath').textContent = path;
+  document.getElementById('selectedListDisplay').style.display = 'block';
+  document.getElementById('listCascadeArea').style.display = 'none';
+  document.getElementById('listSearchArea').style.display = 'none';
+  document.getElementById('listSearchResults').style.display = 'none';
+  setListPickerStatus('', '');
+  clearListData();
+}
+
+function clearSelectedList(silent){
+  document.getElementById('listId').value = '';
+  document.getElementById('selectedListDisplay').style.display = 'none';
+  if(!silent){
+    document.getElementById('listCascadeArea').style.display = 'block';
+    document.getElementById('listSearchArea').style.display = allLists.length > 0 ? 'block' : 'none';
+  }
+}
+
+function resetField(fieldId){
+  var field = document.getElementById(fieldId);
+  if(field) field.style.display = 'none';
+  var selId = fieldId.replace('Field','Select');
+  var sel = document.getElementById(selId);
+  if(sel) sel.innerHTML = '<option value="">—</option>';
+}
+
+function setListPickerStatus(msg, type){
+  var el = document.getElementById('listPickerStatus');
+  if(!msg){ el.innerHTML = ''; return; }
+  var colors = { loading: 'var(--muted)', success: 'var(--green)', error: 'var(--red)' };
+  el.innerHTML = '<div style="font-size:12px;color:' + (colors[type]||'var(--muted)') + ';margin-top:4px;display:flex;align-items:center;gap:4px">' + msg + '</div>';
 }
 
 // ── Init ──────────────────────────────────────────────────────
