@@ -1577,11 +1577,13 @@ function hashToKey(hash) {
 async function isValidKey(key) {
   key = key.trim().toUpperCase();
   if (!key.startsWith('SBV-')) return false;
-  // Check against keys 1-500
+  var checks = [];
   for (var i = 1; i <= 500; i++) {
-    var hash = await hashString(LICENSE_SECRET + ':key:' + i);
-    var validKey = hashToKey(hash);
-    if (key === validKey) return true;
+    checks.push(hashString(LICENSE_SECRET + ':key:' + i));
+  }
+  var hashes = await Promise.all(checks);
+  for (var j = 0; j < hashes.length; j++) {
+    if (key === hashToKey(hashes[j])) return true;
   }
   return false;
 }
