@@ -134,11 +134,11 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 
   <!-- Preset bar -->
   <div class="preset-bar" id="presetBar">
-    <label>Saved presets:</label>
+    <label>Schedule presets:</label>
     <select id="presetSelect" onchange="loadPreset()">
-      <option value="">— select a saved preset —</option>
+      <option value="">— load a saved schedule —</option>
     </select>
-    <button class="btn-small" onclick="showSavePreset()">Save current</button>
+    <button class="btn-small" onclick="showSavePreset()">Save schedule</button>
     <button class="btn-small danger" id="deletePresetBtn" style="display:none" onclick="deletePreset()">Delete</button>
   </div>
 
@@ -460,8 +460,8 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 <div id="presetModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:none;align-items:center;justify-content:center">
   <div style="background:var(--white);border-radius:10px;padding:28px;width:360px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,0.2)">
     <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--olive);margin-bottom:8px">Save preset</div>
-    <p style="font-size:13px;color:var(--slate);margin-bottom:16px">Give this preset a name so you can load it again next time.</p>
-    <input type="text" id="presetNameInput" placeholder="e.g. MWFC Content Calendar" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:16px" />
+    <p style="font-size:13px;color:var(--slate);margin-bottom:16px">Give this preset a name that describes the schedule and naming pattern — e.g. "Post every M/W/F" or "Weekly check-ins". Your list will be picked fresh each time you load it.</p>
+    <input type="text" id="presetNameInput" placeholder="e.g. Post every M/W/F" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:16px" />
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn-secondary" onclick="hideModal()">Cancel</button>
       <button class="btn-primary" onclick="savePreset()">Save</button>
@@ -490,7 +490,7 @@ function savePresets(p){
 function refreshPresetDropdown(){
   var p=getPresets();var sel=document.getElementById('presetSelect');
   var cur=sel.value;
-  sel.innerHTML='<option value="">— select a saved preset —</option>';
+  sel.innerHTML='<option value="">— load a saved schedule —</option>';
   Object.keys(p).sort().forEach(function(name){
     var o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);
   });
@@ -539,27 +539,29 @@ function deletePreset(){
 }
 
 function captureState(){
+  // Presets save schedule + naming only — list is always picked fresh
   return {
-    apiToken:v('apiToken'),listId:v('listId'),
-    namingStyle:state.namingStyle,prefix:document.getElementById('prefix').value,
+    namingStyle:state.namingStyle,
+    prefix:document.getElementById('prefix').value,
     includeDow:state.includeDow,
-    startDate:v('startDate'),endDate:v('endDate'),
-    repeatPattern:v('repeatPattern'),intervalX:document.getElementById('intervalX').value,
-    selectedDays:state.selectedDays.slice(),skipWeekends:state.skipWeekends,
-    hasDueDate:state.hasDueDate,dueDateSetting:v('dueDateSetting'),daysBefore:document.getElementById('daysBefore').value,
-    setPostDate:state.setPostDate,customFieldId:v('customFieldSelect'),
-    assigneeId:v('assigneeSelect'),taskStatus:v('statusSelect')
+    repeatPattern:v('repeatPattern'),
+    intervalX:document.getElementById('intervalX').value,
+    selectedDays:state.selectedDays.slice(),
+    skipWeekends:state.skipWeekends,
+    hasDueDate:state.hasDueDate,
+    dueDateSetting:v('dueDateSetting'),
+    daysBefore:document.getElementById('daysBefore').value,
+    setPostDate:state.setPostDate
   };
 }
 
 function applyState(s){
-  if(s.apiToken)document.getElementById('apiToken').value=s.apiToken;
-  if(s.listId)document.getElementById('listId').value=s.listId;
+  // Restore naming settings
   if(s.namingStyle)setNaming(s.namingStyle);
   if(s.prefix)document.getElementById('prefix').value=s.prefix;
   if(s.includeDow!==undefined)setDow(s.includeDow);
-  if(s.startDate)document.getElementById('startDate').value=s.startDate;
-  if(s.endDate)document.getElementById('endDate').value=s.endDate;
+
+  // Restore schedule settings
   if(s.repeatPattern){document.getElementById('repeatPattern').value=s.repeatPattern;handlePatternChange();}
   if(s.intervalX)document.getElementById('intervalX').value=s.intervalX;
   if(s.selectedDays){
@@ -571,16 +573,16 @@ function applyState(s){
   if(s.dueDateSetting){document.getElementById('dueDateSetting').value=s.dueDateSetting;handleDueDateChange();}
   if(s.daysBefore)document.getElementById('daysBefore').value=s.daysBefore;
   if(s.setPostDate!==undefined)setPostDate(s.setPostDate);
+
+  // Clear list selection — user picks their list fresh each time
+  clearSelectedList(true);
+  document.getElementById('listId').value='';
+
   updatePreview();
   updateTaskCount();
-  // If we have API token + list ID, re-fetch list data to restore dropdowns
-  if(s.apiToken&&s.listId){
-    fetchListData(function(){
-      if(s.customFieldId){document.getElementById('customFieldSelect').value=s.customFieldId;}
-      if(s.assigneeId){document.getElementById('assigneeSelect').value=s.assigneeId;}
-      if(s.taskStatus){document.getElementById('statusSelect').value=s.taskStatus;}
-    });
-  }
+
+  // Navigate to step 1 so they see the naming settings loaded
+  goTo(0);
 }
 
 // ── List data fetch ──────────────────────────────────────────
