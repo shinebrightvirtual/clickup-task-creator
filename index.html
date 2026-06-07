@@ -170,16 +170,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
       <div id="listPickerArea">
         <button class="btn-primary" id="browseListsBtn" onclick="loadWorkspaces()" style="margin-bottom:10px">Browse my lists →</button>
 
-        <!-- Search box -->
-        <div id="listSearchArea" style="display:none;margin-bottom:10px">
-          <div style="position:relative">
-            <input type="text" id="listSearchInput" placeholder="Search lists by name..." oninput="filterLists()" style="padding-left:32px" />
-            <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px">⌕</span>
-          </div>
-          <div id="listSearchResults" style="background:var(--white);border:1px solid var(--border);border-radius:6px;margin-top:6px;max-height:200px;overflow-y:auto;display:none"></div>
-        </div>
-
-        <!-- Cascading pickers -->
+        <!-- Cascading pickers — shown after Browse is clicked -->
         <div id="listCascadeArea" style="display:none">
           <div class="field" style="margin-bottom:12px" id="workspaceField">
             <label style="font-size:12px;color:var(--muted)">Workspace</label>
@@ -204,6 +195,16 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
             <select id="listSelect" onchange="onListChange()">
               <option value="">— select a list —</option>
             </select>
+          </div>
+
+          <!-- Search box — only shown after all lists are loaded -->
+          <div id="listSearchArea" style="display:none;margin-top:4px;padding-top:16px;border-top:1px solid var(--border)">
+            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">Or search all lists</label>
+            <div style="position:relative">
+              <input type="text" id="listSearchInput" placeholder="Type to search by list name..." oninput="filterLists()" style="padding-left:32px" />
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px">⌕</span>
+            </div>
+            <div id="listSearchResults" style="background:var(--white);border:1px solid var(--border);border-radius:6px;margin-top:6px;max-height:200px;overflow-y:auto;display:none"></div>
           </div>
         </div>
 
@@ -1009,7 +1010,6 @@ async function loadWorkspaces(){
   if(!token){ alert('Please enter your API Token first.'); return; }
 
   document.getElementById('listCascadeArea').style.display = 'block';
-  document.getElementById('listSearchArea').style.display = 'block';
   document.getElementById('browseListsBtn').style.display = 'none';
   setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading your workspaces...', 'loading');
 
@@ -1082,6 +1082,7 @@ async function onWorkspaceChange(){
 
     // Pre-load all lists for search
     await loadAllListsForSearch(token, wsId, spaces);
+    if(allLists.length > 0) document.getElementById('listSearchArea').style.display = 'block';
     setListPickerStatus('', '');
   } catch(e){
     setListPickerStatus('Could not load spaces. Try again.', 'error');
@@ -1090,6 +1091,7 @@ async function onWorkspaceChange(){
 
 async function loadAllListsForSearch(token, wsId, spaces){
   allLists = [];
+  document.getElementById('listSearchArea').style.display = 'none';
   for(var i = 0; i < spaces.length; i++){
     var s = spaces[i];
     try {
@@ -1245,6 +1247,7 @@ function clearSelectedList(silent){
   if(!silent){
     document.getElementById('listCascadeArea').style.display = 'block';
     document.getElementById('listSearchArea').style.display = allLists.length > 0 ? 'block' : 'none';
+    document.getElementById('listCascadeArea').style.display = 'block';
   }
 }
 
