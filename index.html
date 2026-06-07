@@ -152,19 +152,19 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
 
     <div class="info-box">
       <div class="info-title">Before you start</div>
-      <p>You'll need two things from ClickUp: your <strong>API Token</strong> (a password that lets this tool talk to your account) and the <strong>List ID</strong> of the list where you want tasks created. Both are easy to find — see the hints below each field.</p>
+      <p>You'll need your ClickUp <strong>API Token</strong> — a key that lets this tool connect to your account. Once you enter it, you can browse your workspace and pick exactly which list to add tasks to.</p>
     </div>
 
     <div class="field protected">
       <label>API Token</label>
       <input type="password" id="apiToken" placeholder="pk_•••••••••••••••••••" autocomplete="off" oninput="clearListData()" />
-      <div class="hint">In ClickUp: click your avatar (bottom left) → Settings → Apps → copy the API Token. It starts with pk_</div>
+      <div class="hint">In ClickUp: click your avatar or initials in the top left corner → Settings → Apps → copy the API Token. It starts with pk_</div>
     </div>
 
     <div class="field">
       <label>Where do you want the tasks created?</label>
       <div id="listPickerArea">
-        <button class="btn-small" id="browseListsBtn" onclick="loadWorkspaces()" style="margin-bottom:10px">Browse my lists</button>
+        <button class="btn-primary" id="browseListsBtn" onclick="loadWorkspaces()" style="margin-bottom:10px">Browse my lists →</button>
 
         <!-- Search box -->
         <div id="listSearchArea" style="display:none;margin-bottom:10px">
@@ -1004,17 +1004,21 @@ async function loadWorkspaces(){
   var token = v('apiToken');
   if(!token){ alert('Please enter your API Token first.'); return; }
 
-  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading your workspaces...', 'loading');
   document.getElementById('listCascadeArea').style.display = 'block';
   document.getElementById('listSearchArea').style.display = 'block';
   document.getElementById('browseListsBtn').style.display = 'none';
+  setListPickerStatus('<span class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span> Loading your workspaces...', 'loading');
 
   try {
     var resp = await fetch('https://api.clickup.com/api/v2/team', {
-      headers: { 'Authorization': token }
+      method: 'GET',
+      headers: { 'Authorization': token, 'Content-Type': 'application/json' }
     });
+    if(!resp.ok){
+      var errData = await resp.json().catch(function(){return {};});
+      throw new Error(errData.err || 'Error ' + resp.status + ' — check your API Token');
+    }
     var data = await resp.json();
-    if(!resp.ok) throw new Error(data.err || 'Could not load workspaces');
 
     var teams = data.teams || [];
     var wsSel = document.getElementById('workspaceSelect');
@@ -1033,7 +1037,10 @@ async function loadWorkspaces(){
       setListPickerStatus(teams.length + ' workspaces found — select one to continue', 'success');
     }
   } catch(e){
-    setListPickerStatus('Could not load workspaces. Check your API Token and try again.', 'error');
+    document.getElementById('browseListsBtn').style.display = 'block';
+    document.getElementById('listCascadeArea').style.display = 'none';
+    document.getElementById('listSearchArea').style.display = 'none';
+    setListPickerStatus('Could not connect to ClickUp — ' + e.message, 'error');
   }
 }
 
@@ -1207,7 +1214,8 @@ function filterLists(){
     results.innerHTML = '<div style="padding:12px 14px;font-size:13px;color:var(--muted)">No lists match "' + query + '"</div>';
   } else {
     results.innerHTML = matches.slice(0, 20).map(function(l){
-      return '<div onclick="selectList('' + l.id + '','' + escHtml(l.name) + '','' + escHtml(l.path) + '')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--cream);font-size:13px" onmouseover="this.style.background='var(--cream-light)'" onmouseout="this.style.background=''"><div style="font-weight:500;color:var(--olive)">' + escHtml(l.name) + '</div><div style="font-size:11px;color:var(--muted);margin-top:2px">' + escHtml(l.path) + '</div></div>';
+      var oc = 'selectList(\'' + l.id + '\',\'' + escHtml(l.name).replace(/'/g,'&#39;') + '\',\'' + escHtml(l.path).replace(/'/g,'&#39;') + '\')';
+      return '<div onclick="' + oc + '" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--cream);font-size:13px;background:var(--white)" onmouseover="this.style.background=\'var(--cream-light)\'" onmouseout="this.style.background=\'var(--white)\'"><div style="font-weight:500;color:var(--olive)">' + escHtml(l.name) + '</div><div style="font-size:11px;color:var(--muted);margin-top:2px">' + escHtml(l.path) + '</div></div>';
     }).join('');
   }
   results.style.display = 'block';
