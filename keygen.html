@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Key Generator — Bulk Task Creator</title>
+<!-- NO INDEXING — private tool -->
+<meta name="robots" content="noindex,nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rust:#7B4B3A;--rust-light:#f0e8e5;--olive:#2F3420;
+  --cream:#EBE6E3;--cream-light:#F5F1EE;--border:#D4CEC9;
+  --muted:#8C8680;--slate:#6F6A64;--white:#fff;--green:#2D6A4F;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--olive);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:40px;max-width:560px;width:100%}
+h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;color:var(--olive);margin-bottom:6px}
+.sub{font-size:13px;color:var(--muted);margin-bottom:28px;font-style:italic}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--olive);margin-bottom:6px}
+.field input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.field input:focus{border-color:var(--rust)}
+.field .hint{font-size:11px;color:var(--muted);margin-top:5px;font-style:italic}
+.btn{padding:11px 28px;background:var(--rust);color:var(--white);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s;margin-right:8px}
+.btn:hover{background:#5a3329}
+.btn-secondary{padding:11px 20px;background:transparent;color:var(--slate);border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
+.btn-secondary:hover{border-color:var(--slate)}
+.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+.keys-area{background:var(--cream-light);border:1px solid var(--border);border-radius:6px;padding:16px;font-family:monospace;font-size:13px;line-height:1.8;color:var(--olive);max-height:320px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.keys-empty{font-size:13px;color:var(--muted);font-style:italic;text-align:center;padding:24px}
+.count-badge{display:inline-block;background:var(--rust-light);color:var(--rust);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-left:8px;vertical-align:middle}
+.secret-warning{background:#fff8e7;border:1px solid #f59e0b;border-radius:6px;padding:12px 14px;font-size:12px;color:#92400e;margin-bottom:20px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Key Generator</h1>
+  <p class="sub">Private tool — Bulk Task Creator by Shine Bright Virtual</p>
+
+  <div class="secret-warning">
+    <strong>Keep your secret phrase private.</strong> Anyone who knows it can generate valid keys. Store it somewhere safe — if you change it, all previously issued keys will stop working.
+  </div>
+
+  <div class="field">
+    <label>Secret phrase</label>
+    <input type="password" id="secret" placeholder="Your private secret phrase" />
+    <div class="hint">Use the same phrase every time. Never share this.</div>
+  </div>
+
+  <div class="field">
+    <label>How many keys to generate?</label>
+    <input type="number" id="count" value="50" min="1" max="500" />
+  </div>
+
+  <button class="btn" onclick="generateKeys()">Generate keys</button>
+  <button class="btn-secondary" id="copyBtn" onclick="copyKeys()" style="display:none">Copy all</button>
+
+  <div class="divider"></div>
+
+  <div style="display:flex;align-items:center;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:500;color:var(--olive)">Generated keys</span>
+    <span class="count-badge" id="countBadge" style="display:none">0</span>
+  </div>
+
+  <div id="keysOutput">
+    <div class="keys-empty">Keys will appear here after generation</div>
+  </div>
+
+  <div id="copyConfirm" style="display:none;font-size:12px;color:var(--green);margin-top:8px;font-style:italic">✓ Copied to clipboard</div>
+</div>
+
+<script>
+// ── Key generation algorithm ──────────────────────────────────
+// Uses a deterministic algorithm: HMAC-style hash of (secret + counter)
+// Same secret always produces the same keys in the same order
+// The app validates by checking if a key matches the format produced by the secret
+
+async function hashString(str) {
+  var encoder = new TextEncoder();
+  var data = encoder.encode(str);
+  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  var hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+function hashToKey(hash) {
+  // Convert first 12 hex chars to alphanumeric key segments (no ambiguous chars)
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0,1,I,O
+  var segments = [];
+  for (var s = 0; s < 3; s++) {
+    var seg = '';
+    for (var i = 0; i < 4; i++) {
+      var idx = parseInt(hash[(s * 4 + i) * 2] + hash[(s * 4 + i) * 2 + 1], 16) % chars.length;
+      seg += chars[idx];
+    }
+    segments.push(seg);
+  }
+  return 'SBV-' + segments.join('-');
+}
+
+async function generateKeys() {
+  var secret = document.getElementById('secret').value.trim();
+  var count = parseInt(document.getElementById('count').value) || 50;
+
+  if (!secret) { alert('Please enter your secret phrase first.'); return; }
+  if (count < 1 || count > 500) { alert('Please enter a number between 1 and 500.'); return; }
+
+  var keys = [];
+  for (var i = 1; i <= count; i++) {
+    var hash = await hashString(secret + ':key:' + i);
+    keys.push(hashToKey(hash));
+  }
+
+  var output = document.getElementById('keysOutput');
+  var keysText = keys.join('\n');
+  output.innerHTML = '<div class="keys-area">' + keys.join('\n') + '</div>';
+  output.dataset.keys = keysText;
+
+  document.getElementById('countBadge').style.display = 'inline-block';
+  document.getElementById('countBadge').textContent = count + ' keys';
+  document.getElementById('copyBtn').style.display = 'inline-block';
+  document.getElementById('copyConfirm').style.display = 'none';
+}
+
+function copyKeys() {
+  var keys = document.getElementById('keysOutput').dataset.keys;
+  if (!keys) return;
+  navigator.clipboard.writeText(keys).then(function() {
+    document.getElementById('copyConfirm').style.display = 'block';
+    setTimeout(function() { document.getElementById('copyConfirm').style.display = 'none'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
