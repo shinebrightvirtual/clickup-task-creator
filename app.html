@@ -1496,17 +1496,19 @@ function forgetToken(){
 // -- Custom field inputs ---------------------------------------
 
 // Field types we can handle
-var SUPPORTED_FIELD_TYPES=['text','number','url','email','phone','currency','short_text','drop_down','labels'];
+var SUPPORTED_FIELD_TYPES=['text','number','url','email','phone','currency','short_text','drop_down','labels','label','checkbox','location','emoji','rating','automatic','manual_progress','task_progress'];
 
 function renderCustomFieldInputs(fields){
   var container=document.getElementById('customFieldsContainer');
   // Filter to supported + non-date fields (date handled separately above)
+  // Exclude only field types that can't have a meaningful default set
+  var excluded = ['attachment','formula','rollup','count','relationship'];
   var supported=fields.filter(function(f){
-    return SUPPORTED_FIELD_TYPES.indexOf(f.type)!==-1;
+    return excluded.indexOf(f.type)===-1 && f.type !== 'date'; // date handled separately above
   });
 
   if(supported.length===0){
-    container.innerHTML='<div style="font-size:13px;color:var(--muted);font-style:italic;padding:8px 0">'+(fields.length>0?'No text or dropdown custom fields found on this list.':'Select a list first to see its custom fields here.')+'</div>';
+    container.innerHTML='<div style="font-size:13px;color:var(--muted);font-style:italic;padding:8px 0">'+(fields.length>0?'No settable custom fields found on this list.':'Select a list first to see its custom fields here.')+'</div>';
     return;
   }
 
@@ -1520,6 +1522,12 @@ function renderCustomFieldInputs(fields){
         +'</select>';
     } else if(f.type==='number'||f.type==='currency'){
       inputHtml='<input type="number" id="cf_'+f.id+'" placeholder="Leave blank to skip" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:DM Sans,sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none" />';
+    } else if(f.type==='checkbox'){
+      inputHtml='<select id="cf_'+f.id+'" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:DM Sans,sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none">'
+        +'<option value="">— leave blank —</option>'
+        +'<option value="true">Checked</option>'
+        +'<option value="false">Unchecked</option>'
+        +'</select>';
     } else {
       inputHtml='<input type="text" id="cf_'+f.id+'" placeholder="Leave blank to skip" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:DM Sans,sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none" />';
     }
@@ -1531,8 +1539,9 @@ function renderCustomFieldInputs(fields){
 }
 
 function collectCustomFieldValues(){
+  var excluded=['attachment','formula','rollup','count','relationship','date'];
   var supported=state.listCustomFields.filter(function(f){
-    return SUPPORTED_FIELD_TYPES.indexOf(f.type)!==-1;
+    return excluded.indexOf(f.type)===-1;
   });
   var result=[];
   supported.forEach(function(f){
@@ -1542,8 +1551,14 @@ function collectCustomFieldValues(){
     if(!val)return;
     if(f.type==='number'||f.type==='currency'){
       result.push({id:f.id,value:parseFloat(val)});
-    } else if(f.type==='drop_down'){
-      result.push({id:f.id,value:parseInt(val)});
+    } else if(f.type==='drop_down'||f.type==='label'){
+      // Try as int first, fall back to string
+      var intVal=parseInt(val);
+      result.push({id:f.id,value:isNaN(intVal)?val:intVal});
+    } else if(f.type==='checkbox'){
+      result.push({id:f.id,value:val==='true'});
+    } else if(f.type==='labels'){
+      result.push({id:f.id,value:[val]});
     } else {
       result.push({id:f.id,value:val});
     }
