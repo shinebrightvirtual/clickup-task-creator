@@ -1109,13 +1109,18 @@ async function fetchListData(callback){
     var fr=await fetch('https://api.clickup.com/api/v2/list/'+listId+'/field',{headers:{'Authorization':token}});
     var fd=await fr.json();
     var fields=fd.fields||[];
+    console.log('Fields from API:', fields.length, 'fields');
+    fields.forEach(function(f){ console.log(' -', f.name, '| type:', f.type, '| id:', f.id); });
     state.listCustomFields=fields;
     // Populate date fields for post date dropdown
     populateCustomFieldDropdown(fields.filter(function(f){return f.type==='date';}));
     // Render all custom fields for bulk fill
     renderCustomFieldInputs(fields);
     if(callback)callback();
-  }catch(e){if(callback)callback();}
+  }catch(e){
+    console.log('fetchListData error:', e.message);
+    if(callback)callback();
+  }
 }
 
 function populateStatusDropdown(statuses){
