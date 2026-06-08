@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/app", "destination": "/app.html" },
+    { "source": "/how-to-use", "destination": "/how-to-use.html" },
     { "source": "/keygen", "destination": "/keygen.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
