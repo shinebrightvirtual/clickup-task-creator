@@ -611,6 +611,12 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
         <div class="hint" id="mIntervalHint">e.g. 3 = every 3 days - 7 = weekly - 14 = every two weeks</div>
       </div>
 
+      <div class="field field-conditional" id="mPostsPerMonthField">
+        <label>How many posts per month?</label>
+        <input type="number" id="mPostsPerMonth" value="10" min="1" max="31" />
+        <div class="hint">Tasks will be spread evenly across each month, skipping weekends.</div>
+      </div>
+
       <div class="field field-conditional" id="mDowPickerField">
         <label>Which days of the week?</label>
         <div class="day-picker" style="margin-top:8px">
