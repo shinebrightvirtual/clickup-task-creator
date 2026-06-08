@@ -1519,11 +1519,15 @@ function renderCustomFieldInputs(fields){
 
   container.innerHTML=supported.map(function(f){
     var inputHtml='';
-    if(f.type==='drop_down'||f.type==='labels'){
+    if(f.type==='drop_down'||f.type==='labels'||f.type==='label'){
       var opts=(f.type_config&&f.type_config.options)||[];
       inputHtml='<select id="cf_'+f.id+'" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:DM Sans,sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none">'
         +'<option value="">— leave blank —</option>'
-        +opts.map(function(o){return '<option value="'+escHtml(o.orderindex!==undefined?String(o.orderindex):o.name)+'">'+escHtml(o.name)+'</option>';}).join('')
+        +opts.map(function(o){
+          var optName = (o&&o.name)||'';
+          var optVal = o&&o.orderindex!==undefined ? String(o.orderindex) : optName;
+          return '<option value="'+escHtml(optVal)+'">'+escHtml(optName)+'</option>';
+        }).join('')
         +'</select>';
     } else if(f.type==='number'||f.type==='currency'){
       inputHtml='<input type="number" id="cf_'+f.id+'" placeholder="Leave blank to skip" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:DM Sans,sans-serif;font-size:13px;color:var(--olive);background:var(--white);outline:none" />';
