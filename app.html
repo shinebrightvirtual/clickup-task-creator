@@ -369,6 +369,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
           <option value="every-x-days" selected>Every few days</option>
           <option value="every-x-weeks">Every few weeks</option>
           <option value="specific-days">Specific days of the week</option>
+          <option value="posts-per-month">X posts per month, spread evenly</option>
         </select>
       </div>
 
@@ -376,6 +377,12 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
         <label id="intervalLabel">How many days between each task?</label>
         <input type="number" id="intervalX" value="3" min="1" max="365" onchange="updateTaskCount()" />
         <div class="hint" id="intervalHint">e.g. 3 = every 3 days - 7 = once a week - 14 = every two weeks</div>
+      </div>
+
+      <div class="field field-conditional" id="postsPerMonthField">
+        <label>How many posts per month?</label>
+        <input type="number" id="postsPerMonth" value="10" min="1" max="31" onchange="updateTaskCount()" />
+        <div class="hint">The app will spread this many tasks evenly across each calendar month in your date range, skipping weekends. If a date falls on a weekend it moves to the next weekday.</div>
       </div>
 
       <div class="field field-conditional" id="dowPickerField">
@@ -594,6 +601,7 @@ html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-se
           <option value="every-x-days" selected>Every few days</option>
           <option value="every-x-weeks">Every few weeks</option>
           <option value="specific-days">Specific days of the week</option>
+          <option value="posts-per-month">X posts per month, spread evenly</option>
         </select>
       </div>
 
@@ -758,6 +766,7 @@ function applyScheduleToRun(s){
   if(s.includeDow!==undefined)setDow(s.includeDow);
   if(s.repeatPattern){document.getElementById('repeatPattern').value=s.repeatPattern;handlePatternChange();}
   if(s.intervalX)document.getElementById('intervalX').value=s.intervalX;
+  if(s.postsPerMonth)document.getElementById('postsPerMonth').value=s.postsPerMonth;
   state.selectedDays=[];
   (s.selectedDays||[]).forEach(function(d){toggleDay(d);});
   if(s.skipWeekends!==undefined)setSkip(s.skipWeekends);
@@ -874,6 +883,7 @@ function saveScheduleFromModal(){
     name:name,
     repeatPattern:document.getElementById('mRepeatPattern').value,
     intervalX:parseInt(document.getElementById('mIntervalX').value)||3,
+    postsPerMonth:parseInt(document.getElementById('mPostsPerMonth').value)||10,
     selectedDays:modalState.selectedDays.slice(),
     skipWeekends:modalState.skipWeekends,
     namingStyle:modalState.namingStyle,
@@ -895,9 +905,11 @@ function handleMPatternChange(){
   var p=document.getElementById('mRepeatPattern').value;
   var showInterval=(p==='every-x-days'||p==='every-x-weeks');
   var showDow=(p==='specific-days');
+  var showPPM=(p==='posts-per-month');
   document.getElementById('mIntervalField').classList.toggle('visible',showInterval);
   document.getElementById('mDowPickerField').classList.toggle('visible',showDow);
-  document.getElementById('mSkipWeekendsField').style.display=showDow?'none':'block';
+  document.getElementById('mPostsPerMonthField').classList.toggle('visible',showPPM);
+  document.getElementById('mSkipWeekendsField').style.display=(showDow||showPPM)?'none':'block';
   if(p==='every-x-weeks'){
     document.getElementById('mIntervalLabel').textContent='How many weeks between each task?';
     document.getElementById('mIntervalHint').textContent='e.g. 1 = every week - 2 = every two weeks - 4 = once a month';
@@ -1029,9 +1041,11 @@ function handlePatternChange(){
   var p=v('repeatPattern');
   var showInterval=(p==='every-x-days'||p==='every-x-weeks');
   var showDow=(p==='specific-days');
+  var showPPM=(p==='posts-per-month');
   document.getElementById('intervalField').classList.toggle('visible',showInterval);
   document.getElementById('dowPickerField').classList.toggle('visible',showDow);
-  document.getElementById('skipWeekendsField').style.display=showDow?'none':'block';
+  document.getElementById('postsPerMonthField').classList.toggle('visible',showPPM);
+  document.getElementById('skipWeekendsField').style.display=(showDow||showPPM)?'none':'block';
   if(p==='every-x-weeks'){
     document.getElementById('intervalLabel').textContent='How many weeks between each task?';
     document.getElementById('intervalHint').textContent='e.g. 1 = every week - 2 = every two weeks - 4 = once a month';
@@ -1329,9 +1343,65 @@ function fmtDate(d){return d.toLocaleDateString('en-US',{month:'short',day:'nume
 function fmtDateFull(d){return d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}
 function fmtDateWithDay(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
 
+function nextWeekday(date){
+  // If date is a weekend, advance to next Monday
+  var d=new Date(date);
+  var dow=d.getDay();
+  if(dow===6)d.setDate(d.getDate()+2); // Saturday -> Monday
+  else if(dow===0)d.setDate(d.getDate()+1); // Sunday -> Monday
+  return d;
+}
+
+function buildPostsPerMonthDates(start,end,postsPerMonth){
+  var dates=[];
+  // Iterate month by month
+  var cur=new Date(start.getFullYear(),start.getMonth(),1);
+  while(cur<=end){
+    var year=cur.getFullYear();
+    var month=cur.getMonth();
+    // Get first and last day of this month within the start/end range
+    var monthStart=new Date(Math.max(new Date(year,month,1).getTime(),start.getTime()));
+    var monthEnd=new Date(Math.min(new Date(year,month+1,0).getTime(),end.getTime()));
+    var daysInRange=Math.round((monthEnd-monthStart)/(1000*60*60*24))+1;
+    // Space posts evenly across the month range
+    var n=Math.min(postsPerMonth,daysInRange);
+    for(var i=0;i<n;i++){
+      // Evenly space: day = start + (i / (n-1)) * range, or just i*(range/(n-1))
+      var offset=n===1?Math.floor(daysInRange/2):Math.round(i*(daysInRange-1)/(n-1));
+      var d=new Date(monthStart);
+      d.setDate(d.getDate()+offset);
+      // Clamp to month range
+      if(d>monthEnd)d=new Date(monthEnd);
+      // Skip weekends — advance to next weekday
+      d=nextWeekday(d);
+      // Make sure we haven't gone past the month end or overall end
+      if(d<=monthEnd&&d<=end){
+        dates.push(new Date(d));
+      }
+    }
+    // Move to next month
+    cur.setMonth(cur.getMonth()+1);
+  }
+  // Remove any duplicates (can happen at month boundaries)
+  var seen={};
+  return dates.filter(function(d){
+    var key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+    if(seen[key])return false;
+    seen[key]=true;
+    return true;
+  });
+}
+
 function buildDateList(){
   var start=parseDate(v('startDate'));var end=parseDate(v('endDate'));
   var pattern=v('repeatPattern');var interval=parseInt(document.getElementById('intervalX').value)||1;
+
+  // Posts per month — special handling
+  if(pattern==='posts-per-month'){
+    var ppm=parseInt(document.getElementById('postsPerMonth').value)||10;
+    return buildPostsPerMonthDates(start,end,ppm);
+  }
+
   var dates=[];var cur=new Date(start);
   while(cur<=end){
     var dow=cur.getDay();var isWeekend=(dow===0||dow===6);var include=false;
