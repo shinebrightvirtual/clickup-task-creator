@@ -1284,6 +1284,11 @@ function selectList(id,name,path){
   document.getElementById('listCascadeArea').style.display='none';
   document.getElementById('listSearchResults').style.display='none';
   setListPickerStatus('','');
+  // Auto-fetch list data as soon as a list is selected
+  setListPickerStatus('<span style="font-size:11px;color:var(--muted)">Loading your list settings...</span>','');
+  fetchListData(function(){
+    setListPickerStatus('','');
+  });
 }
 
 function clearSelectedList(silent){
