@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thank you — Bulk Task Creator</title>
+<meta name="robots" content="noindex,nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --olive:#2F3420;--cream:#EBE6E3;--cream-light:#F5F1EE;
+  --rust:#7B4B3A;--rust-light:#f0e8e5;--rust-dark:#5a3329;
+  --ochre:#C58C47;--plum:#5F3740;--sage:#AEB4A0;
+  --slate:#6F6A64;--muted:#8C8680;--border:#D4CEC9;
+  --white:#fff;--green:#2D6A4F;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--olive);line-height:1.6}
+a{color:var(--rust);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── Nav ── */
+nav{background:var(--olive);padding:16px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px}
+.nav-logo-icon{width:26px;height:26px;background:var(--rust);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--cream)}
+.nav-open{padding:8px 18px;background:var(--rust);color:var(--white);border-radius:5px;font-size:12px;font-weight:500}
+.nav-open:hover{background:var(--rust-dark);text-decoration:none;color:var(--white)}
+
+/* ── Hero ── */
+.hero{background:var(--olive);padding:56px 40px 0;overflow:hidden}
+.hero-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:end}
+.hero-text{padding-bottom:56px}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ochre);margin-bottom:14px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:48px;color:var(--cream);line-height:1.1;margin-bottom:16px;letter-spacing:-.3px}
+.hero-sub{font-size:17px;color:var(--sage);font-weight:300;line-height:1.65;max-width:440px}
+
+/* ── Photo ── */
+.hero-photo{align-self:end}
+.hero-photo img{width:100%;display:block;border-radius:12px 12px 0 0;object-fit:cover;object-position:center top;height:420px}
+
+/* ── Main ── */
+.main{max-width:860px;margin:0 auto;padding:0 40px 80px}
+
+/* ── Next steps ── */
+.next-steps{padding:52px 0;border-bottom:1px solid var(--border)}
+.section-eyebrow{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ochre);margin-bottom:10px}
+.section-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--olive);margin-bottom:24px;line-height:1.2}
+
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:8px}
+.step-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:22px}
+.step-card-num{width:32px;height:32px;border-radius:50%;background:var(--ochre);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--olive);margin-bottom:14px}
+.step-card h3{font-size:15px;font-weight:600;color:var(--olive);margin-bottom:6px}
+.step-card p{font-size:14px;color:var(--slate);line-height:1.65;font-weight:300}
+.step-card code{background:var(--cream-light);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:12px;color:var(--rust);font-family:monospace}
+
+/* ── Key callout ── */
+.key-box{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:28px 32px;margin:32px 0;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.key-box-left{}
+.key-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.key-value{font-family:monospace;font-size:22px;font-weight:600;color:var(--olive);letter-spacing:2px}
+.key-note{font-size:13px;color:var(--slate);margin-top:6px;font-weight:300}
+.key-btn{padding:12px 28px;background:var(--rust);color:var(--white);border-radius:6px;font-size:14px;font-weight:500;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;white-space:nowrap}
+.key-btn:hover{background:var(--rust-dark)}
+
+/* ── Jess note ── */
+.jess-section{padding:52px 0;border-bottom:1px solid var(--border)}
+.jess-inner{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:center}
+.jess-photo{border-radius:10px;overflow:hidden}
+.jess-photo img{width:100%;display:block;object-fit:cover;object-position:center top;height:240px}
+.jess-quote{font-family:'DM Serif Display',serif;font-size:20px;color:var(--olive);line-height:1.55;margin-bottom:16px;font-style:italic}
+.jess-attr{font-size:14px;color:var(--muted)}
+.jess-attr strong{color:var(--rust);font-style:normal;font-weight:500}
+
+/* ── FAQ ── */
+.faq-section{padding:52px 0;border-bottom:1px solid var(--border)}
+.faq-list{margin-top:8px}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-q{font-size:16px;font-weight:500;color:var(--olive);margin-bottom:8px}
+.faq-a{font-size:15px;color:var(--slate);line-height:1.75;font-weight:300}
+.faq-a code{background:var(--cream-light);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:13px;color:var(--rust);font-family:monospace}
+
+/* ── CTA ── */
+.cta-section{padding:52px 0}
+.cta-box{background:var(--olive);border-radius:10px;padding:40px;text-align:center}
+.cta-box h3{font-family:'DM Serif Display',serif;font-size:26px;color:var(--cream);margin-bottom:8px}
+.cta-box p{font-size:15px;color:var(--sage);margin-bottom:24px;font-weight:300}
+.cta-btn{display:inline-block;padding:14px 36px;background:var(--rust);color:var(--white);border-radius:6px;font-size:15px;font-weight:500;transition:background .15s}
+.cta-btn:hover{background:var(--rust-dark);text-decoration:none;color:var(--white)}
+.cta-sub{font-size:13px;color:var(--slate);margin-top:14px}
+.cta-sub a{color:var(--sage)}
+
+/* ── Footer ── */
+footer{background:var(--olive);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-left{font-size:12px;color:var(--slate)}
+.footer-left a{color:var(--sage)}
+.footer-right{font-size:12px;color:var(--slate);font-style:italic}
+
+/* ── Responsive ── */
+@media(max-width:680px){
+  nav{padding:14px 20px}
+  .hero{padding:40px 20px 0}
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .hero-photo{display:none}
+  .hero-title{font-size:34px}
+  .main{padding:0 20px 60px}
+  .steps-grid{grid-template-columns:1fr}
+  .jess-inner{grid-template-columns:1fr;text-align:center}
+  .jess-photo{width:160px;margin:0 auto}
+  footer{padding:20px;flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="#EBE6E3"/><rect x="8" y="1" width="5" height="5" rx="1" fill="#EBE6E3" opacity=".5"/><rect x="1" y="8" width="5" height="5" rx="1" fill="#EBE6E3" opacity=".5"/><path d="M8 11h5M10.5 8.5v5" stroke="#C58C47" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <span class="nav-logo-name">Bulk Task Creator</span>
+  </div>
+  <a href="app.html" class="nav-open">Open the app</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Purchase confirmed</div>
+      <h1 class="hero-title">You're in.<br />Welcome.</h1>
+      <p class="hero-sub">Your license key is on its way to your inbox right now. Check your email and you'll be creating tasks in minutes.</p>
+    </div>
+    <div class="hero-photo">
+      <img src="images/jess.jpg" alt="Jess from Shine Bright Virtual" />
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Next steps -->
+  <div class="next-steps">
+    <div class="section-eyebrow">What happens next</div>
+    <h2 class="section-title">Three steps to your first batch of tasks</h2>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-card-num">1</div>
+        <h3>Check your email</h3>
+        <p>Your license key was just sent to the email you used at checkout. It looks like this: <code>SBV-XXXX-XXXX-XXXX</code></p>
+      </div>
+      <div class="step-card">
+        <div class="step-card-num">2</div>
+        <h3>Open the app and activate</h3>
+        <p>Head to <a href="app.html">bulktaskcreator.com/app</a>, enter your key, and click Activate. It saves automatically so you won't need to enter it again.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-card-num">3</div>
+        <h3>Create your first schedule</h3>
+        <p>Click "+ Create a posting schedule," set your pattern, pick your list, and run it. Your first batch takes about five minutes start to finish.</p>
+      </div>
+    </div>
+
+    <div class="key-box">
+      <div class="key-box-left">
+        <div class="key-label">Your license key</div>
+        <div class="key-value">SBV-DGLS-JTXD-GTKB</div>
+        <div class="key-note">Can't find your email? Use this key to activate. Save it somewhere safe.</div>
+      </div>
+      <button class="key-btn" onclick="navigator.clipboard.writeText('SBV-DGLS-JTXD-GTKB').then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy key',1500)})">Copy key</button>
+    </div>
+  </div>
+
+  <!-- Jess note -->
+  <div class="jess-section">
+    <div class="jess-inner">
+      <div class="jess-photo">
+        <img src="images/jess.jpg" alt="Jess McKnight, Shine Bright Virtual" />
+      </div>
+      <div>
+        <div class="jess-quote">"I built this because someone asked me how to do it manually and I thought — there has to be a better way. Glad it's yours now."</div>
+        <div class="jess-attr">Jess McKnight &nbsp;·&nbsp; <strong>Shine Bright Virtual</strong></div>
+        <p style="font-size:14px;color:var(--slate);margin-top:12px;font-weight:300;line-height:1.6">Questions about anything? Just reply to your purchase email or reach me at <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> — I actually read those.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="section-eyebrow">Common questions</div>
+    <h2 class="section-title">Good ones, answered.</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">I didn't get an email with my license key</div>
+        <div class="faq-a">Check your spam folder first — it can end up there. If it's not there either, email <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> with the email you used at checkout and I'll send it over. In the meantime, your key is shown above — feel free to copy and use it now.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">My API token isn't working</div>
+        <div class="faq-a">Make sure you copied the full token — it starts with <code>pk_</code> and is quite long. In ClickUp: click your avatar in the top left corner, go to Settings, then Apps, and copy it again. Make sure there are no extra spaces before or after it.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">My lists aren't showing up when I browse</div>
+        <div class="faq-a">This usually means the API token wasn't entered before clicking Browse. Paste your token first, then click Browse my lists. If it still doesn't load, try refreshing the page and starting again.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">My custom fields aren't showing</div>
+        <div class="faq-a">Custom fields only load after you've selected a list. Go back to the Connection step and make sure a list is selected — you'll see the list name confirmed on screen once it's set.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">I created duplicate tasks by accident</div>
+        <div class="faq-a">Delete the duplicates directly in ClickUp. To avoid this in future, always check the date range on the Review screen before clicking run. The task count preview will tell you exactly how many are about to be created.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is this different from ClickUp's recurring tasks?</div>
+        <div class="faq-a">ClickUp's recurring feature repeats a single task after it closes. Bulk Task Creator creates a full set of individual tasks upfront — each with its own due date, name, and custom fields already filled in. Your whole month or quarter is ready on day one, not one task at a time.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Something else isn't working</div>
+        <div class="faq-a">Email <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> and describe what's happening. Screenshots always help and I'll get back to you.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-box">
+      <h3>Ready to create your first batch?</h3>
+      <p>Your ClickUp list is waiting. The full step-by-step guide is there whenever you need it.</p>
+      <a href="app.html" class="cta-btn">Open Bulk Task Creator</a>
+      <div class="cta-sub">Need the walkthrough? <a href="how-to-use.html">View the full guide</a></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-left">
+    &copy; 2025 Bulk Task Creator &nbsp;&middot;&nbsp;
+    <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a>
+  </div>
+  <div class="footer-right">by Shine Bright Virtual</div>
+</footer>
+
+</body>
+</html>
