@@ -35,12 +35,12 @@ a:hover{text-decoration:underline}
 
 /* ── Page header ── */
 .page-header{background:var(--olive);padding:48px 40px 40px;position:relative;overflow:hidden}
-.page-header::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(197,140,71,0.1)}
-.page-header::before{content:'';position:absolute;right:80px;bottom:-60px;width:140px;height:140px;border-radius:50%;border:1px solid rgba(174,180,160,0.07)}
+.page-header::after{display:none}
+.page-header::before{display:none}
 .page-header-inner{max-width:760px;margin:0 auto;position:relative}
 .page-eyebrow{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ochre);margin-bottom:12px}
 .page-title{font-family:'DM Serif Display',serif;font-size:40px;color:var(--cream);line-height:1.15;margin-bottom:10px;letter-spacing:-.3px}
-.page-sub{font-size:15px;color:var(--sage);font-weight:300;line-height:1.6;max-width:520px}
+.page-sub{font-size:16px;color:var(--sage);font-weight:300;line-height:1.65;max-width:520px}
 
 /* ── Sticky progress nav ── */
 .progress-nav{background:var(--plum);padding:0;position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,0.08)}
@@ -58,7 +58,7 @@ a:hover{text-decoration:underline}
 .section:last-of-type{border-bottom:none}
 .section-eyebrow{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ochre);margin-bottom:8px}
 .section-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--olive);margin-bottom:12px;line-height:1.2}
-.section-intro{font-size:15px;color:var(--slate);font-weight:300;line-height:1.7;margin-bottom:28px}
+.section-intro{font-size:16px;color:var(--slate);font-weight:300;line-height:1.75;margin-bottom:28px}
 
 /* ── Steps ── */
 .steps{display:flex;flex-direction:column;gap:0}
@@ -67,22 +67,22 @@ a:hover{text-decoration:underline}
 .step-badge{width:32px;height:32px;border-radius:50%;background:var(--ochre);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--olive);flex-shrink:0;margin-top:2px;font-family:'DM Sans',sans-serif}
 .step-badge.check{background:var(--olive);color:var(--cream);font-size:14px}
 .step-content{}
-.step-title{font-size:15px;font-weight:600;color:var(--olive);margin-bottom:5px}
-.step-body{font-size:13px;color:var(--slate);line-height:1.7;font-weight:300}
-.step-body ul{margin:8px 0 0 16px;display:flex;flex-direction:column;gap:4px}
-.step-body li{font-size:13px;color:var(--slate);line-height:1.6}
+.step-title{font-size:16px;font-weight:600;color:var(--olive);margin-bottom:6px}
+.step-body{font-size:15px;color:var(--slate);line-height:1.75;font-weight:300}
+.step-body ul{margin:10px 0 0 16px;display:flex;flex-direction:column;gap:6px}
+.step-body li{font-size:15px;color:var(--slate);line-height:1.65}
 .step-body code{background:var(--cream-light);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:12px;color:var(--rust);font-family:monospace}
 
 /* ── Sub-section headings ── */
 .sub-heading{font-size:13px;font-weight:600;color:var(--olive);text-transform:uppercase;letter-spacing:.5px;margin:24px 0 8px}
 
 /* ── Callout boxes ── */
-.callout{border-radius:8px;padding:14px 16px;margin:20px 0;font-size:13px;line-height:1.65}
-.callout-ochre{background:rgba(197,140,71,0.12);border-left:3px solid var(--ochre);color:var(--olive)}
-.callout-ochre strong{color:var(--ochre)}
-.callout-rust{background:var(--rust-light);border-left:3px solid var(--rust);color:var(--rust-dark)}
+.callout{border-radius:6px;padding:16px 20px;margin:20px 0;font-size:15px;line-height:1.7}
+.callout-ochre{background:#FBF5EA;border:1px solid rgba(197,140,71,0.25);color:var(--olive)}
+.callout-ochre strong{color:var(--rust)}
+.callout-rust{background:#F7EFEC;border:1px solid rgba(123,75,58,0.2);color:var(--rust-dark)}
 .callout-rust strong{color:var(--rust)}
-.callout-olive{background:#e8ead5;border-left:3px solid var(--olive);color:var(--olive)}
+.callout-olive{background:#EDEEE8;border:1px solid rgba(47,52,32,0.15);color:var(--olive)}
 .callout-olive strong{color:var(--olive)}
 
 /* ── Screenshot frames ── */
@@ -113,16 +113,16 @@ a:hover{text-decoration:underline}
 .faq-list{margin-top:4px}
 .faq-item{border-bottom:1px solid var(--border);padding:20px 0}
 .faq-item:first-child{border-top:1px solid var(--border)}
-.faq-q{font-size:15px;font-weight:500;color:var(--olive);margin-bottom:8px}
-.faq-a{font-size:13px;color:var(--slate);line-height:1.75;font-weight:300}
+.faq-q{font-size:17px;font-weight:500;color:var(--olive);margin-bottom:8px}
+.faq-a{font-size:15px;color:var(--slate);line-height:1.8;font-weight:300}
 
 /* ── Quick reference ── */
 .ref-grid{display:flex;flex-direction:column;gap:0;margin-top:8px;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
 .ref-row{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:start;padding:14px 18px;border-bottom:1px solid var(--cream-light)}
 .ref-row:last-child{border-bottom:none}
 .ref-num{width:28px;height:28px;border-radius:50%;background:var(--ochre);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--olive);flex-shrink:0;margin-top:1px}
-.ref-title{font-size:13px;font-weight:500;color:var(--olive)}
-.ref-detail{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.ref-title{font-size:15px;font-weight:500;color:var(--olive)}
+.ref-detail{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.55}
 .ref-tag{font-size:10px;font-weight:500;background:var(--cream-light);color:var(--muted);padding:3px 8px;border-radius:10px;white-space:nowrap;margin-top:2px;align-self:start}
 
 /* ── CTA ── */
