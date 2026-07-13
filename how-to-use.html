@@ -4,261 +4,568 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>How to Use Bulk Task Creator — Shine Bright Virtual</title>
+<meta name="description" content="Step-by-step guide to setting up and using Bulk Task Creator for ClickUp. From your license key to your first batch of tasks." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Serif+Display&display=swap" rel="stylesheet" />
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
+  --olive:#2F3420;--cream:#EBE6E3;--cream-light:#F5F1EE;
   --rust:#7B4B3A;--rust-light:#f0e8e5;--rust-dark:#5a3329;
-  --olive:#2F3420;--sage:#AEB4A0;--cream:#EBE6E3;
-  --slate:#6F6A64;--ochre:#C58C47;--plum:#5F3740;
-  --cream-light:#F5F1EE;--border:#D4CEC9;--muted:#8C8680;
+  --ochre:#C58C47;--plum:#5F3740;--sage:#AEB4A0;
+  --slate:#6F6A64;--muted:#8C8680;--border:#D4CEC9;
   --white:#fff;--green:#2D6A4F;
 }
-html,body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--olive);line-height:1.6}
-a{color:var(--rust);text-decoration:none;border-bottom:1px solid rgba(123,75,58,0.3)}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--olive);line-height:1.6}
+a{color:var(--rust);text-decoration:none}
+a:hover{text-decoration:underline}
 
-.header{background:var(--olive);padding:28px 48px;display:flex;align-items:center;justify-content:space-between}
-.header-logo{display:flex;align-items:center;gap:9px}
-.header-logo-icon{width:26px;height:26px;background:var(--rust);border-radius:6px;display:flex;align-items:center;justify-content:center}
-.header-logo-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--cream)}
-.header-right{font-size:12px;color:var(--sage)}
-.header-right a{color:var(--ochre);border-bottom:none}
+/* ── Nav ── */
+.site-nav{background:var(--olive);padding:16px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px}
+.nav-logo-icon{width:26px;height:26px;background:var(--rust);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--cream)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:12px;color:var(--sage)}
+.nav-links a:hover{color:var(--cream);text-decoration:none}
+.nav-cta{padding:8px 18px;background:var(--rust);color:var(--white) !important;border-radius:5px;font-size:12px;font-weight:500}
+.nav-cta:hover{background:var(--rust-dark) !important;text-decoration:none !important}
 
-.container{max-width:720px;margin:0 auto;padding:56px 48px 80px}
+/* ── Page header ── */
+.page-header{background:var(--olive);padding:48px 40px 40px;position:relative;overflow:hidden}
+.page-header::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(197,140,71,0.1)}
+.page-header::before{content:'';position:absolute;right:80px;bottom:-60px;width:140px;height:140px;border-radius:50%;border:1px solid rgba(174,180,160,0.07)}
+.page-header-inner{max-width:760px;margin:0 auto;position:relative}
+.page-eyebrow{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ochre);margin-bottom:12px}
+.page-title{font-family:'DM Serif Display',serif;font-size:40px;color:var(--cream);line-height:1.15;margin-bottom:10px;letter-spacing:-.3px}
+.page-sub{font-size:15px;color:var(--sage);font-weight:300;line-height:1.6;max-width:520px}
 
-.page-title{font-family:'DM Serif Display',serif;font-size:38px;font-weight:400;color:var(--olive);line-height:1.15;margin-bottom:10px;letter-spacing:-.3px}
-.page-sub{font-size:16px;color:var(--slate);font-weight:300;margin-bottom:48px;line-height:1.6}
+/* ── Sticky progress nav ── */
+.progress-nav{background:var(--plum);padding:0;position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,0.08)}
+.progress-nav-inner{max-width:760px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none}
+.progress-nav-inner::-webkit-scrollbar{display:none}
+.progress-link{flex:1;min-width:fit-content;padding:10px 14px;font-size:10px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:rgba(235,230,227,0.45);text-decoration:none;text-align:center;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.progress-link:hover{color:var(--cream);text-decoration:none}
+.progress-link.active{color:var(--cream);border-bottom-color:var(--ochre)}
 
-/* Step blocks */
-.step{margin-bottom:48px}
-.step-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:16px}
-.step-num{width:36px;height:36px;background:var(--rust);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:18px;color:var(--white);flex-shrink:0;margin-top:2px}
-.step-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--olive)}
-.step-body{padding-left:52px}
-.step-body p{font-size:14px;color:var(--slate);margin-bottom:12px;line-height:1.75;font-weight:300}
-.step-body p:last-child{margin-bottom:0}
-.step-body strong{font-weight:500;color:var(--olive)}
+/* ── Main content ── */
+.main{max-width:760px;margin:0 auto;padding:0 40px 80px}
 
-/* Tip boxes */
-.tip{background:var(--rust-light);border:1px solid rgba(123,75,58,0.15);border-radius:8px;padding:14px 16px;margin:16px 0;font-size:13px;color:var(--rust-dark);line-height:1.6}
-.tip strong{font-weight:600}
+/* ── Section blocks ── */
+.section{padding:52px 0;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--ochre);margin-bottom:8px}
+.section-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--olive);margin-bottom:12px;line-height:1.2}
+.section-intro{font-size:15px;color:var(--slate);font-weight:300;line-height:1.7;margin-bottom:28px}
 
-/* Note boxes */
-.note{background:var(--cream-light);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:16px 0;font-size:13px;color:var(--slate);line-height:1.6}
-.note strong{font-weight:600;color:var(--olive)}
+/* ── Steps ── */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-badge{width:32px;height:32px;border-radius:50%;background:var(--ochre);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--olive);flex-shrink:0;margin-top:2px;font-family:'DM Sans',sans-serif}
+.step-badge.check{background:var(--olive);color:var(--cream);font-size:14px}
+.step-content{}
+.step-title{font-size:15px;font-weight:600;color:var(--olive);margin-bottom:5px}
+.step-body{font-size:13px;color:var(--slate);line-height:1.7;font-weight:300}
+.step-body ul{margin:8px 0 0 16px;display:flex;flex-direction:column;gap:4px}
+.step-body li{font-size:13px;color:var(--slate);line-height:1.6}
+.step-body code{background:var(--cream-light);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:12px;color:var(--rust);font-family:monospace}
 
-/* Steps within a step */
-.sub-steps{list-style:none;margin:12px 0}
-.sub-steps li{font-size:14px;color:var(--slate);padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;line-height:1.6;font-weight:300}
-.sub-steps li:last-child{border-bottom:none}
-.sub-steps li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--rust);flex-shrink:0;margin-top:8px}
+/* ── Sub-section headings ── */
+.sub-heading{font-size:13px;font-weight:600;color:var(--olive);text-transform:uppercase;letter-spacing:.5px;margin:24px 0 8px}
 
-/* Divider */
-.divider{border:none;border-top:1px solid var(--border);margin:48px 0}
+/* ── Callout boxes ── */
+.callout{border-radius:8px;padding:14px 16px;margin:20px 0;font-size:13px;line-height:1.65}
+.callout-ochre{background:rgba(197,140,71,0.12);border-left:3px solid var(--ochre);color:var(--olive)}
+.callout-ochre strong{color:var(--ochre)}
+.callout-rust{background:var(--rust-light);border-left:3px solid var(--rust);color:var(--rust-dark)}
+.callout-rust strong{color:var(--rust)}
+.callout-olive{background:#e8ead5;border-left:3px solid var(--olive);color:var(--olive)}
+.callout-olive strong{color:var(--olive)}
 
-/* CTA */
+/* ── Screenshot frames ── */
+.screenshot{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:20px 0;box-shadow:0 2px 16px rgba(47,52,32,0.06)}
+.screenshot img{width:100%;display:block}
+.screenshot-label{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);padding:10px 14px;background:var(--cream-light);border-top:1px solid var(--border)}
+
+/* ── Example card ── */
+.example-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:20px 0}
+.example-header{padding:14px 18px;border-bottom:1px solid var(--border)}
+.example-label{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.example-title{font-size:15px;font-weight:500;color:var(--olive)}
+.example-body{padding:14px 18px}
+.example-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--cream-light);font-size:13px}
+.example-row:last-child{border-bottom:none}
+.example-key{color:var(--slate)}
+.example-val{font-weight:500;color:var(--olive);text-align:right}
+.example-result{background:var(--cream-light);border-radius:6px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--slate);line-height:1.6}
+.example-result strong{color:var(--rust)}
+
+/* ── Two-run example ── */
+.run-tags{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.run-tag{border-radius:6px;padding:10px 14px;font-size:13px;font-weight:500}
+.run-tag-1{background:var(--olive);color:var(--cream)}
+.run-tag-2{background:var(--rust);color:var(--white)}
+
+/* ── FAQ ── */
+.faq-list{margin-top:4px}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-q{font-size:15px;font-weight:500;color:var(--olive);margin-bottom:8px}
+.faq-a{font-size:13px;color:var(--slate);line-height:1.75;font-weight:300}
+
+/* ── Quick reference ── */
+.ref-grid{display:flex;flex-direction:column;gap:0;margin-top:8px;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ref-row{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:start;padding:14px 18px;border-bottom:1px solid var(--cream-light)}
+.ref-row:last-child{border-bottom:none}
+.ref-num{width:28px;height:28px;border-radius:50%;background:var(--ochre);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--olive);flex-shrink:0;margin-top:1px}
+.ref-title{font-size:13px;font-weight:500;color:var(--olive)}
+.ref-detail{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.ref-tag{font-size:10px;font-weight:500;background:var(--cream-light);color:var(--muted);padding:3px 8px;border-radius:10px;white-space:nowrap;margin-top:2px;align-self:start}
+
+/* ── CTA ── */
 .cta-box{background:var(--olive);border-radius:10px;padding:32px;text-align:center;margin-top:48px}
 .cta-box h3{font-family:'DM Serif Display',serif;font-size:22px;color:var(--cream);margin-bottom:8px}
 .cta-box p{font-size:13px;color:var(--sage);margin-bottom:20px;font-weight:300}
-.cta-btn{display:inline-block;padding:12px 32px;background:var(--rust);color:var(--white);border-radius:6px;font-size:14px;font-weight:500;transition:background .15s;border:none}
-.cta-btn:hover{background:var(--rust-dark)}
+.cta-btn{display:inline-block;padding:12px 32px;background:var(--rust);color:var(--white);border-radius:6px;font-size:14px;font-weight:500;transition:background .15s}
+.cta-btn:hover{background:var(--rust-dark);text-decoration:none}
 
-footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
-footer a{color:var(--rust);border-bottom:none}
+/* ── Footer ── */
+footer{background:var(--olive);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:0}
+.footer-left{font-size:12px;color:var(--slate)}
+.footer-left a{color:var(--sage)}
+.footer-right{font-size:12px;color:var(--slate);font-style:italic}
 
 @media(max-width:600px){
-  .header{padding:18px 20px}
-  .container{padding:40px 20px 60px}
-  .page-title{font-size:28px}
-  .step-body{padding-left:0}
+  .site-nav,.page-header{padding:16px 20px}
+  .page-title{font-size:30px}
+  .main{padding:0 20px 60px}
+  .nav-links{display:none}
+  footer{padding:24px 20px;flex-direction:column;text-align:center}
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-logo">
-    <div class="header-logo-icon">
+<!-- Nav -->
+<nav class="site-nav">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="#EBE6E3"/><rect x="8" y="1" width="5" height="5" rx="1" fill="#EBE6E3" opacity=".5"/><rect x="1" y="8" width="5" height="5" rx="1" fill="#EBE6E3" opacity=".5"/><path d="M8 11h5M10.5 8.5v5" stroke="#C58C47" stroke-width="1.5" stroke-linecap="round"/></svg>
     </div>
-    <span class="header-logo-name">Bulk Task Creator</span>
+    <span class="nav-logo-name">Bulk Task Creator</span>
   </div>
-  <div class="header-right"><a href="app.html">Open the app</a></div>
+  <div class="nav-links">
+    <a href="index.html">Back to site</a>
+    <a href="app.html" class="nav-cta">Open the app</a>
+  </div>
+</nav>
+
+<!-- Page header -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-eyebrow">Step-by-step guide</div>
+    <h1 class="page-title">How to use<br />Bulk Task Creator</h1>
+    <p class="page-sub">From entering your license key to running your first batch of tasks. Takes about five minutes the first time — less once you know the steps.</p>
+  </div>
 </div>
 
-<div class="container">
+<!-- Progress nav -->
+<nav class="progress-nav" id="progress-nav">
+  <div class="progress-nav-inner">
+    <a href="#before-you-start" class="progress-link">Before you start</a>
+    <a href="#step-1" class="progress-link">Step 1</a>
+    <a href="#step-2" class="progress-link">Step 2</a>
+    <a href="#step-3" class="progress-link">Step 3</a>
+    <a href="#step-4" class="progress-link">Step 4</a>
+    <a href="#real-example" class="progress-link">Example</a>
+    <a href="#faq" class="progress-link">Questions</a>
+    <a href="#quick-reference" class="progress-link">Quick ref</a>
+  </div>
+</nav>
 
-  <h1 class="page-title">How to use<br />Bulk Task Creator</h1>
-  <p class="page-sub">This walkthrough covers everything from getting your API token to running your first batch of tasks. It takes about five minutes the first time — less once you know the steps.</p>
+<div class="main">
+
+  <!-- Before you start -->
+  <div class="section" id="before-you-start">
+    <div class="section-eyebrow">Before you start</div>
+    <h2 class="section-title">Enter your license key</h2>
+    <p class="section-intro">When you open the app for the first time, you'll see a screen asking for your license key. Enter the key that was emailed to you after purchase and click Activate.</p>
+
+    <div class="callout callout-ochre">
+      <strong>Your key looks like:</strong> SBV-XXXX-XXXX-XXXX
+    </div>
+
+    <div class="callout callout-olive">
+      Your key saves automatically — you won't need to enter it again on this browser.
+    </div>
+
+    <div class="callout callout-rust">
+      <strong>Lost your key?</strong> Email <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> and we'll send it over.
+    </div>
+  </div>
 
   <!-- Step 1 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">1</div>
-      <div class="step-title">Get your ClickUp API Token</div>
+  <div class="section" id="step-1">
+    <div class="section-eyebrow">Step 1 of 4</div>
+    <h2 class="section-title">Create a posting schedule</h2>
+    <p class="section-intro">On the home screen, click "+ Create a posting schedule." A 3-step modal walks you through it. Set it up once — load it every month.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-badge">1</div>
+        <div class="step-content">
+          <div class="step-title">Name it</div>
+          <div class="step-body">Give it a name that describes the pattern.<br />Example: "Client IG - M/W/F" or "Monday Emails" or "Weekly Check-ins"</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">2</div>
+        <div class="step-content">
+          <div class="step-title">Set the pattern</div>
+          <div class="step-body">
+            Choose how often tasks repeat:
+            <ul>
+              <li>Specific days of the week (Mon, Wed, Fri)</li>
+              <li>Every few days (every 3 days)</li>
+              <li>Every few weeks</li>
+              <li>X posts per month, spread evenly</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">3</div>
+        <div class="step-content">
+          <div class="step-title">Name your tasks</div>
+          <div class="step-body">
+            Choose how each task will be titled:
+            <ul>
+              <li>Custom text + date &rarr; "IG Post: March 3, 2026"</li>
+              <li>Same title every time &rarr; "Post TBD" or "Monday Email: Topic TBD"</li>
+              <li>Date only &rarr; "March 3, 2026"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="step-body">
-      <p>Your API token is how Bulk Task Creator connects to your ClickUp account. Think of it as a key that lets the tool talk to your workspace on your behalf.</p>
-      <p>Here's where to find it:</p>
-      <ul class="sub-steps">
-        <li>Open ClickUp and click your <strong>avatar or initials</strong> in the top left corner</li>
-        <li>Click <strong>Settings</strong></li>
-        <li>In the left sidebar, click <strong>Apps</strong></li>
-        <li>Under API Token, click <strong>Copy</strong></li>
-      </ul>
-      <p>Your token starts with <strong>pk_</strong> and is a long string of letters and numbers. Copy the whole thing.</p>
-      <div class="tip"><strong>Your token is private.</strong> Don't share it with anyone. Bulk Task Creator sends it directly to ClickUp from your browser — it never touches our servers.</div>
+
+    <div class="callout callout-ochre" style="margin-top:24px">
+      Click "Save schedule" when done. Your schedule appears as a card on the home screen.
     </div>
   </div>
 
   <!-- Step 2 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">2</div>
-      <div class="step-title">Create a posting schedule</div>
+  <div class="section" id="step-2">
+    <div class="section-eyebrow">Step 2 of 4</div>
+    <h2 class="section-title">Connect to ClickUp and pick your list</h2>
+
+    <div class="sub-heading">Your API Token</div>
+    <p class="section-intro" style="margin-bottom:12px">In ClickUp: click your avatar or initials in the top left corner &rarr; Settings &rarr; Apps &rarr; copy the API Token. It starts with <code>pk_</code></p>
+
+    <div class="callout callout-olive">
+      Paste your token in the app and it saves automatically — you won't need to enter it again as long as you use the same browser.
     </div>
-    <div class="step-body">
-      <p>Before you create tasks, you save your repeat pattern as a "posting schedule." This is the part you set once and reuse every time — so next month you just load it and go.</p>
-      <p>On the home screen, click <strong>Create a posting schedule</strong> and fill in three things:</p>
-      <ul class="sub-steps">
-        <li><strong>Name it</strong> — something descriptive like "Client IG Posts" or "Monday Emails." You'll see this name every time you come back.</li>
-        <li><strong>Set the pattern</strong> — choose how often tasks repeat. Every day, every few days, every few weeks, or specific days of the week (like every Monday and Wednesday).</li>
-        <li><strong>Name your tasks</strong> — choose how each task will be titled. You can add your own text before the date ("IG Post: March 3"), use the same title every time ("Post Topic TBD"), or just use the date on its own.</li>
-      </ul>
-      <div class="tip"><strong>Not sure what to put for task names?</strong> Think about what you'd want to see in your ClickUp list. "Monday Email: Topic TBD" is a popular one — it tells you what type of task it is, and "Topic TBD" is a reminder to fill in the content later.</div>
-      <p>Click <strong>Save schedule</strong> when you're done. It'll show up as a card on your home screen.</p>
+
+    <div class="sub-heading" style="margin-top:28px">Finding your list</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-badge">1</div>
+        <div class="step-content">
+          <div class="step-title">Click "Browse my lists"</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">2</div>
+        <div class="step-content">
+          <div class="step-title">Select your Workspace from the dropdown</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">3</div>
+        <div class="step-content">
+          <div class="step-title">Select your Space</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">4</div>
+        <div class="step-content">
+          <div class="step-title">Select your Folder <span style="font-weight:400;color:var(--muted)">(optional — skip if your list is not in a folder)</span></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">5</div>
+        <div class="step-content">
+          <div class="step-title">Click your List to select it</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge">6</div>
+        <div class="step-content">
+          <div class="step-title">Or type in the search box to find any list by name</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-ochre" style="margin-top:24px">
+      Once a list is selected, your statuses, team members, and custom fields load automatically. Nothing to look up.
     </div>
   </div>
 
   <!-- Step 3 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">3</div>
-      <div class="step-title">Select your schedule and open the app</div>
-    </div>
-    <div class="step-body">
-      <p>On the home screen you'll see your saved schedules as cards. Click the one you want to use — it'll highlight to show it's selected.</p>
-      <p>Then click <strong>Create tasks with this schedule</strong> to move into the run flow.</p>
-      <div class="note"><strong>Want to skip the schedule step?</strong> You can also click "Skip — set everything manually" to configure everything from scratch each time. This is useful if you have a one-off batch that doesn't fit your usual patterns.</div>
+  <div class="section" id="step-3">
+    <div class="section-eyebrow">Step 3 of 4</div>
+    <h2 class="section-title">Set your dates and settings</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">First &amp; last task date</div>
+          <div class="step-body">Pick your start date and end date. The task count preview updates automatically — you can see exactly how many tasks will be created before you run anything.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Due date <span style="font-weight:400;color:var(--muted)">(optional)</span></div>
+          <div class="step-body">Set the due date to match the task date, a set number of days before it, or leave it blank.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Post date custom field <span style="font-weight:400;color:var(--muted)">(optional)</span></div>
+          <div class="step-body">If your list has a "Post Date" or "Publish Date" custom field, turn this on and select it. The date fills in automatically on every task created.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Other custom fields <span style="font-weight:400;color:var(--muted)">(optional)</span></div>
+          <div class="step-body">Any other custom fields on your list appear here. Set a default value and it applies to every task — content type, post status, whatever you use in your setup.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Assignee &amp; status <span style="font-weight:400;color:var(--muted)">(optional)</span></div>
+          <div class="step-body">Assign all tasks to a team member and set a starting status. Both pull from your actual ClickUp list — just pick from the dropdown.</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Step 4 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">4</div>
-      <div class="step-title">Connect to ClickUp and pick your list</div>
+  <div class="section" id="step-4">
+    <div class="section-eyebrow">Step 4 of 4</div>
+    <h2 class="section-title">Review and run</h2>
+    <p class="section-intro">The Review screen shows a full summary of everything before any tasks are created. Take a quick look — then click Create Tasks in ClickUp.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-badge check">✓</div>
+        <div class="step-content">
+          <div class="step-title">Check the task count</div>
+          <div class="step-body">Does the number look right for your date range?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge check">✓</div>
+        <div class="step-content">
+          <div class="step-title">Check the date range</div>
+          <div class="step-body">Correct month and year? Jan 1 to Jan 31, not Jan 1 to Dec 31 by accident?</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge check">✓</div>
+        <div class="step-content">
+          <div class="step-title">Check the first task name</div>
+          <div class="step-body">Is it formatted the way you want? The preview at the bottom of the summary shows you.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-badge check">✓</div>
+        <div class="step-content">
+          <div class="step-title">Click Create Tasks in ClickUp</div>
+          <div class="step-body">Tasks create one by one — you'll see them appear in a live log.</div>
+        </div>
+      </div>
     </div>
-    <div class="step-body">
-      <p>This is where you paste in your API token and choose which ClickUp list you want the tasks created in.</p>
-      <ul class="sub-steps">
-        <li>Paste your API token in the first field. It saves automatically — you won't need to paste it again next time.</li>
-        <li>Click <strong>Browse my lists</strong> to load your ClickUp workspace.</li>
-        <li>Click through your workspace, space, and folder to find the right list — or use the search box to find it by name.</li>
-        <li>Click the list to select it. You'll see the name appear as a confirmation.</li>
-      </ul>
-      <p>Once you select a list, the app automatically pulls in your real statuses, team members, and custom fields — so you won't need to look anything up manually.</p>
-      <div class="tip"><strong>First time loading your workspace?</strong> It might take 10-15 seconds to pull everything in, especially if you have a large ClickUp workspace. This is normal.</div>
+
+    <div class="callout callout-rust" style="margin-top:24px">
+      <strong>Important:</strong> running the tool twice for the same date range will create duplicate tasks. Always check your date range on the Review screen before clicking run.
     </div>
   </div>
 
-  <!-- Step 5 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">5</div>
-      <div class="step-title">Set your dates</div>
+  <!-- Real example -->
+  <div class="section" id="real-example">
+    <div class="section-eyebrow">Real example</div>
+    <h2 class="section-title">Two schedules. One list.</h2>
+    <p class="section-intro">You can run the tool multiple times to fill the same ClickUp list with different task types. This client sends one email every Monday and posts to social every 3 days — two separate runs, one organized list.</p>
+
+    <div class="run-tags">
+      <div class="run-tag run-tag-1">Run 1: Monday Email - Topic TBD &nbsp;&middot;&nbsp; every Monday</div>
+      <div class="run-tag run-tag-2">Run 2: Post Topic TBD &nbsp;&middot;&nbsp; every 3 days, weekdays only</div>
     </div>
-    <div class="step-body">
-      <p>Pick your <strong>first task date</strong> and <strong>last task date</strong>. The app will create one task for every date that matches your schedule between those two dates.</p>
-      <p>As you fill this in, you'll see a preview showing how many tasks will be created and the date range they cover. This updates automatically so you can adjust until it looks right.</p>
-      <div class="tip"><strong>Example:</strong> If your schedule is Monday, Wednesday, Friday and you set March 1 to March 31 as your range, you'll get 13 tasks — one for every M/W/F in March.</div>
-      <p>Your schedule settings (pattern, naming) are already loaded from the schedule you saved. You can adjust anything here if you need to tweak it for this particular run.</p>
+
+    <div class="example-card">
+      <div class="example-header">
+        <div class="example-label">Result</div>
+        <div class="example-title">One list, two task types, everything structured</div>
+      </div>
+      <div class="example-body">
+        <div class="example-row">
+          <span class="example-key">Email tasks</span>
+          <span class="example-val">7 tasks — one per Monday</span>
+        </div>
+        <div class="example-row">
+          <span class="example-key">Social tasks</span>
+          <span class="example-val">12 tasks — every 3 days</span>
+        </div>
+        <div class="example-row">
+          <span class="example-key">Status on each</span>
+          <span class="example-val">Set automatically on creation</span>
+        </div>
+        <div class="example-row">
+          <span class="example-key">Post date field</span>
+          <span class="example-val">Filled in on every task</span>
+        </div>
+        <div class="example-result">The whole month is structured before a single piece of content has been made. Just drop in the topics when you're ready to batch.</div>
+      </div>
     </div>
   </div>
-
-  <!-- Step 6 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">6</div>
-      <div class="step-title">Configure task settings</div>
-    </div>
-    <div class="step-body">
-      <p>This step is optional — the defaults work fine for most people. But here's what you can set:</p>
-      <ul class="sub-steps">
-        <li><strong>Due date</strong> — set the due date to match the task date, a few days before it, or leave it blank.</li>
-        <li><strong>Post date custom field</strong> — if your ClickUp list has a custom "Post Date" or "Publish Date" field, turn this on and select it. The app will fill it in automatically for every task.</li>
-        <li><strong>Custom fields</strong> — any other custom fields on your list appear here. Set a default value and it gets applied to every task. Great for things like "Post Type" (Social Post, Email, Blog) or "Client Name."</li>
-        <li><strong>Assignee</strong> — assign all tasks to a team member. Pick from the dropdown — it shows your real ClickUp workspace members.</li>
-        <li><strong>Status</strong> — set a starting status on every task. Pick from your list's actual statuses.</li>
-      </ul>
-      <div class="note"><strong>Don't see your custom fields?</strong> They only appear after you've selected a list in the previous step. Go back and make sure a list is selected.</div>
-    </div>
-  </div>
-
-  <!-- Step 7 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">7</div>
-      <div class="step-title">Review and run</div>
-    </div>
-    <div class="step-body">
-      <p>The final screen shows a summary of everything — your list, task count, date range, naming format, and settings. Take a quick look to make sure it all looks right.</p>
-      <p>You'll also see a preview of exactly what the first task will be named, so there are no surprises.</p>
-      <p>When you're ready, click <strong>Create Tasks in ClickUp</strong>. The app will create each task one by one — you'll see a live log as they appear. When it's done, head to your ClickUp list to see them.</p>
-      <div class="tip"><strong>Important:</strong> Running the app twice for the same date range will create duplicate tasks — it doesn't check what's already in your list first. Double-check your date range before hitting run.</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
 
   <!-- FAQ -->
-  <h2 style="font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;color:var(--olive);margin-bottom:28px">Common questions</h2>
+  <div class="section" id="faq">
+    <div class="section-eyebrow">Common questions</div>
+    <h2 class="section-title">Good ones, answered.</h2>
 
-  <div style="margin-bottom:24px">
-    <div style="font-size:15px;font-weight:500;color:var(--olive);margin-bottom:6px">My API token isn't working</div>
-    <div style="font-size:14px;color:var(--slate);font-weight:300;line-height:1.7">Make sure you copied the full token — it starts with pk_ and is quite long. Go back to ClickUp → Settings → Apps and copy it again. Make sure there are no extra spaces before or after it.</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">My API token isn't working</div>
+        <div class="faq-a">Make sure you copied the full token — it starts with <code>pk_</code> and is quite long. Go back to ClickUp, click your avatar in the top left, go to Settings &rarr; Apps, and copy it again. Make sure there are no extra spaces.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">My lists aren't showing up when I browse</div>
+        <div class="faq-a">This usually means the API token wasn't entered before clicking Browse. Paste your token first, then click Browse my lists. If it still doesn't load, try refreshing the page.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">My custom fields aren't showing</div>
+        <div class="faq-a">Custom fields only load after you've selected a list. Go back to the Connection step and make sure a list is selected — you'll see the list name confirmed on screen.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">I created duplicate tasks by accident</div>
+        <div class="faq-a">Delete the duplicates directly in ClickUp. To avoid this in future, always check the date range on the Review screen before clicking run.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is this different from ClickUp's recurring tasks?</div>
+        <div class="faq-a">ClickUp's recurring feature repeats a single task after it closes. Bulk Task Creator creates a full set of individual tasks upfront — each with its own due date, name, and custom fields already filled in. Your whole month is ready on day one.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Something else isn't working</div>
+        <div class="faq-a">Email <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> and describe what's happening. Screenshots always help.</div>
+      </div>
+    </div>
   </div>
 
-  <div style="margin-bottom:24px">
-    <div style="font-size:15px;font-weight:500;color:var(--olive);margin-bottom:6px">My lists aren't showing up when I browse</div>
-    <div style="font-size:14px;color:var(--slate);font-weight:300;line-height:1.7">This usually means the API token wasn't entered before clicking Browse. Paste your token first, then click Browse my lists. If it's still not loading, try refreshing the page and starting again.</div>
-  </div>
+  <!-- Quick reference -->
+  <div class="section" id="quick-reference">
+    <div class="section-eyebrow">Quick reference</div>
+    <h2 class="section-title">The short version.</h2>
 
-  <div style="margin-bottom:24px">
-    <div style="font-size:15px;font-weight:500;color:var(--olive);margin-bottom:6px">My custom fields aren't showing up</div>
-    <div style="font-size:14px;color:var(--slate);font-weight:300;line-height:1.7">Custom fields only load after you've selected a list. Go back to the Connection step and make sure a list is selected — you should see the list name confirmed at the bottom of that section.</div>
-  </div>
+    <div class="ref-grid">
+      <div class="ref-row">
+        <div class="ref-num">1</div>
+        <div>
+          <div class="ref-title">Create a posting schedule</div>
+          <div class="ref-detail">Name it &middot; Set the pattern &middot; Choose task naming &middot; Save</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-num">2</div>
+        <div>
+          <div class="ref-title">Select your schedule on the home screen</div>
+          <div class="ref-detail">Click the schedule card &middot; Click "Create tasks with this schedule"</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-num">3</div>
+        <div>
+          <div class="ref-title">Enter your API token</div>
+          <div class="ref-detail">ClickUp avatar top left &rarr; Settings &rarr; Apps &rarr; copy the pk_ token</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-num">4</div>
+        <div>
+          <div class="ref-title">Browse to your list</div>
+          <div class="ref-detail">Workspace &rarr; Space &rarr; Folder (optional) &rarr; click your List</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-num">5</div>
+        <div>
+          <div class="ref-title">Set your dates</div>
+          <div class="ref-detail">First task date &middot; Last task date &middot; Preview updates live</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-num">6</div>
+        <div>
+          <div class="ref-title">Configure settings</div>
+          <div class="ref-detail">Due date &middot; Post date field &middot; Custom fields &middot; Assignee &middot; Status</div>
+        </div>
+        <div class="ref-tag">optional</div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-num">7</div>
+        <div>
+          <div class="ref-title">Review and run</div>
+          <div class="ref-detail">Check task count and first task name &middot; Click Create Tasks in ClickUp</div>
+        </div>
+        <div></div>
+      </div>
+    </div>
 
-  <div style="margin-bottom:24px">
-    <div style="font-size:15px;font-weight:500;color:var(--olive);margin-bottom:6px">I created duplicate tasks by accident</div>
-    <div style="font-size:14px;color:var(--slate);font-weight:300;line-height:1.7">Unfortunately the app doesn't have an undo button — you'll need to delete the duplicates in ClickUp. To avoid this in future, always check the date range and task count on the Review screen before hitting run.</div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div style="font-size:15px;font-weight:500;color:var(--olive);margin-bottom:6px">I lost my license key</div>
-    <div style="font-size:14px;color:var(--slate);font-weight:300;line-height:1.7">Email <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> with the email address you used to purchase and we'll resend it right away.</div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div style="font-size:15px;font-weight:500;color:var(--olive);margin-bottom:6px">Something else isn't working</div>
-    <div style="font-size:14px;color:var(--slate);font-weight:300;line-height:1.7">Email <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a> and describe what's happening. Screenshots always help.</div>
-  </div>
-
-  <div class="cta-box">
-    <h3>Ready to create your first batch?</h3>
-    <p>Your ClickUp list is waiting.</p>
-    <a href="app.html" class="cta-btn">Open Bulk Task Creator</a>
+    <div class="cta-box">
+      <h3>Ready to create your first batch?</h3>
+      <p>Your ClickUp list is waiting.</p>
+      <a href="app.html" class="cta-btn">Open Bulk Task Creator</a>
+    </div>
   </div>
 
 </div>
 
 <footer>
-  Built by <a href="https://shinebrightvirtual.com">Shine Bright Virtual</a>
-  &nbsp;·&nbsp;
-  Questions? <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a>
+  <div class="footer-left">
+    &copy; 2025 Bulk Task Creator &nbsp;&middot;&nbsp;
+    <a href="mailto:support@shinebrightvirtual.com">support@shinebrightvirtual.com</a>
+  </div>
+  <div class="footer-right">by Shine Bright Virtual</div>
 </footer>
+
+<script>
+// Highlight active progress nav link on scroll
+const sections = document.querySelectorAll('.section');
+const links = document.querySelectorAll('.progress-link');
+
+function updateActive() {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.getBoundingClientRect().top;
+    if (top < 120) current = s.id;
+  });
+  links.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', updateActive);
+updateActive();
+</script>
 
 </body>
 </html>
